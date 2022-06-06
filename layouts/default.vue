@@ -1,8 +1,10 @@
 <template>
-  <div class="bg-slate-50 h-screen">
+  <div class="bg-slate-100 h-screen">
     <div class="container mx-auto lg:px-14">
       <TheNavbar />
-      <slot />
+      <div class="pt-36 pb-5">
+        <slot />
+      </div>
       <TheFooter />
     </div>
   </div>
