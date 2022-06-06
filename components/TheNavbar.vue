@@ -1,0 +1,85 @@
+<script setup>
+import { ref } from "vue";
+
+const isOpen = ref(false);
+</script>
+
+<template>
+  <div class="px-5 py-5 text-slate-500 text-sm">
+    <div class="flex justify-between items-center">
+      <img
+        class="h-8 w-auto"
+        src="https://ampnet.io/wp-content/uploads/2022/03/Identity-developed_logo-amp-new.png"
+      />
+      <button class="md:hidden" @click="isOpen = !isOpen">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth="{2}"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M4 6h16M4 12h16M4 18h16"
+          />
+        </svg>
+      </button>
+      <nav class="hidden md:flex">
+        <div class="flex items-center">
+          <NuxtLink href="#" class="flex mr-6 hover:text-violet-700">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6 mx-1.5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            <span>NEW REQUEST </span></NuxtLink
+          >
+
+          <NuxtLink
+            href="#"
+            class="flex items-center mx-6 hover:text-violet-700"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6 mx-1.5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
+              />
+            </svg>
+            <span>PAYMENTS </span></NuxtLink
+          >
+          <button
+            class="ml-6 rounded-full bg-gradient-to-r from-violet-700 to-purple-500 py-2 px-6 text-white"
+          >
+            0xa...338s
+          </button>
+        </div>
+      </nav>
+    </div>
+    <nav v-if="isOpen" class="pt-4 md:hidden">
+      <div>
+        <NuxtLink href="#" class="block">NEW REQUEST</NuxtLink>
+        <NuxtLink href="#" class="block">PAYMENTS</NuxtLink>
+      </div>
+    </nav>
+  </div>
+</template>
