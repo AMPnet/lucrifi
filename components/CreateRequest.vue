@@ -1,31 +1,7 @@
 <script setup>
-const tokens = [
-  {
-    title: "USDC",
-    img: "",
-  },
-  {
-    title: "DAI",
-    img: "",
-  },
-  {
-    title: "ETH",
-    img: "",
-  },
-  {
-    title: "WETH",
-    img: "",
-  },
-  {
-    title: "AAPX",
-    img: "",
-  },
-  {
-    title: "1INCH",
-    img: "",
-  },
-];
-const selectedToken = ref(tokens[0]);
+const selectedToken = useState("selectedToken");
+const selectedNetwork = useState("selectedNetwork");
+const selectedAmount = useState("selectedCurrencyAmount");
 </script>
 
 <template>
@@ -35,25 +11,41 @@ const selectedToken = ref(tokens[0]);
         <NetworkChooser />
 
         <div class="mt-5">
-          <h3>Currency and amount</h3>
-          <div class="px-4 py-3 border border-slate-300 rounded mt-2">
-            <input min="0" type="number" id="amount" />
-          </div>
+          <CurrencyAmountChooser />
         </div>
 
         <div class="mt-5">
-          <h3>Transfer to</h3>
-          <div class="px-4 py-3 border border-slate-300 rounded mt-2">
-            <input type="text" id="transfer-to" />
-          </div>
+          <TransferToField />
         </div>
+
         <div class="mt-5">
           <div class="px-4 py-3 border border-slate-300 rounded">
-            <input type="text" />
+            <div class="flex items-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"
+                />
+              </svg>
+              <input
+                type="text"
+                placeholder="Add note"
+                class="w-full focus:outline-none mx-2"
+              />
+            </div>
           </div>
         </div>
+
         <button
-          class="mt-3 w-full uppercase text-xs rounded-full bg-gradient-to-r from-violet-700 to-purple-500 py-3 px-6 text-white"
+          class="mt-3 w-full font-bold uppercase text-xs rounded-full bg-gradient-to-r from-sky-600 to-cyan-500 hover:from-sky-700 hover:to-cyan-600 py-3 px-6 text-white"
         >
           Create Request
         </button>
