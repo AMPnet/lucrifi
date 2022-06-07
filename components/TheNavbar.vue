@@ -29,10 +29,10 @@ const isOpen = ref(false);
       </button>
       <nav class="hidden md:flex">
         <div class="flex items-center">
-          <NuxtLink to=/ class="flex mr-6 hover:text-violet-700">
+          <NuxtLink to=/ class="flex mr-6 hover:text-violet-700 py-2" activeClass="text-violet-700 border-b-2 border-violet-700">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              class="h-6 w-6 mx-1.5"
+              class="h-6 w-6 mr-1.5"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -49,11 +49,12 @@ const isOpen = ref(false);
 
           <NuxtLink
             to="/MyPayments"
-            class="flex items-center mx-6 hover:text-violet-700"
+            class="flex items-center py-2 mx-6 hover:text-violet-700"
+            activeClass="text-violet-700 border-b-2 border-violet-700"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              class="h-6 w-6 mx-1.5"
+              class="h-6 w-6 mr-1.5"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
