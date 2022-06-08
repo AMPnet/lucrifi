@@ -48,7 +48,7 @@ const isOpen = ref(false);
           >
 
           <NuxtLink
-            to="/MyPayments"
+            to="/payments"
             class="flex items-center py-2 mx-6 hover:text-violet-700"
             activeClass="text-violet-700 border-b-2 border-violet-700"
           >
