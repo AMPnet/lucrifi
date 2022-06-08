@@ -8,10 +8,10 @@ const isOpen = ref(false);
   <div class="px-5 py-5 text-slate-500 text-sm">
     <div class="flex justify-between items-center">
       <img
-        class="h-8 w-auto"
-        src="https://ampnet.io/wp-content/uploads/2022/03/Identity-developed_logo-amp-new.png"
+        class="h-10 w-auto"
+        src="/logos/lucrifi-logo.png"
       />
-      <button class="md:hidden" @click="isOpen = !isOpen">
+      <button class="sm:hidden" @click="isOpen = !isOpen">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           class="h-6 w-6"
@@ -27,7 +27,7 @@ const isOpen = ref(false);
           />
         </svg>
       </button>
-      <nav class="hidden md:flex">
+      <nav class="hidden sm:flex">
         <div class="flex items-center">
           <NuxtLink to=/ class="flex mr-6 hover:text-violet-700 py-2" activeClass="text-violet-700 border-b-2 border-violet-700">
             <svg
@@ -71,7 +71,7 @@ const isOpen = ref(false);
         </div>
       </nav>
     </div>
-    <nav v-if="isOpen" class="pt-4 md:hidden">
+    <nav v-if="isOpen" class="pt-4 sm:hidden">
       <div>
         <NuxtLink href="#" class="block">NEW REQUEST</NuxtLink>
         <NuxtLink href="#" class="block">PAYMENTS</NuxtLink>

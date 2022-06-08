@@ -66,7 +66,7 @@ const queriedTokens = computed(() => {
 
     <div class="fixed z-10 inset-0 overflow-y-auto">
       <div
-        class="flex items-end sm:items-center justify-center min-h-full p-4 text-center sm:p-0"
+        class="flex items-center justify-center min-h-full p-4 text-center sm:p-0"
       >
         <div
           class="relative bg-white pt-4 pb-4 rounded-lg overflow-hidden shadow-xl transform transition-all sm:my-8 sm:max-w-lg sm:w-full"
