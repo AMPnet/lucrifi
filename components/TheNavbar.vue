@@ -68,11 +68,6 @@ const isOpen = ref(false);
             </svg>
             <span>PAYMENTS </span></NuxtLink
           >
-          <button
-            class="ml-6 rounded-full bg-gradient-to-r from-violet-700 to-purple-500 py-2 px-6 text-white"
-          >
-            0xa...338s
-          </button>
         </div>
       </nav>
     </div>

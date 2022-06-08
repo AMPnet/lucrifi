@@ -11,6 +11,7 @@
     "@nuxtjs/eslint-config": "^8.0.0",
     "@nuxtjs/eslint-module": "^3.0.2",
     "@nuxtjs/tailwindcss": "^5.1.2",
+    "@vueuse/core": "^8.6.0",
     "eslint": "^8.17.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-nuxt": "^3.1.0",
@@ -19,6 +20,7 @@
     "prettier": "^2.5.1"
   },
   "dependencies": {
+    "@vueuse/nuxt": "^8.6.0",
     "vue-gtag": "^2.0.1"
   }
 }
