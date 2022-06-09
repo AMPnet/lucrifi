@@ -1,50 +1,38 @@
 <script setup>
-const selectedToken = useState("selectedToken");
+const props = defineProps({
+  chainId: {
+    type: Number,
+    required: true,
+  },
+  tokens: {
+    type: Array,
+    required: true,
+  },
+});
 
-const tokens = [
-  {
-    title: "USDC",
-    img: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Ethereum-icon-purple.svg/480px-Ethereum-icon-purple.svg.png",
-  },
-  {
-    title: "DAI",
-    img: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Ethereum-icon-purple.svg/480px-Ethereum-icon-purple.svg.png",
-  },
-  {
-    title: "ETH",
-    img: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Ethereum-icon-purple.svg/480px-Ethereum-icon-purple.svg.png",
-  },
-  {
-    title: "WETH",
-    img: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Ethereum-icon-purple.svg/480px-Ethereum-icon-purple.svg.png",
-  },
-  {
-    title: "AAPX",
-    img: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Ethereum-icon-purple.svg/480px-Ethereum-icon-purple.svg.png",
-  },
-  {
-    title: "1INCH",
-    img: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Ethereum-icon-purple.svg/480px-Ethereum-icon-purple.svg.png",
-  },
-];
+const selectedToken = useState("selectedToken");
 
 const searchQuery = ref("");
 
 const topTokens = computed(() => {
   const top = [];
-  for (let i = 0; i < 4; i++) {
-    top.push(tokens[i]);
+
+  for (const token of props.tokens) {
+    if (["USDC", "WETH", "DAI"].includes(token.symbol)) {
+      top.push(token);
+    }
   }
   return top;
 });
+
 const queriedTokens = computed(() => {
   if (searchQuery.value == "") {
-    return tokens;
+    return props.tokens;
   } else {
     const queried = [];
     const queryLowerCase = searchQuery.value.toLowerCase();
-    for (const token of tokens) {
-      if (token.title.toLowerCase().includes(queryLowerCase)) {
+    for (const token of props.tokens) {
+      if (token.name.toLowerCase().includes(queryLowerCase)) {
         queried.push(token);
       }
     }
@@ -95,23 +83,23 @@ const queriedTokens = computed(() => {
               class="w-full px-4 py-3 mt-3 border border-slate-300 rounded focus:outline-none"
               v-model="searchQuery"
               type="text"
-              placeholder="Search token"
+              placeholder="Search token symbol"
             />
             <div
               class="pt-5 pb-2 mb-4 gap-2 flex flex-wrap justify-left border-b border-slate-200"
             >
               <button
                 v-for="token in topTokens"
-                :key="token.title"
+                :key="token.address"
                 @click="
                   selectedToken = token;
                   $emit('close');
                 "
-                class="rounded-full border border-slate-200 px-2 py-1.5 gap-3 hover:bg-violet-200"
+                class="rounded-full border border-slate-200 px-2 py-1.5 gap-3 hover:bg-violet-200 font-bold"
               >
                 <div class="flex items-center">
-                  <img :src="token.img" class="w-5 h-5 mr-1" />
-                  {{ token.title }}
+                  <img :src="token.logoURI" class="w-5 h-5 mr-1" />
+                  {{ token.symbol }}
                 </div>
               </button>
             </div>
@@ -124,15 +112,15 @@ const queriedTokens = computed(() => {
             <button
               class="w-full text-left px-7 py-2 hover:bg-violet-100 hover:font-bold"
               v-for="token in queriedTokens"
-              :key="token.title"
+              :key="token.address"
               @click="
                 selectedToken = token;
                 $emit('close');
               "
             >
               <div class="flex items-center">
-                <img :src="token.img" class="w-5 h-5 mr-2.5" />
-                {{ token.title }}
+                <img :src="token.logoURI" class="w-5 h-5 mr-2.5" />
+                {{ token.symbol }}
               </div>
             </button>
           </div>

@@ -1,17 +1,30 @@
 <script setup>
-const selectedToken = useState("selectedToken", () => {
-  return {
-    title: "USDC",
-    img: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Ethereum-icon-purple.svg/480px-Ethereum-icon-purple.svg.png",
-  };
-});
+const chainId = ref(1);
 
+const { data: uniswapTokenList } = await useFetch(
+  "https://tokens.uniswap.org/",
+  {
+    key: "uniswapItems",
+    transform: (data) =>
+      data["tokens"].filter((token) => token.chainId === chainId.value),
+  }
+);
+
+const selectedToken = useState("selectedToken", () => {
+  return uniswapTokenList.value.filter((token) => token.symbol === "USDC")[0];
+});
 const selectedAmount = useState("selectedCurrencyAmount", () => "");
+
 const showTokenModal = ref(false);
 </script>
 
 <template>
-  <SelectTokenModal v-if="showTokenModal" @close="showTokenModal = false" />
+  <SelectTokenModal
+    :chain-id="chainId"
+    :tokens="uniswapTokenList"
+    v-if="showTokenModal"
+    @close="showTokenModal = false"
+  />
 
   <h3>Currency and amount</h3>
   <div class="px-4 py-3 mt-2 bg-slate-100 border border-slate-300 rounded">
@@ -21,9 +34,9 @@ const showTokenModal = ref(false);
         @click="showTokenModal = true"
       >
         <div class="flex items-center">
-          <img :src="selectedToken.img" class="h-5 w-5" />
+          <img :src="selectedToken.logoURI" class="h-5 w-5" />
 
-          <span class="mx-2.5"> {{ selectedToken.title }}</span>
+          <span class="mx-2.5"> {{ selectedToken.symbol }}</span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             class="h-9 w-9"
