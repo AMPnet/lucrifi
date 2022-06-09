@@ -1,4 +1,6 @@
-<script setup>
+<script setup lang="ts">
+import { useField } from "vee-validate";
+
 const chainId = ref(1);
 
 const { data: uniswapTokenList } = await useFetch(
@@ -13,7 +15,62 @@ const { data: uniswapTokenList } = await useFetch(
 const selectedToken = useState("selectedToken", () => {
   return uniswapTokenList.value.filter((token) => token.symbol === "USDC")[0];
 });
+
 const selectedAmount = useState("selectedCurrencyAmount", () => "");
+
+const countDecimals = function (value: string) {
+  if (!value.includes(".")) return 0;
+
+  if (value.indexOf(".") !== -1 && value.indexOf("-") !== -1) {
+    return value.split("-")[1] || 0;
+  } else if (value.indexOf(".") !== -1) {
+    return value.split(".")[1].length || 0;
+  }
+  return value.split("-")[1] || 0;
+};
+
+function isValidCurrencyAmount(value: string) {
+  if (!value || !value.trim()) return "Please set amount";
+
+  const trimmedValue = value.trim();
+
+  // @ts-ignore
+  if (isNaN(trimmedValue)) {
+    return "Please set valid amount";
+  }
+
+  const valueFloat = parseFloat(trimmedValue);
+
+  if (valueFloat <= 0) {
+    return "Please set positive amount";
+  }
+
+  if (countDecimals(value) > selectedToken.value.decimals) {
+    return "Please set less decimals";
+  }
+
+  return true;
+}
+
+const { value: validatedAmount, meta } = useField(
+  selectedAmount,
+  isValidCurrencyAmount,
+  { initialValue: "" }
+);
+
+const currencyAmountValid = useState("currencyAmountValid", () => false);
+
+watch(meta, async (newMeta, oldMeta) => {
+  currencyAmountValid.value = newMeta.valid;
+});
+
+const dirtyClass = computed(() => {
+  if (!meta.valid) {
+    return "bg-red-50 border-red-300";
+  } else {
+    return "bg-slate-100 border-slate-300";
+  }
+});
 
 const showTokenModal = ref(false);
 </script>
@@ -27,7 +84,7 @@ const showTokenModal = ref(false);
   />
 
   <h3>Currency and amount</h3>
-  <div class="px-4 py-3 mt-2 bg-slate-100 border border-slate-300 rounded">
+  <div class="px-4 py-3 mt-2 border rounded" :class="dirtyClass">
     <div class="flex items-center justify between">
       <button
         class="bg-white rounded-full px-2.5 py-0.75 text-sm font-semibold shadow"
@@ -54,13 +111,12 @@ const showTokenModal = ref(false);
         </div>
       </button>
       <input
-        v-model="selectedAmount"
+        v-model="validatedAmount"
         id="amount"
         type="text"
         inputmode="decimal"
         placeholder="Input amount to receive"
-        pattern="[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)"
-        class="placeholder:text-sm w-full text-xl text-right ml-5 bg-slate-100 focus:outline-none"
+        class="placeholder:text-sm w-full text-xl text-right ml-5 bg-inherit focus:outline-none"
       />
     </div>
   </div>

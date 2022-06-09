@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from "vue";
 
 const isOpen = ref(false);
@@ -7,11 +7,13 @@ const isOpen = ref(false);
 <template>
   <div class="px-5 py-5 text-slate-500 text-sm">
     <div class="flex justify-between items-center">
+      <NuxtLink to="/">
       <img
         class="h-10 w-auto"
         src="/logos/lucrifi-logo.png"
       />
-      <button class="sm:hidden" @click="isOpen = !isOpen">
+     </NuxtLink>
+      <button class="sm:hidden" @click="isOpen = !isOpen ">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           class="h-6 w-6"

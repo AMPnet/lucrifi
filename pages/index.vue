@@ -2,6 +2,16 @@
 const selectedToken = useState("selectedToken");
 const selectedNetwork = useState("selectedNetwork");
 const selectedAmount = useState("selectedCurrencyAmount");
+
+const amountValid = useState("currencyAmountValid");
+const isAddressValid = useState("addressValid");
+
+const formValid = computed(() => {
+  if (amountValid.value && isAddressValid.value) {
+    return true;
+  }
+  return false;
+});
 </script>
 
 <template>
@@ -45,9 +55,10 @@ const selectedAmount = useState("selectedCurrencyAmount");
         </div>
 
         <button
-          class="mt-3 w-full font-bold uppercase text-xs rounded-full bg-gradient-to-r from-sky-600 to-cyan-500 hover:from-sky-700 hover:to-cyan-600 py-3 px-6 text-white"
+          :disabled="!formValid"
+          class="mt-3 w-full font-bold uppercase text-xs rounded-full bg-gradient-to-r from-sky-600 to-cyan-500 hover:from-sky-700 hover:to-cyan-600 py-3 px-6 text-white disabled:from-slate-400 disabled:to-slate-400"
         >
-          Create Request
+          Create Request<br />
         </button>
       </div>
     </div>

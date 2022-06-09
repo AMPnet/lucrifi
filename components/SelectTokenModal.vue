@@ -32,7 +32,7 @@ const queriedTokens = computed(() => {
     const queried = [];
     const queryLowerCase = searchQuery.value.toLowerCase();
     for (const token of props.tokens) {
-      if (token.name.toLowerCase().includes(queryLowerCase)) {
+      if (token.symbol.toLowerCase().includes(queryLowerCase)) {
         queried.push(token);
       }
     }

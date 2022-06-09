@@ -1,10 +1,41 @@
-<script setup>
-const selectedAddress = useState("seletedTransferAddress", () => "");
+<script setup lang="ts">
+import { useField } from "vee-validate";
+import { ethers } from "ethers";
+
+function isValidAddress(value: string) {
+  if (!value || !value.trim()) return "Please set address";
+
+  if (!ethers.utils.isAddress(value)) {
+    return "Please set valid contract address";
+  }
+
+  return true;
+}
+
+const selectedAddress = useState("selectedTransferAddress", () => "");
+const { value: validAddress, meta } = useField(
+  selectedAddress,
+  isValidAddress,
+  { initialValue: "" }
+);
+
+const addressValid = useState("addressValid", () => false);
+watch(meta, async (newMeta, oldMeta) => {
+  addressValid.value = newMeta.valid;
+});
+
+const dirtyClass = computed(() => {
+  if (!meta.valid) {
+    return "bg-red-50 border-red-300";
+  } else {
+    return "bg-white border-slate-300";
+  }
+});
 </script>
 
 <template>
   <h3>Transfer to</h3>
-  <div class="px-4 py-3 border border-slate-300 rounded mt-2">
+  <div class="px-4 py-3 border rounded mt-2" :class="dirtyClass">
     <div class="flex items-center justify-between">
       <svg
         class="w-6 h-6 stroke-current"
@@ -20,9 +51,9 @@ const selectedAddress = useState("seletedTransferAddress", () => "");
       </svg>
 
       <input
-        v-model="selectedAddress"
+        v-model="validAddress"
         type="text"
-        class="w-full focus:outline-none mx-2"
+        class="w-full focus:outline-none mx-2 bg-inherit"
         id="transfer-to"
         placeholder="Input address"
       />

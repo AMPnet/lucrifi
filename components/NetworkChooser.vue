@@ -1,37 +1,49 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from "vue";
 
-const networks = ref([
+const networks = [
   {
     title: "Polygon",
     img: "https://seeklogo.com/images/P/polygon-matic-logo-86F4D6D773-seeklogo.com.png",
+    chainId: 1,
+    url: "",
   },
   {
     title: "Ethereum",
     img: "https://seeklogo.com/images/P/polygon-matic-logo-86F4D6D773-seeklogo.com.png",
+    chainId: 2,
+    url: "",
   },
   {
     title: "BSC",
     img: "https://seeklogo.com/images/P/polygon-matic-logo-86F4D6D773-seeklogo.com.png",
+    chainId: 3,
+    url: "",
   },
   {
     title: "Avanalnche",
     img: "https://seeklogo.com/images/P/polygon-matic-logo-86F4D6D773-seeklogo.com.png",
+    chainId: 4,
+    url: "",
   },
   {
     title: "Tron",
     img: "https://seeklogo.com/images/P/polygon-matic-logo-86F4D6D773-seeklogo.com.png",
+    chainId: 5,
+    url: "",
   },
-]);
+];
 
 const customRpc = ref({
   title: "Custom RPC",
-  addr: "",
+  img: undefined,
+  url: "",
+  chainId: -1,
 });
 
-networks.value.push(customRpc.value);
+networks.push(customRpc.value);
 
-const selectedNetwork = useState("selectedNetwork", () => networks.value[0]);
+const selectedNetwork = useState("selectedNetwork", () => networks[0]);
 
 const dropDownActive = ref(false);
 
