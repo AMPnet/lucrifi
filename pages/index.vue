@@ -3,11 +3,12 @@ const selectedToken = useState("selectedToken");
 const selectedNetwork = useState("selectedNetwork");
 const selectedAmount = useState("selectedCurrencyAmount");
 
-const amountValid = useState("currencyAmountValid");
+const isAmountValid = useState("currencyAmountValid");
 const isAddressValid = useState("addressValid");
+const isRpcValid = useState("rpcUrlValid");
 
 const formValid = computed(() => {
-  if (amountValid.value && isAddressValid.value) {
+  if (isAmountValid.value && isAddressValid.value && isRpcValid.value) {
     return true;
   }
   return false;

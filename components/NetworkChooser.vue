@@ -1,53 +1,84 @@
 <script setup lang="ts">
 import { ref } from "vue";
+import { useField } from "vee-validate";
 
 const networks = [
   {
     title: "Polygon",
     img: "https://seeklogo.com/images/P/polygon-matic-logo-86F4D6D773-seeklogo.com.png",
     chainId: 1,
-    url: "",
   },
   {
     title: "Ethereum",
     img: "https://seeklogo.com/images/P/polygon-matic-logo-86F4D6D773-seeklogo.com.png",
     chainId: 2,
-    url: "",
   },
   {
     title: "BSC",
     img: "https://seeklogo.com/images/P/polygon-matic-logo-86F4D6D773-seeklogo.com.png",
     chainId: 3,
-    url: "",
   },
   {
     title: "Avanalnche",
     img: "https://seeklogo.com/images/P/polygon-matic-logo-86F4D6D773-seeklogo.com.png",
     chainId: 4,
-    url: "",
   },
   {
     title: "Tron",
     img: "https://seeklogo.com/images/P/polygon-matic-logo-86F4D6D773-seeklogo.com.png",
     chainId: 5,
-    url: "",
   },
 ];
 
 const customRpc = ref({
   title: "Custom RPC",
   img: undefined,
-  url: "",
   chainId: -1,
 });
 
 networks.push(customRpc.value);
 
 const selectedNetwork = useState("selectedNetwork", () => networks[0]);
+const rpcUrl = useState("rpcUrl", () => "");
 
 const dropDownActive = ref(false);
 
-const isCustomRpc = computed(() => selectedNetwork.value === customRpc.value);
+const isCustomRpc = computed(
+  () => selectedNetwork.value.title == customRpc.value.title
+);
+
+// Validation
+function isValidRpcUrl(value: string) {
+  if (!value || !value.trim()) return "Please set URL";
+
+  const trimmedValue = value.trim();
+
+  try {
+    new URL(trimmedValue);
+  } catch (_) {
+    return "Please set valid URL";
+  }
+
+  return true;
+}
+
+const { value: validatedRpcUrl, meta } = useField(rpcUrl, isValidRpcUrl, {
+  initialValue: "",
+});
+const rpcUrlValid = useState("rpcUrlValid", () => false);
+
+watch(meta, async (newMeta, oldMeta) => {
+  rpcUrlValid.value =
+    newMeta.valid && selectedNetwork.value.title == customRpc.value.title;
+});
+
+const dirtyClass = computed(() => {
+  if (!meta.valid) {
+    return "bg-red-50 border-red-300";
+  } else {
+    return "bg-slate-100 border-slate-300";
+  }
+});
 </script>
 
 <template>
@@ -130,12 +161,15 @@ const isCustomRpc = computed(() => selectedNetwork.value === customRpc.value);
         </div>
       </button>
     </div>
-    <input
-      v-if="isCustomRpc"
-      class="w-full px-4 py-3 mt-2 border border-slate-300 rounded focus:outline-none"
-      v-model="customRpc.url"
-      type="text"
-      placeholder="Input RPC URL"
-    />
+    <div>
+      <input
+        v-if="isCustomRpc"
+        :class="dirtyClass"
+        class="w-full px-4 py-3 mt-2 border rounded focus:outline-none"
+        v-model="validatedRpcUrl"
+        type="text"
+        placeholder="Input RPC URL"
+      />
+    </div>
   </div>
 </template>
