@@ -2,20 +2,24 @@
 import { useField } from "vee-validate";
 
 import { isValidAddress } from "@/validators/blockchain";
-import { tokenToString } from "typescript";
+import { TokensListResponse } from "@/types/Token";
+import { Network } from "@/types/Network";
 
-const selectedNetwork = useState("selectedNetwork", () => {
+const selectedNetwork = useState("selectedNetwork", (): Network => {
   return {
     chainId: undefined,
+    logoURI: "",
+    rpcURL: undefined,
+    name: "",
   };
 });
 
-const { data: uniswapTokenListAll } = await useFetch(
-  "https://tokens.uniswap.org"
+const { data: uniswapTokenListAll } = await useFetch<TokensListResponse>(
+  "https://tokens.uniswap.org",
+  { pick: ["tokens"] }
 );
 
 const uniswapTokenList = computed(() => {
-  // @ts-ignore
   return uniswapTokenListAll.value.tokens.filter(
     (token) => token.chainId === selectedNetwork.value.chainId
   );
@@ -24,7 +28,7 @@ const selectedToken = useState("selectedToken", () => {
   return uniswapTokenList.value.filter((token) => token.symbol === "USDC")[0];
 });
 
-const countDecimals = function (value: string) {
+const countDecimals = function (value: string): string | number {
   if (!value.includes(".")) return 0;
 
   if (value.indexOf(".") !== -1 && value.indexOf("-") !== -1) {
@@ -35,7 +39,7 @@ const countDecimals = function (value: string) {
   return value.split("-")[1] || 0;
 };
 
-function isValidCurrencyAmount(value: string) {
+function isValidCurrencyAmount(value: string): string | boolean {
   if (!value || !value.trim()) return "Please set amount";
 
   const trimmedValue = value.trim();
@@ -139,8 +143,8 @@ const isCustomRpc = computed(() => selectedNetwork.value.chainId === undefined);
         v-model="validatedCustomTokenAddress"
         id="token-address"
         type="text"
-        placeholder="Input token address"
-        class="placeholder:text-sm text-left w-full bg-inherit focus:outline-none"
+        placeholder="Input token contract address"
+        class="placeholder:text-xs placeholder:sm:text-sm text-left w-full bg-inherit focus:outline-none"
       />
     </div>
   </div>
@@ -178,7 +182,7 @@ const isCustomRpc = computed(() => selectedNetwork.value.chainId === undefined);
         inputmode="decimal"
         placeholder="Input amount to receive"
         :class="isCustomRpc ? 'text-left' : 'text-right ml-5'"
-        class="placeholder:text-sm w-full text-xl bg-inherit focus:outline-none"
+        class="placeholder:text-xs placeholder:sm:text-sm w-full text-xl bg-inherit focus:outline-none"
       />
     </div>
   </div>

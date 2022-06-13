@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { PropType } from "vue";
-import Token from "@/types/Token";
+import { Token } from "@/types/Token";
 
 const props = defineProps({
   chainId: {
@@ -60,7 +60,7 @@ const queriedTokens = computed(() => {
         class="flex items-center justify-center min-h-full p-4 text-center sm:p-0"
       >
         <div
-          class="relative bg-white pt-4 pb-4 rounded-lg overflow-hidden shadow-xl transform transition-all sm:my-8 sm:max-w-lg sm:w-full"
+          class="w-96 relative bg-white pt-4 pb-4 rounded-lg overflow-hidden shadow-xl transform transition-all sm:my-8 sm:max-w-lg sm:w-full"
         >
           <div class="px-6">
             <div class="flex flex-row-reverse">
@@ -108,8 +108,8 @@ const queriedTokens = computed(() => {
             </div>
           </div>
 
-          <div class="h-72 overflow-scroll">
-            <h4 v-if="queriedTokens.length === 0" class="text-slate-400">
+          <div class="h-72 overflow-y-scroll">
+            <h4 v-if="queriedTokens.length === 0" class="text-slate-400 w-full">
               No results found
             </h4>
             <button

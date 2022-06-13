@@ -3,6 +3,8 @@ const selectedToken = useState("selectedToken");
 const selectedNetwork = useState("selectedNetwork");
 const selectedAmount = useState("selectedCurrencyAmount");
 const selectedToAddress = useState("selectedTransferAddress");
+const selectedCustomTokenAddres = useState("selectedCustomTokenAddres");
+const noteData = ref("");
 
 const isAmountValid = useState("currencyAmountValid");
 const isAddressValid = useState("addressValid");
@@ -25,6 +27,46 @@ const formValid = computed(() => {
   }
   return false;
 });
+
+async function createRequest() {
+  let payload = {
+    redirect_url: "https://example.com/${id}",
+    recipient_address: selectedToAddress.value,
+    amount: selectedAmount.value,
+    arbitrary_data: {
+      note: noteData.value,
+    },
+  };
+  let headers = {};
+
+  if (selectedNetwork.value.chainId !== undefined) {
+    payload = {
+      ...payload,
+      chain_id: selectedNetwork.value.chainId,
+      token_address: selectedToken.value.address,
+    };
+  } else {
+    payload = {
+      ...payload,
+      chain_id: undefined,
+      token_address: selectedCustomTokenAddres.value,
+    };
+    headers = {
+      ...headers,
+      "X-RPC-URL-OVERRIDE": selectedNetwork.value.rpcURL,
+    };
+  }
+
+  /*
+  try {
+    resp = await useFetch("https://eth-staging.ampnet.io/v1/send", {
+      headers: headers,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+  */
+}
 </script>
 
 <template>
@@ -59,6 +101,7 @@ const formValid = computed(() => {
                 />
               </svg>
               <input
+                v-model="noteData"
                 type="text"
                 placeholder="Add note (optional)"
                 class="w-full focus:outline-none mx-2"
@@ -69,6 +112,7 @@ const formValid = computed(() => {
 
         <button
           :disabled="!formValid"
+          @click="createRequest"
           class="mt-3 w-full font-bold uppercase text-xs rounded-full bg-gradient-to-r from-sky-600 to-cyan-500 hover:from-sky-700 hover:to-cyan-600 py-3 px-6 text-white disabled:from-slate-400 disabled:to-slate-400"
         >
           Create Request<br />

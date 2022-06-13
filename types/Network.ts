@@ -1,4 +1,4 @@
-export default interface Network {
+export interface Network {
   chainId: number | undefined;
   name: string;
   logoURI: string;

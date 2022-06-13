@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
 
-function isValidAddress(value: string) {
+function isValidAddress(value: string): string | boolean {
   if (!value || !value.trim()) return "Please set address";
 
   if (!ethers.utils.isAddress(value)) {
