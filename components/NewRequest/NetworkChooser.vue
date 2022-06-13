@@ -8,34 +8,13 @@ const networks: Array<Network> = [
     name: "Polygon",
     logoURI:
       "https://seeklogo.com/images/P/polygon-matic-logo-86F4D6D773-seeklogo.com.png",
-    chainId: 1,
+    chainId: 137,
     rpcURL: undefined,
   },
   {
     name: "Ethereum",
     logoURI:
-      "https://seeklogo.com/images/P/polygon-matic-logo-86F4D6D773-seeklogo.com.png",
-    chainId: 1,
-    rpcURL: undefined,
-  },
-  {
-    name: "Avalanche",
-    logoURI:
-      "https://seeklogo.com/images/P/polygon-matic-logo-86F4D6D773-seeklogo.com.png",
-    chainId: 1,
-    rpcURL: undefined,
-  },
-  {
-    name: "Web 2.5",
-    logoURI:
-      "https://seeklogo.com/images/P/polygon-matic-logo-86F4D6D773-seeklogo.com.png",
-    chainId: 1,
-    rpcURL: undefined,
-  },
-  {
-    name: "Web 3.5",
-    logoURI:
-      "https://seeklogo.com/images/P/polygon-matic-logo-86F4D6D773-seeklogo.com.png",
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Ethereum-icon-purple.svg/480px-Ethereum-icon-purple.svg.png",
     chainId: 1,
     rpcURL: undefined,
   },
@@ -76,7 +55,7 @@ watch(meta, async (newMeta, oldMeta) => {
 const customRpc = ref({
   name: "Custom RPC",
   logoURI: undefined,
-  chainId: -1,
+  chainId: undefined,
   rpcURL: validatedRpcUrl.value,
 });
 
@@ -86,13 +65,11 @@ const selectedNetwork = useState("selectedNetwork", () => networks[0]);
 
 const dropDownActive = ref(false);
 
-const isCustomRpc = computed(
-  () => selectedNetwork.value.name == customRpc.value.name
-);
+const isCustomRpc = computed(() => selectedNetwork.value.chainId === undefined);
 
 const dirtyClass = computed(() => {
   if (!meta.valid) {
-    return "bg-red-50 border-red-300";
+    return "bg-orange-50 border-orange-300";
   } else {
     return "bg-slate-100 border-slate-300";
   }

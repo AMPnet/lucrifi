@@ -1,16 +1,6 @@
 <script setup lang="ts">
 import { useField } from "vee-validate";
-import { ethers } from "ethers";
-
-function isValidAddress(value: string) {
-  if (!value || !value.trim()) return "Please set address";
-
-  if (!ethers.utils.isAddress(value)) {
-    return "Please set valid contract address";
-  }
-
-  return true;
-}
+import { isValidAddress } from "@/validators/blockchain";
 
 const { value: validAddress, meta } = useField(
   "selectedAddress",
@@ -29,7 +19,7 @@ watch(meta, async (newMeta, oldMeta) => {
 
 const dirtyClass = computed(() => {
   if (!meta.valid) {
-    return "bg-red-50 border-red-300";
+    return "bg-orange-50 border-orange-300";
   } else {
     return "bg-white border-slate-300";
   }

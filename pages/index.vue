@@ -7,10 +7,21 @@ const selectedToAddress = useState("selectedTransferAddress");
 const isAmountValid = useState("currencyAmountValid");
 const isAddressValid = useState("addressValid");
 const isRpcValid = useState("rpcUrlValid");
+const isCustomTokenAddrValid = useState("customTokenAddressValid");
 
 const formValid = computed(() => {
-  if (isAmountValid.value && isAddressValid.value && isRpcValid.value) {
-    return true;
+  if (isAmountValid.value && isAddressValid.value) {
+    // Custom rpc is not specified
+    if (selectedNetwork.value.chainId !== undefined) {
+      return true;
+    }
+
+    // Custom rpc is specified
+    if (isRpcValid.value && isCustomTokenAddrValid.value) {
+      return true;
+    } else {
+      return false;
+    }
   }
   return false;
 });
