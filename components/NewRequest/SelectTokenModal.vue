@@ -1,11 +1,14 @@
-<script setup>
+<script setup lang="ts">
+import { PropType } from "vue";
+import Token from "@/types/Token";
+
 const props = defineProps({
   chainId: {
     type: Number,
     required: true,
   },
   tokens: {
-    type: Array,
+    type: Array as PropType<Token[]>,
     required: true,
   },
 });

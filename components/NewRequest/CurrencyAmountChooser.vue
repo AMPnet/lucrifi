@@ -16,8 +16,6 @@ const selectedToken = useState("selectedToken", () => {
   return uniswapTokenList.value.filter((token) => token.symbol === "USDC")[0];
 });
 
-const selectedAmount = useState("selectedCurrencyAmount", () => "");
-
 const countDecimals = function (value: string) {
   if (!value.includes(".")) return 0;
 
@@ -53,15 +51,23 @@ function isValidCurrencyAmount(value: string) {
 }
 
 const { value: validatedAmount, meta } = useField(
-  selectedAmount,
+  "selectedAmount",
   isValidCurrencyAmount,
   { initialValue: "" }
+);
+const selectedAmount = useState(
+  "selectedCurrencyAmount",
+  () => validatedAmount.value
 );
 
 const currencyAmountValid = useState("currencyAmountValid", () => false);
 
 watch(meta, async (newMeta, oldMeta) => {
   currencyAmountValid.value = newMeta.valid;
+});
+
+watch(validatedAmount, async (newData, oldData) => {
+  selectedAmount.value = newData;
 });
 
 const dirtyClass = computed(() => {
@@ -76,7 +82,7 @@ const showTokenModal = ref(false);
 </script>
 
 <template>
-  <SelectTokenModal
+  <NewRequestSelectTokenModal
     :chain-id="chainId"
     :tokens="uniswapTokenList"
     v-if="showTokenModal"

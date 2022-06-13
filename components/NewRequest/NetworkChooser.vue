@@ -1,51 +1,45 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useField } from "vee-validate";
+import Network from "@/types/Network";
 
-const networks = [
+const networks: Array<Network> = [
   {
-    title: "Polygon",
-    img: "https://seeklogo.com/images/P/polygon-matic-logo-86F4D6D773-seeklogo.com.png",
+    name: "Polygon",
+    logoURI:
+      "https://seeklogo.com/images/P/polygon-matic-logo-86F4D6D773-seeklogo.com.png",
     chainId: 1,
+    rpcURL: undefined,
   },
   {
-    title: "Ethereum",
-    img: "https://seeklogo.com/images/P/polygon-matic-logo-86F4D6D773-seeklogo.com.png",
-    chainId: 2,
+    name: "Ethereum",
+    logoURI:
+      "https://seeklogo.com/images/P/polygon-matic-logo-86F4D6D773-seeklogo.com.png",
+    chainId: 1,
+    rpcURL: undefined,
   },
   {
-    title: "BSC",
-    img: "https://seeklogo.com/images/P/polygon-matic-logo-86F4D6D773-seeklogo.com.png",
-    chainId: 3,
+    name: "Avalanche",
+    logoURI:
+      "https://seeklogo.com/images/P/polygon-matic-logo-86F4D6D773-seeklogo.com.png",
+    chainId: 1,
+    rpcURL: undefined,
   },
   {
-    title: "Avanalnche",
-    img: "https://seeklogo.com/images/P/polygon-matic-logo-86F4D6D773-seeklogo.com.png",
-    chainId: 4,
+    name: "Web 2.5",
+    logoURI:
+      "https://seeklogo.com/images/P/polygon-matic-logo-86F4D6D773-seeklogo.com.png",
+    chainId: 1,
+    rpcURL: undefined,
   },
   {
-    title: "Tron",
-    img: "https://seeklogo.com/images/P/polygon-matic-logo-86F4D6D773-seeklogo.com.png",
-    chainId: 5,
+    name: "Web 3.5",
+    logoURI:
+      "https://seeklogo.com/images/P/polygon-matic-logo-86F4D6D773-seeklogo.com.png",
+    chainId: 1,
+    rpcURL: undefined,
   },
 ];
-
-const customRpc = ref({
-  title: "Custom RPC",
-  img: undefined,
-  chainId: -1,
-});
-
-networks.push(customRpc.value);
-
-const selectedNetwork = useState("selectedNetwork", () => networks[0]);
-const rpcUrl = useState("rpcUrl", () => "");
-
-const dropDownActive = ref(false);
-
-const isCustomRpc = computed(
-  () => selectedNetwork.value.title == customRpc.value.title
-);
 
 // Validation
 function isValidRpcUrl(value: string) {
@@ -62,15 +56,39 @@ function isValidRpcUrl(value: string) {
   return true;
 }
 
-const { value: validatedRpcUrl, meta } = useField(rpcUrl, isValidRpcUrl, {
-  initialValue: "",
+const { value: validatedRpcUrl, meta } = useField(
+  "rpcUrlInput",
+  isValidRpcUrl,
+  {
+    initialValue: "",
+  }
+);
+watch(validatedRpcUrl, async (newRpcUrl, oldRpcUrl) => {
+  selectedNetwork.value.rpcURL = newRpcUrl;
 });
-const rpcUrlValid = useState("rpcUrlValid", () => false);
 
+const rpcUrlValid = useState("rpcUrlValid", () => false);
 watch(meta, async (newMeta, oldMeta) => {
   rpcUrlValid.value =
-    newMeta.valid && selectedNetwork.value.title == customRpc.value.title;
+    newMeta.valid && selectedNetwork.value.name == customRpc.value.name;
 });
+
+const customRpc = ref({
+  name: "Custom RPC",
+  logoURI: undefined,
+  chainId: -1,
+  rpcURL: validatedRpcUrl.value,
+});
+
+networks.push(customRpc.value);
+
+const selectedNetwork = useState("selectedNetwork", () => networks[0]);
+
+const dropDownActive = ref(false);
+
+const isCustomRpc = computed(
+  () => selectedNetwork.value.name == customRpc.value.name
+);
 
 const dirtyClass = computed(() => {
   if (!meta.valid) {
@@ -91,7 +109,7 @@ const dirtyClass = computed(() => {
       <div class="flex items-center">
         <img
           v-if="!isCustomRpc"
-          :src="selectedNetwork.img"
+          :src="selectedNetwork.logoURI"
           class="w-4 h-4 mr-2.5"
         />
         <svg
@@ -109,7 +127,7 @@ const dirtyClass = computed(() => {
             d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
           />
         </svg>
-        <span>{{ selectedNetwork.title }}</span>
+        <span>{{ selectedNetwork.name }}</span>
       </div>
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -130,7 +148,7 @@ const dirtyClass = computed(() => {
       <button
         class="w-full text-left px-4 py-2 text-sm hover:bg-violet-100 hover:font-bold"
         v-for="network in networks"
-        :key="network.title"
+        :key="network.name"
         @click="
           selectedNetwork = network;
           dropDownActive = false;
@@ -139,7 +157,7 @@ const dirtyClass = computed(() => {
         <div class="flex items-center">
           <img
             v-if="network !== customRpc"
-            :src="network.img"
+            :src="network.logoURI"
             class="w-4 h-4 mr-2.5"
           />
           <svg
@@ -157,7 +175,7 @@ const dirtyClass = computed(() => {
               d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
             />
           </svg>
-          {{ network.title }}
+          {{ network.name }}
         </div>
       </button>
     </div>

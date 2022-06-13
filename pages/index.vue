@@ -2,6 +2,7 @@
 const selectedToken = useState("selectedToken");
 const selectedNetwork = useState("selectedNetwork");
 const selectedAmount = useState("selectedCurrencyAmount");
+const selectedToAddress = useState("selectedTransferAddress");
 
 const isAmountValid = useState("currencyAmountValid");
 const isAddressValid = useState("addressValid");
@@ -19,14 +20,14 @@ const formValid = computed(() => {
   <div class="text-center">
     <div class="text-gray-700 bg-white py-4 px-5 inline-flex rounded-xl">
       <div class="w-full sm:w-96">
-        <NetworkChooser />
+        <NewRequestNetworkChooser />
 
         <div class="mt-5">
-          <CurrencyAmountChooser />
+          <NewRequestCurrencyAmountChooser />
         </div>
 
         <div class="mt-5">
-          <TransferToField />
+          <NewRequestTransferToField />
         </div>
 
         <div class="mt-5">

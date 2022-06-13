@@ -12,12 +12,15 @@ function isValidAddress(value: string) {
   return true;
 }
 
-const selectedAddress = useState("selectedTransferAddress", () => "");
 const { value: validAddress, meta } = useField(
-  selectedAddress,
+  "selectedAddress",
   isValidAddress,
   { initialValue: "" }
 );
+const selectedAddress = useState("selectedTransferAddress", () => validAddress);
+watch(validAddress, async (newAddr, oldAddr) => {
+  selectedAddress.value = newAddr;
+});
 
 const addressValid = useState("addressValid", () => false);
 watch(meta, async (newMeta, oldMeta) => {
