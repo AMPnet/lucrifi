@@ -10,4 +10,10 @@ function isValidAddress(value: string): string | boolean {
   return true;
 }
 
-export { isValidAddress };
+function countDecimals(value: string): number {
+  if (!value.includes(".")) return 0;
+
+  return value.split(".")[1].length || 0;
+}
+
+export { isValidAddress, countDecimals };

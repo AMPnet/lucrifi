@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { useField } from "vee-validate";
+import { useTokensStore } from "@/stores/tokens";
 
-import { isValidAddress } from "@/validators/blockchain";
-import { TokensListResponse } from "@/types/Token";
+import { isValidAddress, countDecimals } from "@/validators/blockchain";
 import { Network } from "@/types/Network";
+
+const tokensListStore = useTokensStore();
+const uniswapTokenListAll = await tokensListStore.tokensList;
 
 const selectedNetwork = useState("selectedNetwork", (): Network => {
   return {
@@ -14,30 +17,16 @@ const selectedNetwork = useState("selectedNetwork", (): Network => {
   };
 });
 
-const { data: uniswapTokenListAll } = await useFetch<TokensListResponse>(
-  "https://tokens.uniswap.org",
-  { pick: ["tokens"] }
-);
-
 const uniswapTokenList = computed(() => {
-  return uniswapTokenListAll.value.tokens.filter(
+  return uniswapTokenListAll.tokens.filter(
     (token) => token.chainId === selectedNetwork.value.chainId
   );
 });
 const selectedToken = useState("selectedToken", () => {
   return uniswapTokenList.value.filter((token) => token.symbol === "USDC")[0];
 });
-
-const countDecimals = function (value: string): string | number {
-  if (!value.includes(".")) return 0;
-
-  if (value.indexOf(".") !== -1 && value.indexOf("-") !== -1) {
-    return value.split("-")[1] || 0;
-  } else if (value.indexOf(".") !== -1) {
-    return value.split(".")[1].length || 0;
-  }
-  return value.split("-")[1] || 0;
-};
+const tokenLogoUri = computed(() => selectedToken.value.logoURI);
+const tokenSymbol = computed(() => selectedToken.value.symbol);
 
 function isValidCurrencyAmount(value: string): string | boolean {
   if (!value || !value.trim()) return "Please set amount";
@@ -156,9 +145,9 @@ const isCustomRpc = computed(() => selectedNetwork.value.chainId === undefined);
         @click="showTokenModal = true"
       >
         <div class="flex items-center">
-          <img :src="selectedToken.logoURI" class="h-5 w-5" />
+          <img :src="tokenLogoUri" class="h-5 w-5" />
 
-          <span class="mx-2.5"> {{ selectedToken.symbol }}</span>
+          <span class="mx-2.5"> {{ tokenSymbol }}</span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             class="h-9 w-9"

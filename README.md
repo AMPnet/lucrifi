@@ -1,4 +1,11 @@
+
 # Nuxt 3 Minimal Starter
+
+## Supported Env variables
+
+```bash
+NUXT_BACKEND_URL=https://eth-staging.ampnet.io/v1
+```
 
 Look at the [nuxt 3 documentation](https://v3.nuxtjs.org) to learn more.
 

@@ -1,4 +1,8 @@
 <script setup>
+import { countDecimals } from "@/validators/blockchain";
+
+const runtimeConfig = useRuntimeConfig();
+
 const selectedToken = useState("selectedToken");
 const selectedNetwork = useState("selectedNetwork");
 const selectedAmount = useState("selectedCurrencyAmount");
@@ -29,10 +33,14 @@ const formValid = computed(() => {
 });
 
 async function createRequest() {
+  const nDecimals = countDecimals(selectedAmount.value);
+  const zeros = "0".repeat(selectedToken.value.decimals - nDecimals);
+  const shiftedAmount = `${selectedAmount.value.replace(".", "")}${zeros}`;
+
   let payload = {
-    redirect_url: "https://example.com/${id}",
+    redirect_url: runtimeConfig.public.requestPaymentRedirect,
     recipient_address: selectedToAddress.value,
-    amount: selectedAmount.value,
+    amount: shiftedAmount,
     arbitrary_data: {
       note: noteData.value,
     },
@@ -57,15 +65,21 @@ async function createRequest() {
     };
   }
 
-  /*
-  try {
-    resp = await useFetch("https://eth-staging.ampnet.io/v1/send", {
+  const { data, error } = await useFetch(
+    `${runtimeConfig.public.backendUrl}/send`,
+    {
+      method: "post",
       headers: headers,
+      body: payload,
+    }
+  );
+
+  if (error.value) {
+  } else {
+    navigateTo({
+      path: `/payments/requested/${data.value.id}`,
     });
-  } catch (err) {
-    console.log(err);
   }
-  */
 }
 </script>
 
