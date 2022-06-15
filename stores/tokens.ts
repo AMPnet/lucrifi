@@ -17,7 +17,9 @@ export const useTokensStore = defineStore("tokensList", {
         { pick: ["tokens"] }
       );
       if (error.value) {
-        throwError("failed to fetch token list");
+        navigateTo({
+          path: `/errorPage`,
+        });
       }
       state.data = data.value;
       return data.value;

@@ -79,6 +79,9 @@ async function createRequest() {
   );
 
   if (error.value) {
+    navigateTo({
+      path: `/errorPage`,
+    });
   } else {
     navigateTo({
       path: `/payments/requested/${data.value.id}`,

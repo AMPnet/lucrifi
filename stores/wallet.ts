@@ -42,6 +42,11 @@ export const useWallet = defineStore("walletData", {
             pick: ["id", "redirect_url"],
           }
         );
+      if (error.value) {
+        navigateTo({
+          path: `/errorPage`,
+        });
+      }
       const requestId = requestData.value.id;
       this.isConnecting = true;
       const { data: statusData, refresh } =
@@ -62,6 +67,10 @@ export const useWallet = defineStore("walletData", {
         await new Promise((r) => setTimeout(r, 2000));
 
         await refresh();
+
+        if (error.value) {
+          this.isConnecting = false;
+        }
 
         if (statusData.value.status === "SUCCESS") {
           this.isConnecting = false;
