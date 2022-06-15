@@ -29,16 +29,14 @@ const tokenLogoUri = computed(() => selectedToken.value.logoURI);
 const tokenSymbol = computed(() => selectedToken.value.symbol);
 
 function isValidCurrencyAmount(value: string): string | boolean {
-  if (!value || !value.trim()) return "Please set amount";
+  if (!value) return "Please set amount";
 
-  const trimmedValue = value.trim();
-
-  // @ts-ignore
-  if (isNaN(trimmedValue)) {
+  let regex = /^(0|[1-9]\d*)(\.\d+)?$/;
+  if (!regex.test(value)) {
     return "Please set valid amount";
   }
 
-  const valueFloat = parseFloat(trimmedValue);
+  const valueFloat = parseFloat(value);
 
   if (valueFloat <= 0) {
     return "Please set positive amount";

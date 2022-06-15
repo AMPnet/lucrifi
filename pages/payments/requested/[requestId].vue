@@ -17,8 +17,18 @@ const tokensListStore = useTokensStore();
 
 const route = useRoute();
 
+let headers = {};
+if (route.query.rpcURL) {
+  headers = {
+    "X-RPC-URL": route.query.rpcURL,
+  };
+}
+
 const { data: requestData } = await useFetch<FetchSendRequestResponse>(
-  `${runtimeConfig.public.backendUrl}/send/${route.params.requestId}`
+  `${runtimeConfig.public.backendUrl}/send/${route.params.requestId}`,
+  {
+    headers: headers,
+  }
 );
 
 const tokensList = await tokensListStore.tokensList;
@@ -72,7 +82,7 @@ const showCopyDialog = ref(false);
 
 function openCopiedDialog() {
   showCopyDialog.value = true;
-  setTimeout(() => (showCopyDialog.value = false), 1000);
+  setTimeout(() => (showCopyDialog.value = false), 800);
 }
 </script>
 

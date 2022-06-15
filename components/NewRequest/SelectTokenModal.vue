@@ -21,7 +21,7 @@ const topTokens = computed(() => {
   const top = [];
 
   for (const token of props.tokens) {
-    if (["USDC", "WETH", "DAI"].includes(token.symbol)) {
+    if (["USDC", "WETH", "DAI", "USDT"].includes(token.symbol)) {
       top.push(token);
     }
   }

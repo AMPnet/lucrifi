@@ -46,6 +46,7 @@ async function createRequest() {
     },
   };
   let headers = {};
+  let queryParams = {};
 
   if (selectedNetwork.value.chainId !== undefined) {
     payload = {
@@ -61,7 +62,10 @@ async function createRequest() {
     };
     headers = {
       ...headers,
-      "X-RPC-URL-OVERRIDE": selectedNetwork.value.rpcURL,
+      "X-RPC-URL": selectedNetwork.value.rpcURL,
+    };
+    queryParams = {
+      rpcURL: selectedNetwork.value.rpcURL,
     };
   }
 
@@ -78,8 +82,11 @@ async function createRequest() {
   } else {
     navigateTo({
       path: `/payments/requested/${data.value.id}`,
+      query: queryParams,
     });
   }
+  selectedAmount.value = "";
+  selectedToAddress.value = "";
 }
 </script>
 
