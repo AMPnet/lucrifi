@@ -2,14 +2,31 @@
 import { useField } from "vee-validate";
 import { isValidAddress } from "@/validators/blockchain";
 
+import { useWallet } from "@/stores/wallet";
+
+const wallet = useWallet();
+
 const { value: validAddress, meta } = useField(
   "selectedAddress",
   isValidAddress,
   { initialValue: "" }
 );
+
+const myWalletBtnClass = ref(
+  "text-violet-700 hover:bg-violet-700 hover:text-white"
+);
 const selectedAddress = useState("selectedTransferAddress", () => validAddress);
+
 watch(validAddress, async (newAddr, oldAddr) => {
   selectedAddress.value = newAddr;
+
+  if (validAddress.value.toLowerCase() === wallet.walletAddress.toLowerCase()) {
+    myWalletBtnClass.value =
+      "text-white bg-gradient-to-r from-violet-700 to-purple-500 hover:from-violet-800 hover:to-purple-600";
+  } else {
+    myWalletBtnClass.value =
+      "text-violet-700 hover:bg-violet-700 hover:text-white";
+  }
 });
 
 const addressValid = useState("addressValid", () => false);
@@ -46,10 +63,34 @@ const dirtyClass = computed(() => {
       <input
         v-model="validAddress"
         type="text"
-        class="w-full focus:outline-none mx-2 bg-inherit"
+        class="w-full focus:outline-none mx-2 bg-inherit text-sm"
         id="transfer-to"
         placeholder="Input address"
       />
+      <button
+        v-if="wallet.isWalletConnected"
+        class="py-1.5 px-3 whitespace-nowrap rounded-full text-xs font-bold border border-violet-700"
+        @click="validAddress = wallet.walletAddress"
+        :class="myWalletBtnClass"
+      >
+        <div class="flex items-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5 mr-1"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          <span>My wallet</span>
+        </div>
+      </button>
     </div>
   </div>
 </template>

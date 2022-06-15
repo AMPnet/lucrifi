@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { ref } from "vue";
+import { useWallet } from "@/stores/wallet";
+
+const wallet = useWallet();
 
 const isOpen = ref(false);
 </script>
@@ -46,6 +49,7 @@ const isOpen = ref(false);
                 d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
               />
             </svg>
+
             <span>NEW REQUEST </span></NuxtLink
           >
 
@@ -70,6 +74,9 @@ const isOpen = ref(false);
             </svg>
             <span>PAYMENTS </span></NuxtLink
           >
+          <div v-if="wallet.isWalletConnected" class="ml-3">
+            <WalletBtn :wallet-addr="wallet.walletAddress" />
+          </div>
         </div>
       </nav>
     </div>
