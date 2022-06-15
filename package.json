@@ -24,6 +24,7 @@
     "@pinia/nuxt": "^0.1.9",
     "@vueuse/nuxt": "^8.6.0",
     "pinia": "^2.0.14",
+    "qrcode.vue": "^3.3.3",
     "vee-validate": "^4.5.11",
     "vue-gtag": "^2.0.1"
   }

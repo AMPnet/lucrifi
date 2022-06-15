@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import QrcodeVue from "qrcode.vue";
+
 import { useTokensStore } from "@/stores/tokens";
 import { useNetworksStore } from "@/stores/networks";
 
@@ -27,16 +29,16 @@ const amount = computed(() => {
   const token = tokensList.tokens.find(
     (tok: Token) => tok.address.toLowerCase() === addr
   );
-  const whole = requestData.value.amount.slice(0, -token.decimals);
+  const integer = requestData.value.amount.slice(0, -token.decimals);
   let decimal = requestData.value.amount.slice(-token.decimals);
 
-  if (decimal.length === 0) {
-    return whole;
-  }
   // Remove trailing zeros
   decimal = decimal.replace(/0+$/, "");
+  if (decimal.length === 0) {
+    return integer;
+  }
 
-  return `${whole}.${decimal}`;
+  return `${integer}.${decimal}`;
 });
 
 const note = computed(() => requestData.value.arbitrary_data.note);
@@ -97,11 +99,8 @@ function openCopiedDialog() {
 
         <div class="text-xs mt-3.5">To: {{ recepientAddress }}</div>
 
-        <div class="mt-7 flex justify-center">
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/QR_icon.svg/1200px-QR_icon.svg.png"
-            class="w-36 h-36"
-          />
+        <div class="mt-7 mb-1 flex justify-center">
+          <qrcode-vue :value="transferUrl" :size="150" level="H" />
         </div>
 
         <button
