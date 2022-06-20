@@ -46,7 +46,7 @@ async function connectWallet() {
               />
             </svg>
 
-            <span> Please wait</span>
+            <span>Connecting wallet</span>
           </div>
         </button>
       </div>

@@ -6,6 +6,8 @@ const props = defineProps({
   },
 });
 
+const showDisconnectDialog = ref(false);
+
 const shortAddr = computed(() => {
   return `${props.walletAddr.slice(0, 4)}...${props.walletAddr.slice(-4)}`;
 });
@@ -14,6 +16,7 @@ const shortAddr = computed(() => {
 <template>
   <div>
     <button
+      @click="showDisconnectDialog = !showDisconnectDialog"
       class="rounded-full text-sm font-bold px-0.5 text-white bg-gradient-to-r from-violet-700 to-purple-500 hover:from-violet-800 hover:to-purple-600"
     >
       <div class="flex items-center justify-between">
@@ -34,5 +37,6 @@ const shortAddr = computed(() => {
         </div>
       </div>
     </button>
+    <AuthorizationDisconnectWallet v-if="showDisconnectDialog" />
   </div>
 </template>
