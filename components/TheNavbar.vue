@@ -123,7 +123,10 @@ const isOpen = ref(false);
             </svg>
             <span>PAYMENTS </span></NuxtLink
           >
-</div>
+        </div>
+          <div v-if="wallet.isWalletConnected" class="mt-5">
+            <WalletBtn :wallet-addr="wallet.walletAddress" />
+          </div>
       </div>
     </nav>
   </div>

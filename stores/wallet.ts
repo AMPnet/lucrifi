@@ -61,7 +61,7 @@ export const useWallet = defineStore("walletData", {
 
       setTimeout(function () {
         this.isConnecting = false;
-      }, 5 * 60 * 1000); // Timeout if user doesn't log in within time
+      }, 5 * 60 * 1000); // Timeout if user doesn't log in within reasonable time
 
       while (this.isConnecting) {
         await new Promise((r) => setTimeout(r, 2000));
@@ -73,8 +73,8 @@ export const useWallet = defineStore("walletData", {
         }
 
         if (statusData.value.status === "SUCCESS") {
-          this.isConnecting = false;
           this.walletAddress = statusData.value.balance.wallet;
+          this.isConnecting = false;
         } else if (statusData.value.status === "FAILED") {
           this.isConnecting = false;
         }

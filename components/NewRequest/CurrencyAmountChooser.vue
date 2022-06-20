@@ -112,65 +112,67 @@ const isCustomRpc = computed(() => selectedNetwork.value.chainId === undefined);
 </script>
 
 <template>
-  <NewRequestSelectTokenModal
-    :chain-id="selectedNetwork.chainId"
-    :tokens="uniswapTokenList"
-    v-if="showTokenModal"
-    @close="showTokenModal = false"
-  />
+  <div>
+    <NewRequestSelectTokenModal
+      :chain-id="selectedNetwork.chainId"
+      :tokens="uniswapTokenList"
+      v-if="showTokenModal"
+      @close="showTokenModal = false"
+    />
 
-  <h3>Currency and amount</h3>
-  <div
-    v-if="isCustomRpc"
-    class="px-4 py-3 mt-2 border rounded"
-    :class="dirtyClassTokenAddress"
-  >
-    <div class="flex items-center justify between">
-      <input
-        v-model="validatedCustomTokenAddress"
-        id="token-address"
-        type="text"
-        placeholder="Input token contract address"
-        class="placeholder:text-xs placeholder:sm:text-sm text-left w-full bg-inherit focus:outline-none"
-      />
+    <h3>Currency and amount</h3>
+    <div
+      v-if="isCustomRpc"
+      class="px-4 py-3 mt-2 border rounded"
+      :class="dirtyClassTokenAddress"
+    >
+      <div class="flex items-center justify between">
+        <input
+          v-model="validatedCustomTokenAddress"
+          id="token-address"
+          type="text"
+          placeholder="Input token contract address"
+          class="placeholder:text-xs placeholder:sm:text-sm text-left w-full bg-inherit focus:outline-none"
+        />
+      </div>
     </div>
-  </div>
-  <div class="px-4 py-3 mt-2 border rounded" :class="dirtyClassAmount">
-    <div class="flex items-center justify between">
-      <button
-        v-if="!isCustomRpc"
-        class="bg-white rounded-full px-2.5 py-0.75 text-sm font-semibold shadow"
-        @click="showTokenModal = true"
-      >
-        <div class="flex items-center">
-          <img :src="tokenLogoUri" class="h-5 w-5" />
+    <div class="px-4 py-3 mt-2 border rounded" :class="dirtyClassAmount">
+      <div class="flex items-center justify between">
+        <button
+          v-if="!isCustomRpc"
+          class="bg-white rounded-full px-2.5 py-0.75 text-sm font-semibold shadow"
+          @click="showTokenModal = true"
+        >
+          <div class="flex items-center">
+            <img :src="tokenLogoUri" class="h-5 w-5" />
 
-          <span class="mx-2.5"> {{ tokenSymbol }}</span>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-9 w-9"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M19 9l-7 7-7-7"
-            />
-          </svg>
-        </div>
-      </button>
-      <input
-        v-model="validatedAmount"
-        id="amount"
-        type="text"
-        inputmode="decimal"
-        placeholder="Input amount to receive"
-        :class="isCustomRpc ? 'text-left' : 'text-right ml-5'"
-        class="placeholder:text-xs placeholder:sm:text-sm w-full text-xl bg-inherit focus:outline-none"
-      />
+            <span class="mx-2.5"> {{ tokenSymbol }}</span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-9 w-9"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M19 9l-7 7-7-7"
+              />
+            </svg>
+          </div>
+        </button>
+        <input
+          v-model="validatedAmount"
+          id="amount"
+          type="text"
+          inputmode="decimal"
+          placeholder="Input amount to receive"
+          :class="isCustomRpc ? 'text-left' : 'text-right ml-5'"
+          class="placeholder:text-xs placeholder:sm:text-sm w-full text-xl bg-inherit focus:outline-none"
+        />
+      </div>
     </div>
   </div>
 </template>
