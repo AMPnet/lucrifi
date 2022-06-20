@@ -14,7 +14,6 @@ export const useWallet = defineStore("walletData", {
 
   hydrate(storeState, initialState) {
     // https://pinia.vuejs.org/api/interfaces/pinia.DefineStoreOptions.html#hydrate
-
     // @ts-expect-error: https://github.com/microsoft/TypeScript/issues/43826
     storeState.walletAddress = useLocalStorage("wallet-address", "");
   },
@@ -25,7 +24,7 @@ export const useWallet = defineStore("walletData", {
 
   actions: {
     async connectWallet() {
-      const runtimeConfig = this.$nuxt.$config;
+      const runtimeConfig = useRuntimeConfig();
 
       const payload = {
         chain_id: 1,
@@ -40,6 +39,7 @@ export const useWallet = defineStore("walletData", {
             method: "post",
             body: payload,
             pick: ["id", "redirect_url"],
+            key: Date.now().toString(),
           }
         );
       if (error.value) {

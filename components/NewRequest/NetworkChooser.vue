@@ -106,7 +106,10 @@ const dirtyClass = computed(() => {
         />
       </svg>
     </button>
-    <div v-if="dropDownActive" class="mt-1 shadow-md rounded-md">
+    <div
+      v-if="dropDownActive"
+      class="mt-1 shadow-lg rounded-md absolute z-10 bg-white"
+    >
       <button
         class="w-full text-left px-4 py-2 text-sm hover:bg-violet-100 hover:font-bold"
         v-for="network in networks"
