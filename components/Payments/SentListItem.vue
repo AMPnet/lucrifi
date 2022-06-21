@@ -52,11 +52,11 @@ const statusColorClass = computed(() => {
 </script>
 <template>
   <div
-    class="grid grid-cols-9 py-5 items-center border-b border-slate-2 text-sm font-bold px-6 text-slate-400"
+    class="grid grid-cols-5 gap-y-7 sm:gap-0 sm:grid-cols-9 py-5 items-center border-b border-slate-2 text-sm font-bold px-6 text-slate-400"
   >
     <div class="col-span-3 text-gray-700 text-base">{{ amount }}</div>
     <div>{{ chainLogoUrl }}</div>
-    <div class="col-span-2">
+    <div class="col-span-3 sm:col-span-2">
       <div class="flex items-center relative">
         <span>{{ shortAddr(toWalletAddr, 5, 5) }}</span>
         <button
@@ -65,7 +65,7 @@ const statusColorClass = computed(() => {
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            class="h-5 w-5"
+            class="h-4 w-4"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -144,7 +144,7 @@ const statusColorClass = computed(() => {
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            class="h-5 w-5"
+            class="h-4 w-4"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -159,27 +159,28 @@ const statusColorClass = computed(() => {
         </a>
       </div>
     </div>
-    <div class="relative">
-      <div class="flex justify-end">
-        <button @click="showMenu = !showMenu">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-6 w-6 text-gray-700"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"
-            />
-          </svg>
-        </button>
-      </div>
+    <div class="relative flex justify-start sm:justify-end">
+      <button @click="showMenu = !showMenu">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-6 w-6 text-gray-700"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"
+          />
+        </svg>
+      </button>
 
-      <div v-show="showMenu" class="absolute z-10 right-0 top-4">
+      <div
+        v-show="showMenu"
+        class="absolute z-10 left-0 sm:left-auto sm:right-0 top-4"
+      >
         <div class="min-h-full py-3 sm:py-0 text-center">
           <div
             class="bg-white rounded-lg py-2 text-sm text-left overflow-hidden shadow-xl sm:w-full"

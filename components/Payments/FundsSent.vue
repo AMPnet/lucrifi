@@ -43,8 +43,8 @@ const data = [
 </script>
 
 <template>
-  <div class="bg-white border border-slate-200 rounded-xl py-4 mx-2 md:mx-24">
-    <div class="grid grid-cols-9 text-sm font-bold pb-5 px-6">
+  <div class="bg-white border border-slate-200 rounded-xl py-4 mx-2 lg:mx-24">
+    <div class="hidden sm:grid grid-cols-9 text-sm font-bold pb-5 px-6">
       <div class="col-span-3">Amount & token</div>
       <div>Chain</div>
       <div class="col-span-2">To wallet</div>

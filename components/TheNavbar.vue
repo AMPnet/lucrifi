@@ -122,10 +122,10 @@ const isOpen = ref(false);
         <div class="flex mt-2">
           <NuxtLink
             to="/payments"
-            class="inline-flex items-center py-2 hover:text-violet-700"
+            class="inline-flex py-2 hover:text-violet-700"
             activeClass="text-violet-700 border-b-2 border-violet-700"
           >
-            <div>
+            <div class="flex items-center">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="h-6 w-6 mr-1.5"
