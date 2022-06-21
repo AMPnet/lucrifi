@@ -13,7 +13,10 @@ const menuId = ref(1);
     <ClientOnly>
       <div v-if="walletConnected">
         <div class="flex justify-center gap-8 text-slate-500 text-sm font-bold">
-          <button class="text-violet-700">
+          <button
+            @click="menuId = 1"
+            :class="menuId === 1 ? 'text-violet-700' : 'text-inherit'"
+          >
             <div class="flex items-center uppercase">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -32,7 +35,10 @@ const menuId = ref(1);
               <span>Funds Requested</span>
             </div>
           </button>
-          <button>
+          <button
+            @click="menuId = 2"
+            :class="menuId === 2 ? 'text-violet-700' : 'text-inherit'"
+          >
             <div class="flex items-center uppercase">
               <svg
                 xmlns="http://www.w3.org/2000/svg"

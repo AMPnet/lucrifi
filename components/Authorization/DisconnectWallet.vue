@@ -1,18 +1,13 @@
 <script setup lang="ts">
 import { useWallet } from "@/stores/wallet";
 import { useClipboard } from "@vueuse/core";
+import { shortAddr } from "@/shared/wallet";
 
 const { copy } = useClipboard();
 
 const wallet = useWallet();
 
 const showCopied = ref(false);
-
-const shortAddr = computed(() => {
-  return `${wallet.walletAddress.slice(0, 5)}...${wallet.walletAddress.slice(
-    -4
-  )}`;
-});
 
 function copyAddr() {
   copy(wallet.walletAddress);
@@ -34,7 +29,7 @@ function copyAddr() {
           <div
             class="flex justify-center items-center border-b mb-3 py-2 px-7 text-black font-bold"
           >
-            <span>{{ shortAddr }}</span>
+            <span>{{ shortAddr(wallet.walletAddress, 5, 4) }}</span>
             <button
               @click="copyAddr"
               class="ml-2 rounded-full bg-gray-100 p-1.5 hover:bg-gray-300"

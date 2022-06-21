@@ -13,6 +13,7 @@ const networkStore = useNetworksStore();
 
 const runtimeConfig = useRuntimeConfig();
 const { copy } = useClipboard();
+
 const tokensListStore = useTokensStore();
 
 const route = useRoute();

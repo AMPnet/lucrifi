@@ -55,7 +55,6 @@ const data = [
       <div class="col-span-2">Created at</div>
       <div class="col-span-2">Status</div>
       <div class="col-span-3">Note</div>
-      <div></div>
     </div>
 
     <div v-for="transaction of data" :key="transaction.ammount">
@@ -68,7 +67,5 @@ const data = [
         :id="transaction.id"
       />
     </div>
-
-    <div></div>
   </div>
 </template>
