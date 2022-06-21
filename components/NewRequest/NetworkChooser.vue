@@ -62,7 +62,7 @@ const dirtyClass = computed(() => {
 </script>
 
 <template>
-  <div>
+  <div class="relative">
     <h3>Network</h3>
     <button
       class="w-full flex items-center justify-between px-4 py-3 border border-slate-300 rounded mt-2"
@@ -108,7 +108,7 @@ const dirtyClass = computed(() => {
     </button>
     <div
       v-if="dropDownActive"
-      class="mt-1 shadow-lg rounded-md absolute z-10 bg-white"
+      class="mt-1 shadow-lg rounded-md absolute w-full z-10 bg-white"
     >
       <button
         class="w-full text-left px-4 py-2 text-sm hover:bg-violet-100 hover:font-bold"
@@ -121,9 +121,12 @@ const dirtyClass = computed(() => {
       >
         <div class="flex items-center">
           <img :src="network.logoURI" class="w-4 h-4 mr-2.5" />
-          {{ network.name }}
+          <span>{{ network.name }}</span>
         </div>
       </button>
+
+      <!--
+      TODO: Custom RPC support will be implemented in later version
 
       <button
         class="w-full text-left px-4 py-2 text-sm hover:bg-violet-100 hover:font-bold"
@@ -150,7 +153,10 @@ const dirtyClass = computed(() => {
           {{ customRpc.name }}
         </div>
       </button>
+      -->
     </div>
+
+    <!--
     <div>
       <input
         v-if="isCustomRpc"
@@ -161,5 +167,6 @@ const dirtyClass = computed(() => {
         placeholder="Input RPC URL"
       />
     </div>
+    -->
   </div>
 </template>
