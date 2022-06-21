@@ -122,7 +122,9 @@ function openCopiedDialog() {
           class="rounded-full bg-slate-200 px-3 py-1 mt-1.5"
         >
           <div class="flex items-center text-sm">
-            <span> {{ transferUrl }} </span>
+            <span class="">
+              {{ `${transferUrl.slice(0, 42)}...` }}
+            </span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               class="h-6 w-6 ml-1"

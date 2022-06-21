@@ -13,7 +13,7 @@ async function connectWallet() {
     <div
       class="text-gray-700 bg-white py-8 sm:py-10 px-4 sm:px-14 inline-flex rounded-xl"
     >
-      <div class="w-full sm:w-64">
+      <div class="w-64">
         <div class="flex justify-center mb-5">
           <img class="h-12 w-auto" src="/logos/lucrifi-logo.png" />
         </div>
