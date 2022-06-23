@@ -1,8 +1,13 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, Ref } from "vue";
 import { useField } from "vee-validate";
 
 import { useNetworksStore } from "@/stores/networks";
+import { useTokensStore } from "@/stores/tokens";
+import { Token } from "@/types/Token";
+import { Network } from "@/types/Network";
+
+const tokensListStore = useTokensStore();
 
 const networkStore = useNetworksStore();
 const networks = networkStore.networksList;
@@ -59,6 +64,21 @@ const dirtyClass = computed(() => {
     return "bg-slate-100 border-slate-300";
   }
 });
+
+async function selectNetwork(network: Network) {
+  selectedNetwork.value = network;
+
+  // Change token
+  const tokensList = await tokensListStore.tokensList;
+  const selectedToken: Ref<Token> = useState("selectedToken");
+
+  selectedToken.value = tokensList.tokens.find(
+    (token) =>
+      token.symbol === "USDC" && token.chainId === selectedNetwork.value.chainId
+  );
+
+  dropDownActive.value = false;
+}
 </script>
 
 <template>
@@ -114,10 +134,7 @@ const dirtyClass = computed(() => {
         class="w-full text-left px-4 py-2 text-sm hover:bg-violet-100 hover:font-bold"
         v-for="network in networks"
         :key="network.name"
-        @click="
-          selectedNetwork = network;
-          dropDownActive = false;
-        "
+        @click="selectNetwork(network)"
       >
         <div class="flex items-center">
           <img :src="network.logoURI" class="w-4 h-4 mr-2.5" />
