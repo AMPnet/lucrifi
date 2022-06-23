@@ -13,10 +13,14 @@ const { data, error, pending } =
 if (error.value) {
   navigateTo("/errorPage");
 }
+
+const requests = computed(() => data.value.requests.reverse());
 </script>
 
 <template>
-  <div class="bg-white border border-slate-200 rounded-xl py-4 mx-2 xl:mx-24">
+  <div
+    class="bg-white border border-slate-200 rounded-xl py-4 mx-2 xl:mx-24 h-[550px] lg:h-[700px] overflow-y-scroll"
+  >
     <div class="hidden sm:grid grid-cols-12 text-sm font-bold pb-5 px-6">
       <div class="col-span-3">Amount & token</div>
       <div>Chain</div>
@@ -25,11 +29,7 @@ if (error.value) {
       <div class="col-span-3">Note</div>
     </div>
 
-    <div
-      v-if="!pending"
-      v-for="request of data.requests.reverse()"
-      :key="request.id"
-    >
+    <div v-if="!pending" v-for="request of requests" :key="request.id">
       <PaymentsRequestListItem
         :amount="request.amount"
         :token-address="request.token_address"
