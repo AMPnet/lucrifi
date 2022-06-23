@@ -23,7 +23,7 @@ const uniswapTokenList = computed(() => {
   );
 });
 const selectedToken = useState("selectedToken", () => {
-  return uniswapTokenList.value.filter((token) => token.symbol === "USDC")[0];
+  return uniswapTokenList.value.find((token) => token.symbol === "USDC");
 });
 const tokenLogoUri = computed(() => selectedToken.value.logoURI);
 const tokenSymbol = computed(() => selectedToken.value.symbol);
