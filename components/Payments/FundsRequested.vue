@@ -5,8 +5,8 @@ import { useWallet } from "@/stores/wallet";
 const wallet = useWallet();
 const runtimeConfig = useRuntimeConfig();
 
-const { data, error } =
-  await useFetch<FetchERC20SendRequestsByRecipientAddress>(
+const { data, error, pending } =
+  useLazyFetch<FetchERC20SendRequestsByRecipientAddress>(
     `${runtimeConfig.public.backendUrl}/send/by-recipient/${wallet.walletAddress}`
   );
 
@@ -26,7 +26,7 @@ if (error.value) {
     </div>
 
     <div
-      v-if="data"
+      v-if="!pending"
       v-for="request of data.requests.reverse()"
       :key="request.id"
     >
@@ -42,8 +42,8 @@ if (error.value) {
         :tx-hash="request.send_tx.tx_hash"
       />
     </div>
-    <div v-else>
-      <h3>No results found</h3>
+    <div v-else class="text-center py-5">
+      <h3>Loading...</h3>
     </div>
   </div>
 </template>
