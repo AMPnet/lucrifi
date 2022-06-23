@@ -53,6 +53,8 @@ async function createRequest() {
     amount: shiftedAmount,
     arbitrary_data: {
       note: noteData.value,
+      created: new Date().toISOString(),
+      tokenLogoUrl: selectedToken.value.logoURI,
     },
     chain_id: undefined,
     token_address: "",

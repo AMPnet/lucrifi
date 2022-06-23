@@ -14,6 +14,7 @@ const selectedNetwork = useState("selectedNetwork", (): Network => {
     logoURI: "",
     rpcURL: undefined,
     name: "",
+    blockExplorerUrl: "",
   };
 });
 

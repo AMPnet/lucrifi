@@ -25,15 +25,21 @@ if (error.value) {
       <div class="col-span-3">Note</div>
     </div>
 
-    <div v-if="data" v-for="request of data.requests" :key="request.id">
+    <div
+      v-if="data"
+      v-for="request of data.requests.reverse()"
+      :key="request.id"
+    >
       <PaymentsRequestListItem
         :amount="request.amount"
         :token-address="request.token_address"
         :chain-id="request.chain_id"
-        created="06-07-2022"
+        :created="request.arbitrary_data.created || ''"
         :note="request.arbitrary_data.note"
         :status="request.status"
         :id="request.id"
+        :redirect-url="request.redirect_url"
+        :tx-hash="request.send_tx.tx_hash"
       />
     </div>
     <div v-else>
