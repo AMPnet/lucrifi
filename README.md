@@ -4,7 +4,9 @@
 ## Supported Env variables
 
 ```bash
-NUXT_BACKEND_URL=https://eth-staging.ampnet.io/v1
+NUXT_PUBLIC_BACKEND_URL=https://eth-staging.ampnet.io/v1
+NUXT_PUBLIC_REQUEST_PAYMENT_REDIRECT=https://rsend.vercel.app/request-send/${id}/action
+NUXT_PUBLIC_GTAG_ID="G-XXXXXXXX"
 ```
 
 Look at the [nuxt 3 documentation](https://v3.nuxtjs.org) to learn more.

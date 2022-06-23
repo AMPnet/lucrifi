@@ -20,6 +20,7 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
+      gtagId: "",
       backendUrl: "https://eth-staging.ampnet.io/api/blockchain-api/v1",
       requestPaymentRedirect:
         "https://rsend.vercel.app/request-send/${id}/action",

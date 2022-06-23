@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { pageview } from "vue-gtag";
 import { useWallet } from "@/stores/wallet";
+
+pageview({ page_title: "/payments" });
 
 const wallet = useWallet();
 

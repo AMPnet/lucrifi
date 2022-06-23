@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { event, pageview } from "vue-gtag";
 import QrcodeVue from "qrcode.vue";
 
 import { useTokensStore } from "@/stores/tokens";
@@ -8,6 +9,8 @@ import { useClipboard } from "@vueuse/core";
 import { FetchSendRequestResponse } from "@/types/ampnet/RequestPayment";
 import { Token } from "@/types/Token";
 import { Network } from "@/types/Network";
+
+pageview({ page_title: "/request_details" });
 
 const networkStore = useNetworksStore();
 
@@ -118,6 +121,7 @@ function openCopiedDialog() {
           @click="
             copy(transferUrl);
             openCopiedDialog();
+            event('copy_payment_link');
           "
           class="rounded-full bg-slate-200 px-3 py-1 mt-1.5"
         >

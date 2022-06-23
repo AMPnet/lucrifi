@@ -1,13 +1,23 @@
-<script setup>
+<script setup lang="ts">
+import { Ref } from "vue";
+import { event, pageview } from "vue-gtag";
 import { countDecimals } from "@/validators/blockchain";
+
+import { Network } from "@/types/Network";
+import { Token } from "@/types/Token";
+import { FetchSendRequestResponse } from "@/types/ampnet/RequestPayment";
+
+pageview({ page_title: "/create-request" });
 
 const runtimeConfig = useRuntimeConfig();
 
-const selectedToken = useState("selectedToken");
-const selectedNetwork = useState("selectedNetwork");
-const selectedAmount = useState("selectedCurrencyAmount");
-const selectedToAddress = useState("selectedTransferAddress");
-const selectedCustomTokenAddres = useState("selectedCustomTokenAddres");
+const selectedToken: Ref<Token> = useState("selectedToken");
+const selectedNetwork: Ref<Network> = useState("selectedNetwork");
+const selectedAmount: Ref<string> = useState("selectedCurrencyAmount");
+const selectedToAddress: Ref<string> = useState("selectedTransferAddress");
+const selectedCustomTokenAddres: Ref<string> = useState(
+  "selectedCustomTokenAddres"
+);
 const noteData = ref("");
 
 const isAmountValid = useState("currencyAmountValid");
@@ -44,6 +54,8 @@ async function createRequest() {
     arbitrary_data: {
       note: noteData.value,
     },
+    chain_id: undefined,
+    token_address: "",
   };
   let headers = {};
   let queryParams = {};
@@ -57,7 +69,6 @@ async function createRequest() {
   } else {
     payload = {
       ...payload,
-      chain_id: undefined,
       token_address: selectedCustomTokenAddres.value,
     };
     headers = {
@@ -69,7 +80,7 @@ async function createRequest() {
     };
   }
 
-  const { data, error } = await useFetch(
+  const { data, error } = await useFetch<FetchSendRequestResponse>(
     `${runtimeConfig.public.backendUrl}/send`,
     {
       method: "post",
@@ -83,6 +94,7 @@ async function createRequest() {
       path: `/errorPage`,
     });
   } else {
+    event("create_payment_request");
     navigateTo({
       path: `/payments/requested/${data.value.id}`,
       query: queryParams,

@@ -1,6 +1,7 @@
 import { useLocalStorage } from "@vueuse/core";
 import { defineStore } from "pinia";
 import { ethers } from "ethers";
+import { event } from "vue-gtag";
 
 import { BalanceCheckRequestResponse } from "@/types/ampnet/BalanceCheck";
 
@@ -75,6 +76,7 @@ export const useWallet = defineStore("walletData", {
         if (statusData.value.status === "SUCCESS") {
           this.walletAddress = statusData.value.balance.wallet;
           this.isConnecting = false;
+          event("login", { method: "Wallet" });
         } else if (statusData.value.status === "FAILED") {
           this.isConnecting = false;
         }
@@ -83,6 +85,10 @@ export const useWallet = defineStore("walletData", {
 
     disconnectWallet() {
       this.walletAddress = "";
+      event("logout", {
+        event_category: "engagement",
+        event_label: "wallet_disconnect",
+      });
     },
   },
 });
