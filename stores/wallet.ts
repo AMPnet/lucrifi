@@ -30,8 +30,7 @@ export const useWallet = defineStore("walletData", {
       const payload = {
         chain_id: 1,
         token_address: "0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9",
-        redirect_url:
-          "https://amptzr-git-add-connect-wallet-ampnetx.vercel.app/connect/${id}",
+        redirect_url: runtimeConfig.public.connectWalletRedirect,
       };
       const { data: requestData, error } =
         await useFetch<BalanceCheckRequestResponse>(

@@ -24,6 +24,7 @@ export default defineNuxtConfig({
       backendUrl: "https://eth-staging.ampnet.io/api/blockchain-api/v1",
       requestPaymentRedirect:
         "https://rsend.vercel.app/request-send/${id}/action",
+      connectWalletRedirect: "https://staging.ampnet.io/connect/${id}",
     },
   },
 });

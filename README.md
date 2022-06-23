@@ -6,7 +6,9 @@
 ```bash
 NUXT_PUBLIC_BACKEND_URL=https://eth-staging.ampnet.io/api/blockchain-api/v1
 NUXT_PUBLIC_REQUEST_PAYMENT_REDIRECT=https://rsend.vercel.app/request-send/${id}/action
+NUXT_PUBLIC_CONNECT_WALLET_REDIRECT=https://staging.ampnet.io/connect/${id}
 NUXT_PUBLIC_GTAG_ID="G-XXXXXXXX"
+
 ```
 
 Look at the [nuxt 3 documentation](https://v3.nuxtjs.org) to learn more.
