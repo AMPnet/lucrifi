@@ -1,5 +1,9 @@
 function solNumberToDecimal(amount: string, decimals: number): string {
-  const integer = amount.slice(0, -decimals);
+  let integer = amount.slice(0, -decimals);
+  if (integer.length === 0) {
+    integer = "0";
+  }
+
   let decimal = amount.slice(-decimals);
 
   // Remove trailing zeros
