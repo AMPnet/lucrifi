@@ -57,7 +57,7 @@ export const useWallet = defineStore("walletData", {
           }
         );
 
-      window.open(requestData.value.redirect_url, "_blank");
+      window.open(requestData.value.redirect_url);
 
       setTimeout(function () {
         this.isConnecting = false;
