@@ -1,6 +1,8 @@
 import { defineStore } from "pinia";
 import { TokensListResponse } from "@/types/Token";
 
+import { ipfsToHttp } from "@/shared/ipfs";
+
 export const useTokensStore = defineStore("tokensList", {
   state: () => {
     return { data: undefined };
@@ -14,7 +16,20 @@ export const useTokensStore = defineStore("tokensList", {
 
       const { data, error } = await useFetch<TokensListResponse>(
         "https://tokens.uniswap.org",
-        { pick: ["tokens"] }
+        {
+          key: "uniswapTokens",
+          pick: ["tokens"],
+          transform: (data) => {
+            const tokens = data.tokens;
+
+            data.tokens = tokens.map((token) => {
+              token.logoURI = ipfsToHttp(token.logoURI);
+              return token;
+            });
+
+            return data;
+          },
+        }
       );
       if (error.value) {
         navigateTo({
