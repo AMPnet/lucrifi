@@ -3,8 +3,23 @@ import { useWallet } from "@/stores/wallet";
 
 const wallet = useWallet();
 
-async function connectWallet() {
-  await wallet.connectWallet();
+function connectWallet() {
+  window.open(wallet.connectData.redirectUrl, "_blank");
+  wallet.connectWallet();
+}
+
+const { data, pending, refresh } = await wallet.preFetchConnectData();
+
+watch(data, (newData) => {
+  if (newData) {
+    wallet.connectData.id = newData.id;
+    wallet.connectData.redirectUrl = newData.redirect_url;
+  }
+});
+
+if (!wallet.isWalletConnected) {
+  // Fetch new wallet connect data only if the user hasn't connected wallet
+  await refresh();
 }
 </script>
 
@@ -24,6 +39,7 @@ async function connectWallet() {
 
         <button
           v-if="!wallet.isConnecting"
+          :disabled="pending"
           @click="connectWallet"
           class="mt-3 w-full font-bold text-xs rounded-full bg-gradient-to-r from-sky-600 to-cyan-500 hover:from-sky-700 hover:to-cyan-600 py-3 px-6 text-white disabled:from-slate-400 disabled:to-slate-400"
         >

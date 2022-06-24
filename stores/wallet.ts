@@ -10,6 +10,10 @@ export const useWallet = defineStore("walletData", {
     return {
       walletAddress: useLocalStorage("wallet-address", ""),
       isConnecting: false,
+      connectData: {
+        redirectUrl: "",
+        id: "",
+      },
     };
   },
 
@@ -24,7 +28,10 @@ export const useWallet = defineStore("walletData", {
   },
 
   actions: {
-    async connectWallet() {
+    async preFetchConnectData() {
+      /*
+      Fetches redirect URL and request ID that will be used to connect wallet
+      */
       const runtimeConfig = useRuntimeConfig();
 
       const payload = {
@@ -32,32 +39,31 @@ export const useWallet = defineStore("walletData", {
         token_address: "0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9",
         redirect_url: runtimeConfig.public.connectWalletRedirect,
       };
-      const { data: requestData, error } =
-        await useFetch<BalanceCheckRequestResponse>(
-          `${runtimeConfig.public.backendUrl}/balance/`,
-          {
-            method: "post",
-            body: payload,
-            pick: ["id", "redirect_url"],
-            key: Date.now().toString(),
-          }
-        );
-      if (error.value) {
-        navigateTo({
-          path: `/errorPage`,
-        });
-      }
-      const requestId = requestData.value.id;
-      this.isConnecting = true;
-      const { data: statusData, refresh } =
-        await useFetch<BalanceCheckRequestResponse>(
-          `${runtimeConfig.public.backendUrl}/balance/${requestId}`,
-          {
-            pick: ["status", "balance"],
-          }
-        );
+      const data = await useFetch<BalanceCheckRequestResponse>(
+        `${runtimeConfig.public.backendUrl}/balance/`,
+        {
+          method: "post",
+          body: payload,
+          pick: ["id", "redirect_url"],
+        }
+      );
 
-      window.open(requestData.value.redirect_url);
+      return data;
+    },
+    async connectWallet() {
+      const runtimeConfig = useRuntimeConfig();
+
+      this.isConnecting = true;
+      const {
+        data: statusData,
+        refresh,
+        error,
+      } = await useFetch<BalanceCheckRequestResponse>(
+        `${runtimeConfig.public.backendUrl}/balance/${this.connectData.id}`,
+        {
+          pick: ["status", "balance"],
+        }
+      );
 
       setTimeout(function () {
         this.isConnecting = false;
