@@ -137,7 +137,7 @@ async function selectNetwork(network: Network) {
         @click="selectNetwork(network)"
       >
         <div class="flex items-center">
-          <img :src="network.logoURI" class="w-4 h-4 mr-2.5" />
+          <img :src="network.logoURI" class="w-4 h-4 mr-2.5" alt="chain logo" />
           <span>{{ network.name }}</span>
         </div>
       </button>

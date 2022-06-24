@@ -100,12 +100,12 @@ const statusMapping = {
   >
     <div class="col-span-3 text-gray-700 text-base">
       <div class="flex items-center">
-        <img class="w-5 h-5 mr-2" :src="token.logoURI" />
+        <img class="w-5 h-5 mr-2" :src="token.logoURI" alt="token logo" />
         <span>{{ prettyAmount }} {{ token.symbol }}</span>
       </div>
     </div>
     <div class="flex items-center">
-      <img class="w-5 h-5" :src="network.logoURI" />
+      <img class="w-5 h-5" :src="network.logoURI" alt="network logo" />
     </div>
     <div class="col-span-3 sm:col-span-2">
       <div class="flex items-center relative">

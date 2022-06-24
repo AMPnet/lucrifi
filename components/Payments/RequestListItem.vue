@@ -109,12 +109,12 @@ function copyPaymentLink() {
   >
     <div class="col-span-3 text-gray-700 text-base break-all">
       <div class="flex items-center">
-        <img class="w-5 h-5 mr-2" :src="token.logoURI" />
+        <img class="w-5 h-5 mr-2" :src="token.logoURI" alt="token logo" />
         <span>{{ prettyAmount }} {{ token.symbol }}</span>
       </div>
     </div>
     <div class="flex items-center">
-      <img class="w-5 h-5" :src="network.logoURI" />
+      <img class="w-5 h-5" :src="network.logoURI" alt="token logo" />
     </div>
     <div class="col-span-2 text-xs">{{ prettyDate }}</div>
     <div class="col-span-3 sm:col-span-2">

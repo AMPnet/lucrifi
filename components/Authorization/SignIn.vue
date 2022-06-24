@@ -15,7 +15,11 @@ async function connectWallet() {
     >
       <div class="w-64">
         <div class="flex justify-center mb-5">
-          <img class="h-12 w-auto" src="/logos/lucrifi-logo.png" />
+          <img
+            class="h-12 w-auto"
+            src="/logos/lucrifi-logo.png"
+            alt="lucrifi logo"
+          />
         </div>
 
         <button

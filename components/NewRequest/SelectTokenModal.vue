@@ -101,7 +101,11 @@ const queriedTokens = computed(() => {
                 class="rounded-full border border-slate-200 px-2 py-1.5 gap-3 hover:bg-violet-200 font-bold"
               >
                 <div class="flex items-center">
-                  <img :src="token.logoURI" class="w-5 h-5 mr-1" />
+                  <img
+                    :src="token.logoURI"
+                    class="w-5 h-5 mr-1"
+                    alt="token logo"
+                  />
                   {{ token.symbol }}
                 </div>
               </button>
@@ -122,7 +126,11 @@ const queriedTokens = computed(() => {
               "
             >
               <div class="flex items-center">
-                <img :src="token.logoURI" class="w-5 h-5 mr-2.5" />
+                <img
+                  :src="token.logoURI"
+                  class="w-5 h-5 mr-2.5"
+                  alt="token logo"
+                />
                 {{ token.symbol }}
               </div>
             </button>
