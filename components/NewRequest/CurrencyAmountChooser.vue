@@ -32,7 +32,7 @@ const tokenSymbol = computed(() => selectedToken.value.symbol);
 function isValidCurrencyAmount(value: string): string | boolean {
   if (!value) return "Please set amount";
 
-  let regex = /^(0|[1-9]\d*)(\.\d+)?$/;
+  let regex = /^(0|[1-9]\d*)((\.|,)\d+)?$/;
   if (!regex.test(value)) {
     return "Please set valid amount";
   }

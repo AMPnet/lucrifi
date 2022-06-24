@@ -77,15 +77,20 @@ const prettyAmount = computed(() => {
 });
 const showMenu = ref(false);
 
-const statusColorClass = computed(() => {
-  if (props.status.toLowerCase() === "success") {
-    return "text-green-400";
-  } else if (props.status.toLowerCase() === "failed") {
-    return "text-red-400";
-  } else {
-    return "text-gray-400";
-  }
-});
+const statusMapping = {
+  SUCCESS: {
+    title: "Paid",
+    class: "text-green-400",
+  },
+  PENDING: {
+    title: "Waiting payment",
+    class: "text-gray-400",
+  },
+  FAILED: {
+    title: "Failed",
+    class: "text-red-400",
+  },
+};
 
 const showCopied = ref(false);
 
@@ -113,7 +118,7 @@ function copyPaymentLink() {
     </div>
     <div class="col-span-2 text-xs">{{ prettyDate }}</div>
     <div class="col-span-3 sm:col-span-2">
-      <div class="flex items-center" :class="statusColorClass">
+      <div class="flex items-center" :class="statusMapping[status].class">
         <div class="mr-1">
           <svg
             v-if="status.toLowerCase() === 'success'"
@@ -161,7 +166,7 @@ function copyPaymentLink() {
             />
           </svg>
         </div>
-        <span>{{ status }}</span>
+        <span>{{ statusMapping[status].title }}</span>
 
         <a
           v-if="status.toLowerCase() === 'success'"

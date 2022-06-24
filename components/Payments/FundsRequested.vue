@@ -14,7 +14,13 @@ if (error.value) {
   navigateTo("/errorPage");
 }
 
-const requests = computed(() => data.value.requests.reverse());
+const requests = computed(() =>
+  data.value.requests.sort((a, b) => {
+    const date1 = Date.parse(a.arbitrary_data.created);
+    const date2 = Date.parse(b.arbitrary_data.created);
+    return date2 - date1;
+  })
+);
 </script>
 
 <template>
@@ -42,8 +48,14 @@ const requests = computed(() => data.value.requests.reverse());
         :tx-hash="request.send_tx.tx_hash"
       />
     </div>
-    <div v-else class="text-center py-5">
+    <div v-else class="text-center py-5 text-slate-400">
       <h3>Loading...</h3>
     </div>
+    <h3
+      class="text-center py-5 text-slate-400"
+      v-if="!pending && requests.length === 0"
+    >
+      No requests found
+    </h3>
   </div>
 </template>

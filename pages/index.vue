@@ -43,9 +43,10 @@ const formValid = computed(() => {
 });
 
 async function createRequest() {
-  const nDecimals = countDecimals(selectedAmount.value);
+  const uniformAmountFormat = selectedAmount.value.replace(",", ".");
+  const nDecimals = countDecimals(uniformAmountFormat);
   const zeros = "0".repeat(selectedToken.value.decimals - nDecimals);
-  const shiftedAmount = `${selectedAmount.value.replace(".", "")}${zeros}`;
+  const shiftedAmount = `${uniformAmountFormat.replace(".", "")}${zeros}`;
 
   let payload = {
     redirect_url: runtimeConfig.public.requestPaymentRedirect,

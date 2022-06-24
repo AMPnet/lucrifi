@@ -15,6 +15,8 @@ const menuId = ref(1);
   <div>
     <ClientOnly>
       <div v-if="walletConnected">
+        <!--
+
         <div class="flex justify-center gap-8 text-slate-500 text-sm font-bold">
           <button
             @click="menuId = 1"
@@ -61,10 +63,16 @@ const menuId = ref(1);
             </div>
           </button>
         </div>
-
+        -->
         <div class="mt-4">
           <PaymentsFundsRequested v-show="menuId === 1" />
-          <PaymentsFundsSent v-show="menuId === 2" />
+          <!--
+            Funds Sent is not yet properly implemented on the backend. When it becomes
+            implemented, this line and the commented block above can be uncommented.
+            Contact Filip D. for more details.
+
+            <PaymentsFundsSent v-show="menuId === 2" /> 
+            -->
         </div>
       </div>
 
