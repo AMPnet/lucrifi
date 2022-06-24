@@ -15,7 +15,7 @@ const isOpen = ref(false);
       <NuxtLink to="/">
         <img
           class="h-10 w-auto"
-          src="/logos/lucrifi-logo.png"
+          src="/logos/lucrifi-logo.webp"
           alt="Lucrifi logo"
         />
       </NuxtLink>

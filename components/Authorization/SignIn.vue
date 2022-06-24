@@ -32,7 +32,7 @@ if (!wallet.isWalletConnected) {
         <div class="flex justify-center mb-5">
           <img
             class="h-12 w-auto"
-            src="/logos/lucrifi-logo.png"
+            src="/logos/lucrifi-logo.webp"
             alt="lucrifi logo"
           />
         </div>
