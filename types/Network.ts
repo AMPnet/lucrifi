@@ -4,4 +4,5 @@ export interface Network {
   logoURI: string;
   rpcURL: string | undefined;
   blockExplorerUrl: string;
+  apiKey: string;
 }

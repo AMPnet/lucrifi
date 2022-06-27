@@ -60,7 +60,9 @@ async function createRequest() {
     chain_id: undefined,
     token_address: "",
   };
-  let headers = {};
+  let headers = {
+    "X-API-KEY": `${selectedNetwork.value.apiKey}`,
+  };
   let queryParams = {};
 
   if (selectedNetwork.value.chainId !== undefined) {
@@ -74,10 +76,7 @@ async function createRequest() {
       ...payload,
       token_address: selectedCustomTokenAddres.value,
     };
-    headers = {
-      ...headers,
-      "X-RPC-URL": selectedNetwork.value.rpcURL,
-    };
+    headers["X-RPC-URL"] = selectedNetwork.value.rpcURL;
     queryParams = {
       rpcURL: selectedNetwork.value.rpcURL,
     };

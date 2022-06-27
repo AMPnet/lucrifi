@@ -39,6 +39,9 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
+    polygonApiKey: "",
+    ethereumApiKey: "",
+
     public: {
       gtagId: "",
       backendUrl: "https://eth-staging.ampnet.io/api/blockchain-api/v1",
