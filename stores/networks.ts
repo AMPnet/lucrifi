@@ -3,6 +3,8 @@ import { Network } from "@/types/Network";
 
 export const useNetworksStore = defineStore("networksList", {
   state: () => {
+    const runtimeConfig = useRuntimeConfig();
+
     return {
       networks: [
         {
@@ -12,6 +14,7 @@ export const useNetworksStore = defineStore("networksList", {
           chainId: 137,
           rpcURL: undefined,
           blockExplorerUrl: "https://polygonscan.com/tx",
+          apiKey: runtimeConfig.polygonApiKey,
         },
         {
           name: "Ethereum",
@@ -20,6 +23,7 @@ export const useNetworksStore = defineStore("networksList", {
           chainId: 1,
           rpcURL: undefined,
           blockExplorerUrl: "https://etherscan.io/tx",
+          apiKey: runtimeConfig.ethereumApiKey,
         },
       ],
     };

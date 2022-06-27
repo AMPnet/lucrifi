@@ -3,6 +3,8 @@ import { defineStore } from "pinia";
 import { ethers } from "ethers";
 import { event } from "vue-gtag";
 
+import { useNetworksStore } from "@/stores/networks";
+
 import { BalanceCheckRequestResponse } from "@/types/ampnet/BalanceCheck";
 
 export const useWallet = defineStore("walletData", {
@@ -35,14 +37,21 @@ export const useWallet = defineStore("walletData", {
       const runtimeConfig = useRuntimeConfig();
 
       const payload = {
-        chain_id: 1,
-        token_address: "0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9",
+        chain_id: 137,
+        token_address: "0x0000000000000000000000000000000000001010",
         redirect_url: runtimeConfig.public.connectWalletRedirect,
+      };
+
+      const networksStore = useNetworksStore();
+      const apiKey = networksStore.networksList[0].apiKey;
+      const headers = {
+        "X-API-KEY": `${apiKey}`,
       };
       const data = await useFetch<BalanceCheckRequestResponse>(
         `${runtimeConfig.public.backendUrl}/balance/`,
         {
           method: "post",
+          headers: headers,
           body: payload,
           pick: ["id", "redirect_url"],
         }
@@ -51,6 +60,12 @@ export const useWallet = defineStore("walletData", {
       return data;
     },
     async connectWallet() {
+      const networksStore = useNetworksStore();
+      const apiKey = networksStore.networksList[0].apiKey;
+      const headers = {
+        "X-API-KEY": `${apiKey}`,
+      };
+
       const runtimeConfig = useRuntimeConfig();
 
       this.isConnecting = true;
@@ -62,6 +77,7 @@ export const useWallet = defineStore("walletData", {
         `${runtimeConfig.public.backendUrl}/balance/${this.connectData.id}`,
         {
           pick: ["status", "balance"],
+          headers: headers,
         }
       );
 
