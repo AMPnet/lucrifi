@@ -91,6 +91,11 @@ const selectedTokenAddress = useState("selectedCustomTokenAddres", () => {
 });
 const amountTokenValid = useState("customTokenAddressValid", () => false);
 
+watch(selectedNetwork, () => {
+  // Reset amount if the network changes
+  validatedAmount.value = "";
+});
+
 // Dynamic Classes
 const dirtyClassAmount = computed(() => {
   if (!meta.valid) {
