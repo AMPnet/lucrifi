@@ -16,9 +16,12 @@ if (error.value) {
 
 const requests = computed(() =>
   data.value.requests.sort((a, b) => {
-    const date1 = Date.parse(a.arbitrary_data.created);
-    const date2 = Date.parse(b.arbitrary_data.created);
-    return date2 - date1;
+    if (a.arbitrary_data && b.arbitrary_data) {
+      const date1 = Date.parse(a.arbitrary_data.created);
+      const date2 = Date.parse(b.arbitrary_data.created);
+      return date2 - date1;
+    }
+    return 0;
   })
 );
 
