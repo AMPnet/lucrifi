@@ -30,7 +30,6 @@ const requests = computed(() => data.value.requests);
         :amount="request.amount"
         :token-address="request.token_address"
         :chain-id="request.chain_id"
-        :note="request.arbitrary_data.note"
         :to-wallet-addr="request.recipient_address"
         :status="request.status"
         :id="request.id"

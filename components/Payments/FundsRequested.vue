@@ -60,7 +60,7 @@ const noData = computed(() => !pending.value && requests.value.length === 0);
       <h3>Loading...</h3>
     </div>
 
-    <h3 class="text-center py-5 text-slate-500" v-if="noData">
+    <h3 class="text-center py-5 text-slate-400" v-if="noData">
       No payment requests found
     </h3>
   </div>
