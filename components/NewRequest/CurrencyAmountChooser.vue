@@ -92,8 +92,12 @@ const selectedTokenAddress = useState("selectedCustomTokenAddres", () => {
 const amountTokenValid = useState("customTokenAddressValid", () => false);
 
 watch(selectedNetwork, () => {
-  // Reset amount if the network changes
+  // Reset amount and token if the network changes
   validatedAmount.value = "";
+  selectedToken.value = uniswapTokenList.value.find(
+    (token) =>
+      token.symbol === "USDC" && token.chainId === selectedNetwork.value.chainId
+  );
 });
 
 // Dynamic Classes

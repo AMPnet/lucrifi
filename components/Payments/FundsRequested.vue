@@ -21,11 +21,14 @@ const requests = computed(() =>
     return date2 - date1;
   })
 );
+
+const noData = computed(() => !pending.value && requests.value.length === 0);
 </script>
 
 <template>
   <div
-    class="bg-white border border-slate-200 rounded-xl py-4 mx-2 xl:mx-24 h-[550px] lg:h-[700px] overflow-y-scroll"
+    class="bg-white border border-slate-200 rounded-xl py-4 mx-2 xl:mx-24 overflow-y-scroll"
+    :class="'h-fit' ? noData : 'h-[550px] lg:h-[700px]'"
   >
     <div class="hidden sm:grid grid-cols-12 text-sm font-bold pb-5 px-6">
       <div class="col-span-3">Amount & token</div>
@@ -40,8 +43,10 @@ const requests = computed(() =>
         :amount="request.amount"
         :token-address="request.token_address"
         :chain-id="request.chain_id"
-        :created="request.arbitrary_data.created || ''"
-        :note="request.arbitrary_data.note"
+        :created="
+          request.arbitrary_data ? request.arbitrary_data.created || '' : ''
+        "
+        :note="request.arbitrary_data ? request.arbitrary_data.note : ''"
         :status="request.status"
         :id="request.id"
         :redirect-url="request.redirect_url"
@@ -51,11 +56,9 @@ const requests = computed(() =>
     <div v-else class="text-center py-5 text-slate-400">
       <h3>Loading...</h3>
     </div>
-    <h3
-      class="text-center py-5 text-slate-400"
-      v-if="!pending && requests.length === 0"
-    >
-      No requests found
+
+    <h3 class="text-center py-5 text-slate-500" v-if="noData">
+      No payment requests found
     </h3>
   </div>
 </template>

@@ -67,16 +67,6 @@ const dirtyClass = computed(() => {
 
 async function selectNetwork(network: Network) {
   selectedNetwork.value = network;
-
-  // Change token
-  const tokensList = await tokensListStore.tokensList;
-  const selectedToken: Ref<Token> = useState("selectedToken");
-
-  selectedToken.value = tokensList.tokens.find(
-    (token) =>
-      token.symbol === "USDC" && token.chainId === selectedNetwork.value.chainId
-  );
-
   dropDownActive.value = false;
 }
 </script>
