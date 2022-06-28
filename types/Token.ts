@@ -7,7 +7,7 @@ interface Version {
 interface Tags {}
 
 export interface Token {
-  chainId: number;
+  chainId: string;
   address: string;
   name: string;
   symbol: string;
@@ -16,11 +16,12 @@ export interface Token {
 }
 
 export interface TokensListResponse {
-  name: string;
-  timestamp: Date;
-  version: Version;
-  tags: Tags;
-  logoURI: string;
-  keywords: string[];
-  tokens: Token[];
+  "1": Token[];
+  "56": Token[];
+  "100": Token[];
+  "137": Token[];
+  "250": Token[];
+  "1285": Token[];
+  "43114": Token[];
+  "1313161554": Token[];
 }

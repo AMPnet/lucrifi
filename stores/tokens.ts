@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
-import { TokensListResponse } from "@/types/Token";
+import {Token, TokensListResponse} from "@/types/Token";
+import tokensList from '../public/tokens/list.json';
 
 export const useTokensStore = defineStore("tokensList", {
   state: () => {
@@ -7,22 +8,31 @@ export const useTokensStore = defineStore("tokensList", {
   },
 
   getters: {
-    tokensList: async (state) => {
+    tokensList: function(state) {
       if (state.data) {
+        return tokensList;
+      } else {
+        state.data = tokensList;
         return state.data;
       }
-
-      const { data, error } = await useFetch<TokensListResponse>(
-        "https://tokens.uniswap.org",
-        { pick: ["tokens"] }
-      );
-      if (error.value) {
-        navigateTo({
-          path: `/errorPage`,
-        });
-      }
-      state.data = data.value;
-      return data.value;
-    },
+    }
+    // tokensList: async (state) => {
+    //   if (state.data) {
+    //     return state.data;
+    //   }
+    //
+    //   const { data, error } = await useFetch<TokensListResponse>(
+    //     "https://raw.githubusercontent.com/viaprotocol/tokenlists/main/tokenlists/all.json"
+    //   );
+    //
+    //   const fetched = JSON.parse(data.value.toString());
+    //   if (error.value) {
+    //     navigateTo({
+    //       path: `/errorPage`,
+    //     });
+    //   }
+    //   state.data = fetched;
+    //   return fetched;
+    // },
   },
 });

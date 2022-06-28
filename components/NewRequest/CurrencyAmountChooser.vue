@@ -4,9 +4,8 @@ import { useTokensStore } from "@/stores/tokens";
 
 import { isValidAddress, countDecimals } from "@/validators/blockchain";
 import { Network } from "@/types/Network";
-
 const tokensListStore = useTokensStore();
-const uniswapTokenListAll = await tokensListStore.tokensList;
+const tokensList = tokensListStore.tokensList;
 
 const selectedNetwork = useState("selectedNetwork", (): Network => {
   return {
@@ -17,13 +16,11 @@ const selectedNetwork = useState("selectedNetwork", (): Network => {
   };
 });
 
-const uniswapTokenList = computed(() => {
-  return uniswapTokenListAll.tokens.filter(
-    (token) => token.chainId === selectedNetwork.value.chainId
-  );
+const filteredTokenList = computed(() => {
+  return tokensList[selectedNetwork.value.chainId.toString()];
 });
 const selectedToken = useState("selectedToken", () => {
-  return uniswapTokenList.value.filter((token) => token.symbol === "USDC")[0];
+  return filteredTokenList.value.filter((token) => token.symbol === "USDC")[0];
 });
 const tokenLogoUri = computed(() => selectedToken.value.logoURI);
 const tokenSymbol = computed(() => selectedToken.value.symbol);
@@ -115,7 +112,7 @@ const isCustomRpc = computed(() => selectedNetwork.value.chainId === undefined);
   <div>
     <NewRequestSelectTokenModal
       :chain-id="selectedNetwork.chainId"
-      :tokens="uniswapTokenList"
+      :tokens="filteredTokenList"
       v-if="showTokenModal"
       @close="showTokenModal = false"
     />
@@ -144,7 +141,7 @@ const isCustomRpc = computed(() => selectedNetwork.value.chainId === undefined);
           @click="showTokenModal = true"
         >
           <div class="flex items-center">
-            <img :src="tokenLogoUri" class="h-5 w-5" />
+            <img :src="`/tokens/${tokenLogoUri}`" class="h-5 w-5" />
 
             <span class="mx-2.5"> {{ tokenSymbol }}</span>
             <svg

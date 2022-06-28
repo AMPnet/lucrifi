@@ -59,7 +59,7 @@ const note = computed(() => requestData.value.arbitrary_data.note);
 
 const tokenMeta = computed((): Token => {
   const addr = requestData.value.token_address.toLowerCase();
-  const token = tokensList.tokens.find(
+  const token = tokensList[requestData.value.chain_id.toString()].find(
     (tok: Token) => tok.address.toLowerCase() === addr
   );
 
