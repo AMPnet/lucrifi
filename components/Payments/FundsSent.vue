@@ -5,10 +5,11 @@ import { useWallet } from "@/stores/wallet";
 const wallet = useWallet();
 const runtimeConfig = useRuntimeConfig();
 
-const { data, error, pending } =
+const { data, error, pending, refresh } =
   useLazyFetch<FetchERC20SendRequestsByRecipientAddress>(
     `${runtimeConfig.public.backendUrl}/send/by-sender/${wallet.walletAddress}`
   );
+refresh();
 
 if (error.value) {
   navigateTo("/errorPage");
