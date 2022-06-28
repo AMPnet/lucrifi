@@ -10,8 +10,6 @@ import { FetchSendRequestResponse } from "@/types/ampnet/RequestPayment";
 import { Token } from "@/types/Token";
 import { Network } from "@/types/Network";
 
-import { solNumberToDecimal } from "@/shared/token";
-
 pageview({ page_title: "/request_details" });
 
 const networkStore = useNetworksStore();

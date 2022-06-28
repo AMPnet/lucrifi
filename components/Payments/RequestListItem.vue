@@ -2,7 +2,6 @@
 import { useClipboard } from "@vueuse/core";
 import { useNetworksStore } from "@/stores/networks";
 import { useTokensStore } from "@/stores/tokens";
-import { solNumberToDecimal } from "@/shared/token";
 import { Token } from "@/types/Token";
 
 const { copy } = useClipboard();

@@ -1,8 +1,6 @@
 import { defineStore } from "pinia";
 import { TokensListResponse } from "@/types/Token";
 
-import { ipfsToHttp } from "@/shared/ipfs";
-
 export const useTokensStore = defineStore("tokensList", {
   state: () => {
     return { data: undefined };

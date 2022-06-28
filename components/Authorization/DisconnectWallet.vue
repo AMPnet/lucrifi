@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useClipboard } from "@vueuse/core";
 import { useWallet } from "@/stores/wallet";
-import { shortAddr } from "@/shared/wallet";
 
 const { copy } = useClipboard();
 

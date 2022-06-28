@@ -1,10 +1,8 @@
 <script setup lang="ts">
 import { useClipboard } from "@vueuse/core";
 
-import { shortAddr } from "@/shared/wallet";
 import { useNetworksStore } from "@/stores/networks";
 import { useTokensStore } from "@/stores/tokens";
-import { solNumberToDecimal } from "@/shared/token";
 import { Token } from "@/types/Token";
 
 const { copy } = useClipboard();
