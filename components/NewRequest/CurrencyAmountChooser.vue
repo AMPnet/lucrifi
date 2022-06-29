@@ -1,12 +1,10 @@
 <script setup lang="ts">
 import { useField } from "vee-validate";
 import { useTokensStore } from "@/stores/tokens";
-
 import { isValidAddress, countDecimals } from "@/validators/blockchain";
 import { Network } from "@/types/Network";
-const tokensListStore = useTokensStore();
-const tokensList = tokensListStore.tokensList;
 
+const tokensListStore = useTokensStore();
 const selectedNetwork = useState("selectedNetwork", (): Network => {
   return {
     chainId: undefined,
@@ -17,10 +15,10 @@ const selectedNetwork = useState("selectedNetwork", (): Network => {
 });
 
 const filteredTokenList = computed(() => {
-  return tokensList[selectedNetwork.value.chainId.toString()];
+  return tokensListStore.tokensList(selectedNetwork.value.chainId);
 });
 const selectedToken = useState("selectedToken", () => {
-  return filteredTokenList.value.filter((token) => token.symbol === "USDC")[0];
+  return filteredTokenList.value.find((token) => (token.symbol === "USDC" || token.symbol === "DAI"));
 });
 const tokenLogoUri = computed(() => selectedToken.value.logoURI);
 const tokenSymbol = computed(() => selectedToken.value.symbol);

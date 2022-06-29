@@ -1,14 +1,16 @@
 <script setup lang="ts">
 import { event, pageview } from "vue-gtag";
 import QrcodeVue from "qrcode.vue";
+import { useClipboard } from "@vueuse/core";
 
 import { useTokensStore } from "@/stores/tokens";
 import { useNetworksStore } from "@/stores/networks";
 
-import { useClipboard } from "@vueuse/core";
 import { FetchSendRequestResponse } from "@/types/ampnet/RequestPayment";
 import { Token } from "@/types/Token";
 import { Network } from "@/types/Network";
+
+import { solNumberToDecimal } from "@/shared/token";
 
 pageview({ page_title: "/request_details" });
 
@@ -35,24 +37,21 @@ const { data: requestData } = await useFetch<FetchSendRequestResponse>(
   }
 );
 
+const network = computed((): Network => {
+  return networkStore.networks.find(
+      (network) => network.chainId === requestData.value.chain_id
+  );
+});
+
 const tokensList = await tokensListStore.tokensList;
 const transferUrl = computed(() => requestData.value.redirect_url);
 const recepientAddress = computed(() => requestData.value.recipient_address);
 const amount = computed(() => {
   const addr = requestData.value.token_address.toLowerCase();
-  const token = tokensList.tokens.find(
+  const token: Token = tokensListStore.tokensList(network.value.chainId).find(
     (tok: Token) => tok.address.toLowerCase() === addr
   );
-  const integer = requestData.value.amount.slice(0, -token.decimals);
-  let decimal = requestData.value.amount.slice(-token.decimals);
-
-  // Remove trailing zeros
-  decimal = decimal.replace(/0+$/, "");
-  if (decimal.length === 0) {
-    return integer;
-  }
-
-  return `${integer}.${decimal}`;
+  return solNumberToDecimal(requestData.value.amount, token.decimals);
 });
 
 const note = computed(() => requestData.value.arbitrary_data.note);
@@ -74,12 +73,6 @@ const tokenMeta = computed((): Token => {
     decimals: 18,
     name: "Custom",
   };
-});
-
-const network = computed((): Network => {
-  return networkStore.networks.find(
-    (network) => network.chainId === requestData.value.chain_id
-  );
 });
 
 const showCopyDialog = ref(false);

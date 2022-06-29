@@ -61,10 +61,7 @@ function copyAddr() {
 
         <div>
           <button
-            @click="
-              wallet.disconnectWallet;
-              event('disconnect_wallet');
-            "
+            @click="wallet.disconnectWallet"
             class="text-sm rounded-full py-1 px-2 border border-pink-500 text-pink-500 hover:bg-pink-500 hover:text-white"
           >
             Disconnect

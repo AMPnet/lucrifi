@@ -1,50 +1,18 @@
 <script setup lang="ts">
+import { FetchERC20SendRequestsByRecipientAddress } from "@/types/ampnet/RequestPayment";
+import { useWallet } from "@/stores/wallet";
+
+const wallet = useWallet();
 const runtimeConfig = useRuntimeConfig();
 
-//const { data, error } = await useFetch(`${runtimeConfig.public.backendUrl}/`);
+const { data, error } =
+  await useFetch<FetchERC20SendRequestsByRecipientAddress>(
+    `${runtimeConfig.public.backendUrl}/send/by-recipient/${wallet.walletAddress}`
+  );
 
-const data = [
-  {
-    ammount: 2.2,
-    chain: 1,
-    status: "Paid",
-    Note: "",
-    date: "25 Aug 2022",
-    id: "1",
-  },
-  {
-    ammount: 2342,
-    chain: 1,
-    status: "Pending",
-    Note: " Dafuuuq fjeijf oiejfj ifej oifjeoi jfoi ejoifj eoijfoeijfoiej fioejio jeoi jeoi jfoie",
-    date: "25 Aug 2022",
-    id: "2",
-  },
-  {
-    ammount: 2342,
-    chain: 2,
-    status: "Paid",
-    Note: "",
-    date: "25 Aug 2022",
-    id: "35",
-  },
-  {
-    ammount: 24982304802930,
-    chain: 1,
-    status: "Paid",
-    Note: "",
-    date: "25 Aug 2022",
-    id: "242",
-  },
-  {
-    ammount: 358390.35332,
-    chain: 1,
-    status: "Paid",
-    Note: "Test nonte",
-    date: "25 Aug 2022",
-    id: "33",
-  },
-];
+if (error.value) {
+  navigateTo("/errorPage");
+}
 </script>
 
 <template>
@@ -57,15 +25,19 @@ const data = [
       <div class="col-span-3">Note</div>
     </div>
 
-    <div v-for="transaction of data" :key="transaction.ammount">
+    <div v-if="data" v-for="request of data.requests" :key="request.id">
       <PaymentsRequestListItem
-        :amount="transaction.ammount"
-        chain-logo-url="P"
-        :created="transaction.date"
-        :note="transaction.Note"
-        :status="transaction.status"
-        :id="transaction.id"
+        :amount="request.amount"
+        :token-address="request.token_address"
+        :chain-id="request.chain_id"
+        created="06-07-2022"
+        :note="request.arbitrary_data.note"
+        :status="request.status"
+        :id="request.id"
       />
+    </div>
+    <div v-else>
+      <h3>No results found</h3>
     </div>
   </div>
 </template>

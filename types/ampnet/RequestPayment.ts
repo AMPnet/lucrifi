@@ -9,7 +9,7 @@ interface SendTx {
   to: string;
   data: string;
   block_confirmations: string | undefined;
-  timestamp: Date | undefined;
+  timestamp: string | undefined;
 }
 
 export interface FetchSendRequestResponse {
@@ -24,4 +24,8 @@ export interface FetchSendRequestResponse {
   screen_config: ScreenConfig | undefined;
   redirect_url: string;
   send_tx: SendTx;
+}
+
+export interface FetchERC20SendRequestsByRecipientAddress {
+  requests: Array<FetchSendRequestResponse>;
 }

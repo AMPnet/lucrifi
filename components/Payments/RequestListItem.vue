@@ -1,15 +1,27 @@
 <script setup lang="ts">
+import { useNetworksStore } from "@/stores/networks";
+import { useTokensStore } from "@/stores/tokens";
+import { solNumberToDecimal } from "@/shared/token";
+import { Token } from "@/types/Token";
+
+const networkStore = useNetworksStore();
+const tokensStore = useTokensStore();
+
 const props = defineProps({
   id: {
     type: String,
     required: true,
   },
   amount: {
-    type: Number,
+    type: String,
     required: true,
   },
-  chainLogoUrl: {
+  tokenAddress: {
     type: String,
+    required: true,
+  },
+  chainId: {
+    type: Number,
     required: true,
   },
   created: {
@@ -26,6 +38,24 @@ const props = defineProps({
   },
 });
 
+const network = computed(() => {
+  return networkStore.networksList.find(
+    (network) => network.chainId === props.chainId
+  );
+});
+const token = computed(() => {
+  return tokensStore.tokensList(network.value.chainId).find(
+    (token) => token.address.toLowerCase() === props.tokenAddress.toLowerCase()
+  );
+});
+
+const prettyAmount = computed(() => {
+  const token: Token = tokensStore.tokensList(network.value.chainId).find(
+    (tok: Token) =>
+      tok.address.toLowerCase() === props.tokenAddress.toLowerCase()
+  );
+  return solNumberToDecimal(props.amount, token.decimals);
+});
 const showMenu = ref(false);
 
 const statusColorClass = computed(() => {
@@ -42,8 +72,15 @@ const statusColorClass = computed(() => {
   <div
     class="grid grid-cols-6 gap-y-7 sm:gap-0 sm:grid-cols-12 py-5 items-center border-b border-slate-2 text-sm font-bold px-6 text-slate-400"
   >
-    <div class="col-span-3 text-gray-700 text-base">{{ amount }}</div>
-    <div>{{ chainLogoUrl }}</div>
+    <div class="col-span-3 text-gray-700 text-base">
+      <div class="flex items-center">
+        <img class="w-5 h-5 mr-2" :src="token.logoURI" />
+        <span>{{ prettyAmount }} {{ token.symbol }}</span>
+      </div>
+    </div>
+    <div class="flex items-center">
+      <img class="w-5 h-5" :src="network.logoURI" />
+    </div>
     <div class="col-span-2 text-xs">{{ created }}</div>
     <div class="col-span-3 sm:col-span-2">
       <div class="flex items-center" :class="statusColorClass">
