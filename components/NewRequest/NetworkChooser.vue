@@ -68,13 +68,6 @@ const dirtyClass = computed(() => {
 async function selectNetwork(network: Network) {
   selectedNetwork.value = network;
 
-  // Change token
-  const tokensList = tokensListStore.tokensList(selectedNetwork.value.chainId);
-  const selectedToken: Ref<Token> = useState("selectedToken");
-  selectedToken.value = tokensList.find(
-      (token) =>
-          token.symbol === "USDC" && token.chainId == selectedNetwork.value.chainId
-  );
   dropDownActive.value = false;
 }
 </script>
@@ -135,7 +128,7 @@ async function selectNetwork(network: Network) {
         @click="selectNetwork(network)"
       >
         <div class="flex items-center">
-          <img :src="network.logoURI" class="w-4 h-4 mr-2.5" />
+          <img :src="network.logoURI" class="w-4 h-4 mr-2.5" alt="chain logo" />
           <span>{{ network.name }}</span>
         </div>
       </button>

@@ -10,8 +10,6 @@ import { FetchSendRequestResponse } from "@/types/ampnet/RequestPayment";
 import { Token } from "@/types/Token";
 import { Network } from "@/types/Network";
 
-import { solNumberToDecimal } from "@/shared/token";
-
 pageview({ page_title: "/request_details" });
 
 const networkStore = useNetworksStore();
@@ -43,7 +41,6 @@ const network = computed((): Network => {
   );
 });
 
-const tokensList = await tokensListStore.tokensList;
 const transferUrl = computed(() => requestData.value.redirect_url);
 const recepientAddress = computed(() => requestData.value.recipient_address);
 const amount = computed(() => {
@@ -58,7 +55,7 @@ const note = computed(() => requestData.value.arbitrary_data.note);
 
 const tokenMeta = computed((): Token => {
   const addr = requestData.value.token_address.toLowerCase();
-  const token = tokensList[requestData.value.chain_id.toString()].find(
+  const token = tokensListStore.tokensList(requestData.value.chain_id).find(
     (tok: Token) => tok.address.toLowerCase() === addr
   );
 
@@ -93,14 +90,14 @@ function openCopiedDialog() {
       <div class="w-full sm:w-96">
         <h2 class="text-lg font-bold">Transfer request</h2>
         <div class="flex items-center justify-center mt-5">
-          <img :src="tokenMeta.logoURI" class="w-5 h-5" />
+          <img :src="`/tokens/${tokenMeta.logoURI}`" class="w-5 h-5" alt="token logo" />
           <span class="ml-1.5 text-2xl font-bold"
             >{{ amount }} {{ tokenMeta.symbol }}</span
           >
         </div>
 
         <div class="flex items-center justify-center mt-1.5">
-          <img :src="network.logoURI" class="w-4 h-4" />
+          <img :src="network.logoURI" class="w-4 h-4" alt="token logo" />
           <span class="ml-1.5 text-sm font-bold">{{ network.name }}</span>
         </div>
 

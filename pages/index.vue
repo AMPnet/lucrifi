@@ -43,9 +43,10 @@ const formValid = computed(() => {
 });
 
 async function createRequest() {
-  const nDecimals = countDecimals(selectedAmount.value);
+  const uniformAmountFormat = selectedAmount.value.replace(",", ".");
+  const nDecimals = countDecimals(uniformAmountFormat);
   const zeros = "0".repeat(selectedToken.value.decimals - nDecimals);
-  const shiftedAmount = `${selectedAmount.value.replace(".", "")}${zeros}`;
+  const shiftedAmount = `${uniformAmountFormat.replace(".", "")}${zeros}`;
 
   let payload = {
     redirect_url: runtimeConfig.public.requestPaymentRedirect,
@@ -53,11 +54,15 @@ async function createRequest() {
     amount: shiftedAmount,
     arbitrary_data: {
       note: noteData.value,
+      created: new Date().toISOString(),
+      tokenLogoUrl: selectedToken.value.logoURI,
     },
     chain_id: undefined,
     token_address: "",
   };
-  let headers = {};
+  let headers = {
+    "X-API-KEY": `${selectedNetwork.value.apiKey}`,
+  };
   let queryParams = {};
 
   if (selectedNetwork.value.chainId !== undefined) {
@@ -71,10 +76,7 @@ async function createRequest() {
       ...payload,
       token_address: selectedCustomTokenAddres.value,
     };
-    headers = {
-      ...headers,
-      "X-RPC-URL": selectedNetwork.value.rpcURL,
-    };
+    headers["X-RPC-URL"] = selectedNetwork.value.rpcURL;
     queryParams = {
       rpcURL: selectedNetwork.value.rpcURL,
     };

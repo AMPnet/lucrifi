@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { shortAddr } from "@/shared/wallet";
-
 const props = defineProps({
   walletAddr: {
     type: String,

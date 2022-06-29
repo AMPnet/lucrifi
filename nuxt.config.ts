@@ -2,6 +2,26 @@ import { defineNuxtConfig } from "nuxt";
 
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
+  app: {
+    head: {
+      title: "Lucrifi",
+      htmlAttrs: {
+        lang: "en",
+      },
+      meta: [
+        {
+          hid: "description",
+          name: "description",
+          content: "Easily get paid in crypto",
+        },
+        {
+          hid: "keywords",
+          name: "keywords",
+          content: "web3, crypto, blockhain, defi, payments, transaction, dev3",
+        },
+      ],
+    },
+  },
   css: ["~/assets/css/tailwind.css"],
   modules: ["@nuxtjs/tailwindcss"],
 
@@ -19,6 +39,15 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
+    polygonApiKey: "",
+    ethereumApiKey: "",
+    bscApiKey: "",
+    avaxApiKey: "",
+    mvrApiKey: "",
+    gnosisApiKey: "",
+    fantomApiKey: "",
+    auroraApiKey: "",
+
     public: {
       gtagId: "",
       backendUrl: "https://eth-staging.ampnet.io/api/blockchain-api/v1",

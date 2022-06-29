@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import { event } from "vue-gtag";
-import { useWallet } from "@/stores/wallet";
 import { useClipboard } from "@vueuse/core";
-import { shortAddr } from "@/shared/wallet";
+import { useWallet } from "@/stores/wallet";
 
 const { copy } = useClipboard();
 

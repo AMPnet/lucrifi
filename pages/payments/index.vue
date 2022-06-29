@@ -6,15 +6,13 @@ pageview({ page_title: "/payments" });
 
 const wallet = useWallet();
 
-const walletConnected = computed(() => wallet.isWalletConnected);
-
 const menuId = ref(1);
 </script>
 
 <template>
   <div>
     <ClientOnly>
-      <div v-if="walletConnected">
+      <div v-if="wallet.isWalletConnected">
         <div class="flex justify-center gap-8 text-slate-500 text-sm font-bold">
           <button
             @click="menuId = 1"
@@ -61,16 +59,13 @@ const menuId = ref(1);
             </div>
           </button>
         </div>
-
         <div class="mt-4">
           <PaymentsFundsRequested v-show="menuId === 1" />
           <PaymentsFundsSent v-show="menuId === 2" />
         </div>
       </div>
-
-      <div v-else>
-        <AuthorizationSignIn />
-      </div>
     </ClientOnly>
+
+    <AuthorizationSignIn />
   </div>
 </template>

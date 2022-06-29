@@ -11,14 +11,22 @@ const selectedNetwork = useState("selectedNetwork", (): Network => {
     logoURI: "",
     rpcURL: undefined,
     name: "",
+    blockExplorerUrl: "",
+    apiKey:"",
   };
+});
+
+watch(selectedNetwork, (newNetwork) => {
+  // Reset amount and token if the network changes
+  validatedAmount.value = "";
+  selectedToken.value = tokensListStore.tokensList(newNetwork.chainId).find((token) => token.symbol === "USDC");
 });
 
 const filteredTokenList = computed(() => {
   return tokensListStore.tokensList(selectedNetwork.value.chainId);
-});
+})
 const selectedToken = useState("selectedToken", () => {
-  return filteredTokenList.value.find((token) => (token.symbol === "USDC" || token.symbol === "DAI"));
+  return filteredTokenList.value.find((token) => token.symbol == "USDC");
 });
 const tokenLogoUri = computed(() => selectedToken.value.logoURI);
 const tokenSymbol = computed(() => selectedToken.value.symbol);
@@ -26,7 +34,7 @@ const tokenSymbol = computed(() => selectedToken.value.symbol);
 function isValidCurrencyAmount(value: string): string | boolean {
   if (!value) return "Please set amount";
 
-  let regex = /^(0|[1-9]\d*)(\.\d+)?$/;
+  let regex = /^(0|[1-9]\d*)((\.|,)\d+)?$/;
   if (!regex.test(value)) {
     return "Please set valid amount";
   }

@@ -6,8 +6,23 @@ import { useWallet } from "@/stores/wallet";
 
 const wallet = useWallet();
 
-async function connectWallet() {
+function connectWallet() {
+  window.open(wallet.connectData.redirectUrl, "_blank");
   wallet.connectWallet();
+}
+
+const { data, pending, refresh } = await wallet.preFetchConnectData();
+
+watch(data, (newData) => {
+  if (newData) {
+    wallet.connectData.id = newData.id;
+    wallet.connectData.redirectUrl = newData.redirect_url;
+  }
+});
+
+if (!wallet.isWalletConnected) {
+  // Fetch new wallet connect data only if the user hasn't connected wallet
+  await refresh();
 }
 
 const { value: validAddress, meta } = useField(
@@ -100,6 +115,7 @@ const dirtyClass = computed(() => {
 
           <button
             v-else
+            :disabled="pending"
             class="py-1 px-3 whitespace-nowrap rounded-full text-xs font-bold border border-violet-700 text-violet-700 hover:bg-violet-700 hover:text-white"
             @click="connectWallet"
           >
