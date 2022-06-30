@@ -27,15 +27,17 @@ export const useNetworksStore = defineStore("networksList", {
         },
         {
           name: "BSC",
-          logoURI: "https://chainlist.org/_next/image?url=https%3A%2F%2Fdefillama.com%2Fchain-icons%2Frsz_binance.jpg&w=32&q=75",
+          logoURI:
+            "https://chainlist.org/_next/image?url=https%3A%2F%2Fdefillama.com%2Fchain-icons%2Frsz_binance.jpg&w=32&q=75",
           chainId: 56,
           rpcURL: undefined,
           apiKey: runtimeConfig.bscApiKey,
           blockExplorerUrl: "https://bscscan.com/tx",
         },
         {
-          name: "Gnosis",
-          logoURI: "https://chainlist.org/_next/image?url=https%3A%2F%2Fdefillama.com%2Fchain-icons%2Frsz_xdai.jpg&w=32&q=75",
+          name: "xDai/Gnosis",
+          logoURI:
+            "https://chainlist.org/_next/image?url=https%3A%2F%2Fdefillama.com%2Fchain-icons%2Frsz_xdai.jpg&w=32&q=75",
           chainId: 100,
           rpcURL: undefined,
           apiKey: runtimeConfig.gnosisApiKey,
@@ -43,7 +45,8 @@ export const useNetworksStore = defineStore("networksList", {
         },
         {
           name: "Fantom Opera",
-          logoURI: "https://chainlist.org/_next/image?url=https%3A%2F%2Fdefillama.com%2Fchain-icons%2Frsz_fantom.jpg&w=32&q=75",
+          logoURI:
+            "https://chainlist.org/_next/image?url=https%3A%2F%2Fdefillama.com%2Fchain-icons%2Frsz_fantom.jpg&w=32&q=75",
           chainId: 250,
           rpcURL: undefined,
           apiKey: runtimeConfig.fantomApiKey,
@@ -51,7 +54,8 @@ export const useNetworksStore = defineStore("networksList", {
         },
         {
           name: "Moonriver",
-          logoURI: "https://chainlist.org/_next/image?url=https%3A%2F%2Fdefillama.com%2Fchain-icons%2Frsz_moonriver.jpg&w=32&q=75",
+          logoURI:
+            "https://chainlist.org/_next/image?url=https%3A%2F%2Fdefillama.com%2Fchain-icons%2Frsz_moonriver.jpg&w=32&q=75",
           chainId: 1285,
           rpcURL: undefined,
           apiKey: runtimeConfig.mvrApiKey,
@@ -59,7 +63,8 @@ export const useNetworksStore = defineStore("networksList", {
         },
         {
           name: "Avalanche",
-          logoURI: "https://chainlist.org/_next/image?url=https%3A%2F%2Fdefillama.com%2Fchain-icons%2Frsz_avalanche.jpg&w=32&q=75",
+          logoURI:
+            "https://chainlist.org/_next/image?url=https%3A%2F%2Fdefillama.com%2Fchain-icons%2Frsz_avalanche.jpg&w=32&q=75",
           chainId: 43114,
           rpcURL: undefined,
           apiKey: runtimeConfig.avaxApiKey,
@@ -67,7 +72,8 @@ export const useNetworksStore = defineStore("networksList", {
         },
         {
           name: "Aurora",
-          logoURI: "https://chainlist.org/_next/image?url=https%3A%2F%2Fdefillama.com%2Fchain-icons%2Frsz_aurora.jpg&w=32&q=75",
+          logoURI:
+            "https://chainlist.org/_next/image?url=https%3A%2F%2Fdefillama.com%2Fchain-icons%2Frsz_aurora.jpg&w=32&q=75",
           chainId: 1313161554,
           rpcURL: undefined,
           apiKey: runtimeConfig.auroraApiKey,

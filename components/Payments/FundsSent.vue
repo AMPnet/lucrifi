@@ -16,10 +16,18 @@ if (error.value) {
 }
 
 const requests = computed(() => data.value.requests);
+const noData = computed(() => !pending.value && requests.value.length === 0);
 </script>
 
 <template>
-  <div class="bg-white border border-slate-200 rounded-xl py-4 mx-2 lg:mx-24">
+  <div
+    class="bg-white border border-slate-200 rounded-xl py-4 mx-2 lg:mx-24"
+    :class="
+      noData
+        ? 'h-fit'
+        : 'max-h-[550px] lg:max-h-[700px] min-h-[270px] md:min-h-[200px]'
+    "
+  >
     <div class="hidden sm:grid grid-cols-9 text-sm font-bold pb-5 px-6">
       <div class="col-span-3">Amount & token</div>
       <div>Chain</div>
