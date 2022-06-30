@@ -17,6 +17,13 @@ Look at the [nuxt 3 documentation](https://v3.nuxtjs.org) to learn more.
 
 ## Setup
 
+### Prepare your environemnt
+
+Follow [this](https://v3.nuxtjs.org/getting-started/quick-start#prerequisites
+)
+
+### Dependencies
+
 Make sure to install the dependencies:
 
 ```bash
