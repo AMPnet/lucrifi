@@ -4,7 +4,7 @@ import { defineNuxtConfig } from "nuxt";
 export default defineNuxtConfig({
   app: {
     head: {
-      title: "Lucrifi",
+      title: "LucriFi",
       htmlAttrs: {
         lang: "en",
       },
@@ -12,12 +12,13 @@ export default defineNuxtConfig({
         {
           hid: "description",
           name: "description",
-          content: "Easily get paid in crypto",
+          content: "Get paid in crypto, easy and fast!",
         },
         {
           hid: "keywords",
           name: "keywords",
-          content: "web3, crypto, blockhain, defi, payments, transaction, dev3",
+          content:
+            "web3, crypto, blockhain, defi, payments, transaction, dev3, lucrifi, finance",
         },
       ],
     },
@@ -59,6 +60,7 @@ export default defineNuxtConfig({
 
   typescript: {
     typeCheck: true,
-    tsConfig: "./tsconfig.json"
-  }
+    tsConfig: "./tsconfig.json",
+    shim: false,
+  },
 });

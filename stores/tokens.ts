@@ -8,7 +8,7 @@ export const useTokensStore = defineStore("tokensList", {
   },
   actions: {
     tokensList: function(chainId: number): Token[] {
-      return this.data[chainId.toString()];
+      return this.data[chainId];
     }
   }
 });

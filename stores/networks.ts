@@ -10,7 +10,7 @@ export const useNetworksStore = defineStore("networksList", {
         {
           name: "Polygon",
           logoURI:
-              "https://seeklogo.com/images/P/polygon-matic-logo-86F4D6D773-seeklogo.com.png",
+            "https://seeklogo.com/images/P/polygon-matic-logo-86F4D6D773-seeklogo.com.png",
           chainId: 137,
           rpcURL: undefined,
           apiKey: runtimeConfig.polygonApiKey,
@@ -19,7 +19,7 @@ export const useNetworksStore = defineStore("networksList", {
         {
           name: "Ethereum",
           logoURI:
-              "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Ethereum-icon-purple.svg/480px-Ethereum-icon-purple.svg.png",
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Ethereum-icon-purple.svg/480px-Ethereum-icon-purple.svg.png",
           chainId: 1,
           rpcURL: undefined,
           apiKey: runtimeConfig.ethereumApiKey,

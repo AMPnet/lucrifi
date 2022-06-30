@@ -26,7 +26,7 @@ const filteredTokenList = computed(() => {
   return tokensListStore.tokensList(selectedNetwork.value.chainId);
 })
 const selectedToken = useState("selectedToken", () => {
-  return filteredTokenList.value.find((token) => token.symbol == "USDC");
+  return filteredTokenList.value.find((token) => token.symbol === "USDC");
 });
 const tokenLogoUri = computed(() => selectedToken.value.logoURI);
 const tokenSymbol = computed(() => selectedToken.value.symbol);

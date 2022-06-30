@@ -49,13 +49,10 @@ const props = defineProps({
 
 const network = computed(() => {
   return networkStore.networksList.find(
-    (network) => network.chainId == props.chainId
+    (network) => network.chainId === props.chainId
   );
 });
 const token = computed(() => {
-  console.log("network.value.chainId", network.value.chainId)
-  console.log("tokensStore.tokensList", tokensStore.tokensList(network.value.chainId).map(it => it.address))
-  console.log("props.tokenAddress.toLowerCase()", props.tokenAddress.toLowerCase())
   return tokensStore.tokensList(network.value.chainId).find(
     (token) => token.address.toLowerCase() === props.tokenAddress.toLowerCase()
   );
@@ -109,7 +106,7 @@ function copyPaymentLink() {
   >
     <div class="col-span-3 text-gray-700 text-base break-all">
       <div class="flex items-center">
-        <img class="w-5 h-5 mr-2" :src="`/tokens/${token.logoURI}`" alt="token logo" />
+        <img class="w-5 h-5 mr-2" :src="`/tokens/${token.logoURI}`" alt="token logo" loading="lazy" />
         <span>{{ prettyAmount }} {{ token.symbol }}</span>
       </div>
     </div>
