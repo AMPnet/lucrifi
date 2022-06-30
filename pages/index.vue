@@ -141,7 +141,7 @@ async function createRequest() {
               <input
                 v-model="noteData"
                 type="text"
-                placeholder="Add note (optional)"
+                placeholder="Add note (e.g. invoice link)"
                 class="w-full focus:outline-none mx-2"
               />
             </div>
