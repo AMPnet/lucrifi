@@ -42,6 +42,12 @@ export default defineNuxtConfig({
   runtimeConfig: {
     polygonApiKey: "",
     ethereumApiKey: "",
+    bscApiKey: "",
+    avaxApiKey: "",
+    mvrApiKey: "",
+    gnosisApiKey: "",
+    fantomApiKey: "",
+    auroraApiKey: "",
 
     public: {
       gtagId: "",
@@ -53,6 +59,8 @@ export default defineNuxtConfig({
   },
 
   typescript: {
+    typeCheck: true,
+    tsConfig: "./tsconfig.json",
     shim: false,
   },
 });

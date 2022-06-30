@@ -35,12 +35,17 @@ const { data: requestData } = await useFetch<FetchSendRequestResponse>(
   }
 );
 
-const tokensList = await tokensListStore.tokensList;
+const network = computed((): Network => {
+  return networkStore.networks.find(
+      (network) => network.chainId === requestData.value.chain_id
+  );
+});
+
 const transferUrl = computed(() => requestData.value.redirect_url);
 const recepientAddress = computed(() => requestData.value.recipient_address);
 const amount = computed(() => {
   const addr = requestData.value.token_address.toLowerCase();
-  const token: Token = tokensList.tokens.find(
+  const token: Token = tokensListStore.tokensList(network.value.chainId).find(
     (tok: Token) => tok.address.toLowerCase() === addr
   );
   return solNumberToDecimal(requestData.value.amount, token.decimals);
@@ -50,7 +55,7 @@ const note = computed(() => requestData.value.arbitrary_data.note);
 
 const tokenMeta = computed((): Token => {
   const addr = requestData.value.token_address.toLowerCase();
-  const token = tokensList.tokens.find(
+  const token = tokensListStore.tokensList(requestData.value.chain_id).find(
     (tok: Token) => tok.address.toLowerCase() === addr
   );
 
@@ -65,12 +70,6 @@ const tokenMeta = computed((): Token => {
     decimals: 18,
     name: "Custom",
   };
-});
-
-const network = computed((): Network => {
-  return networkStore.networks.find(
-    (network) => network.chainId === requestData.value.chain_id
-  );
 });
 
 const showCopyDialog = ref(false);
@@ -91,7 +90,7 @@ function openCopiedDialog() {
       <div class="w-full sm:w-96">
         <h2 class="text-lg font-bold">Transfer request</h2>
         <div class="flex items-center justify-center mt-5">
-          <img :src="tokenMeta.logoURI" class="w-5 h-5" alt="token logo" />
+          <img :src="`/tokens/${tokenMeta.logoURI}`" class="w-5 h-5" alt="token logo" />
           <span class="ml-1.5 text-2xl font-bold"
             >{{ amount }} {{ tokenMeta.symbol }}</span
           >

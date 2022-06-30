@@ -67,6 +67,7 @@ const dirtyClass = computed(() => {
 
 async function selectNetwork(network: Network) {
   selectedNetwork.value = network;
+
   dropDownActive.value = false;
 }
 </script>

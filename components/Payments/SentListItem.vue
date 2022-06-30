@@ -9,7 +9,6 @@ const { copy } = useClipboard();
 const networkStore = useNetworksStore();
 
 const tokensStore = useTokensStore();
-const tokensList = await tokensStore.tokensList;
 
 const props = defineProps({
   id: {
@@ -52,13 +51,13 @@ const network = computed(() => {
   );
 });
 const token = computed(() => {
-  return tokensList.tokens.find(
+  return tokensStore.tokensList(network.value.chainId).find(
     (token) => token.address.toLowerCase() === props.tokenAddress.toLowerCase()
   );
 });
 
 const prettyAmount = computed(() => {
-  const token: Token = tokensList.tokens.find(
+  const token: Token = tokensStore.tokensList(network.value.chainId).find(
     (tok: Token) =>
       tok.address.toLowerCase() === props.tokenAddress.toLowerCase()
   );

@@ -8,8 +8,6 @@ const { copy } = useClipboard();
 const networkStore = useNetworksStore();
 const tokensStore = useTokensStore();
 
-const tokensList = await tokensStore.tokensList;
-
 const props = defineProps({
   id: {
     type: String,
@@ -55,9 +53,12 @@ const network = computed(() => {
   );
 });
 const token = computed(() => {
-  return tokensList.tokens.find(
-    (token) => token.address.toLowerCase() === props.tokenAddress.toLowerCase()
-  );
+  return tokensStore
+    .tokensList(network.value.chainId)
+    .find(
+      (token) =>
+        token.address.toLowerCase() === props.tokenAddress.toLowerCase()
+    );
 });
 
 const prettyDate = computed(() => {
@@ -68,10 +69,12 @@ const prettyDate = computed(() => {
 });
 
 const prettyAmount = computed(() => {
-  const token: Token = tokensList.tokens.find(
-    (tok: Token) =>
-      tok.address.toLowerCase() === props.tokenAddress.toLowerCase()
-  );
+  const token: Token = tokensStore
+    .tokensList(network.value.chainId)
+    .find(
+      (tok: Token) =>
+        tok.address.toLowerCase() === props.tokenAddress.toLowerCase()
+    );
   return solNumberToDecimal(props.amount, token.decimals);
 });
 const showMenu = ref(false);
@@ -108,7 +111,12 @@ function copyPaymentLink() {
   >
     <div class="col-span-3 text-gray-700 text-base break-all">
       <div class="flex items-center">
-        <img class="w-5 h-5 mr-2" :src="token.logoURI" alt="token logo" />
+        <img
+          class="w-5 h-5 mr-2"
+          :src="`/tokens/${token.logoURI}`"
+          alt="token logo"
+          loading="lazy"
+        />
         <span>{{ prettyAmount }} {{ token.symbol }}</span>
       </div>
     </div>
