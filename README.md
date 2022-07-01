@@ -1,5 +1,5 @@
 
-# Nuxt 3 Minimal Starter
+# LucriFi on Nuxt 3
 
 ## Supported Env variables
 
@@ -65,3 +65,11 @@ npm run preview
 ```
 
 Checkout the [deployment documentation](https://v3.nuxtjs.org/guide/deploy/presets) for more information.
+
+## Supporting new chains
+
+1. Add all the new chain tokens in `public/tokens/list.json`, along with token images in the `public/tokens/images`
+2. If supporting native token for the chain, the native token list item in `list.json` **must have `address` property set to `0x0000000000000000000000000000000000000000`**. This is how it's determined if the token is native in the code.
+3. Generate a new project API key on backend for the new chain using new chain's `chainId`
+4. Create a new env variable in `nuxt.config.ts` that will keep the API key property for the new chain.
+5. Add the new chain data in `stores/networks.ts`
