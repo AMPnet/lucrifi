@@ -12,19 +12,21 @@ const selectedNetwork = useState("selectedNetwork", (): Network => {
     rpcURL: undefined,
     name: "",
     blockExplorerUrl: "",
-    apiKey:"",
+    apiKey: "",
   };
 });
 
 watch(selectedNetwork, (newNetwork) => {
   // Reset amount and token if the network changes
   validatedAmount.value = "";
-  selectedToken.value = tokensListStore.tokensList(newNetwork.chainId).find((token) => token.symbol === "USDC");
+  selectedToken.value = tokensListStore
+    .tokensList(newNetwork.chainId)
+    .find((token) => token.symbol === "USDC");
 });
 
 const filteredTokenList = computed(() => {
   return tokensListStore.tokensList(selectedNetwork.value.chainId);
-})
+});
 const selectedToken = useState("selectedToken", () => {
   return filteredTokenList.value.find((token) => token.symbol === "USDC");
 });
@@ -39,7 +41,7 @@ function isValidCurrencyAmount(value: string): string | boolean {
     return "Please set valid amount";
   }
 
-  const valueFloat = parseFloat(value);
+  const valueFloat = parseFloat(value.replace(",", "."));
 
   if (valueFloat <= 0) {
     return "Please set positive amount";

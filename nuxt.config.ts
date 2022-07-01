@@ -44,7 +44,7 @@ export default defineNuxtConfig({
     ethereumApiKey: "",
     bscApiKey: "",
     avaxApiKey: "",
-    mvrApiKey: "",
+    moonriverApiKey: "",
     gnosisApiKey: "",
     fantomApiKey: "",
     auroraApiKey: "",

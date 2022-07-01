@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Ref } from "vue";
+
 import { event, pageview } from "vue-gtag";
 import { countDecimals } from "@/validators/blockchain";
 
@@ -55,31 +56,38 @@ async function createRequest() {
     arbitrary_data: {
       note: noteData.value,
       created: new Date().toISOString(),
-      tokenLogoUrl: selectedToken.value.logoURI,
+      // Hack so rsend app can display token icons
+      tokenLogoUrl: `https://${window.location.host}/tokens/${selectedToken.value.logoURI}`,
     },
     chain_id: undefined,
-    token_address: "",
+    asset_type: "",
   };
   let headers = {
     "X-API-KEY": `${selectedNetwork.value.apiKey}`,
   };
   let queryParams = {};
 
+  const isNativeToken =
+    selectedToken.value.address ===
+    "0x0000000000000000000000000000000000000000";
+
   if (selectedNetwork.value.chainId !== undefined) {
-    payload = {
-      ...payload,
-      chain_id: selectedNetwork.value.chainId,
-      token_address: selectedToken.value.address,
-    };
+    payload["chain_id"] = selectedNetwork.value.chainId;
+    if (!isNativeToken) {
+      payload["token_address"] = selectedToken.value.address;
+    }
   } else {
-    payload = {
-      ...payload,
-      token_address: selectedCustomTokenAddres.value,
-    };
+    payload["token_address"] = selectedCustomTokenAddres.value;
     headers["X-RPC-URL"] = selectedNetwork.value.rpcURL;
     queryParams = {
       rpcURL: selectedNetwork.value.rpcURL,
     };
+  }
+
+  if (isNativeToken) {
+    payload["asset_type"] = "NATIVE";
+  } else {
+    payload["asset_type"] = "TOKEN";
   }
 
   const { data, error } = await useFetch<FetchSendRequestResponse>(
