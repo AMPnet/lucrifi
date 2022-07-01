@@ -1543,7 +1543,7 @@
     {
       "address": "0x0000000000000000000000000000000000000000",
       "name": "Gnosis/XDai Native",
-      "symbol": "GNO",
+      "symbol": "xDAI",
       "chainId": 100,
       "decimals": 18,
       "logoURI": "images/100/rsz_xdai.webp"
@@ -2183,7 +2183,7 @@
       "name": "Moonriver Native",
       "symbol": "MOVR",
       "chainId": 1285,
-      "decimals": 6,
+      "decimals": 18,
       "logoURI": "images/1285/rsz_moonriver.webp"
     },
     {
@@ -2233,7 +2233,7 @@
       "name": "Avalanche Native",
       "symbol": "AVAX",
       "chainId": 43114,
-      "decimals": 6,
+      "decimals": 18,
       "logoURI": "images/43114/rsz_avalanche.webp"
     },
     {
@@ -2305,7 +2305,7 @@
     {
       "address": "0x0000000000000000000000000000000000000000",
       "name": "Aurora Native",
-      "symbol": "AURORA",
+      "symbol": "ETH",
       "chainId": 1313161554,
       "decimals": 18,
       "logoURI": "images/1313161554/rsz_aurora.webp"
