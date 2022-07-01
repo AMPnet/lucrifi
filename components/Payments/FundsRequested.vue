@@ -42,7 +42,7 @@ const noData = computed(() => !pending.value && requests.value.length === 0);
     <div class="hidden sm:grid grid-cols-12 text-sm font-bold pb-5 px-6">
       <div class="col-span-3">Amount & token</div>
       <div>Chain</div>
-      <div class="col-span-2">Created at</div>
+      <div class="col-span-2">Created</div>
       <div class="col-span-2">Status</div>
       <div class="col-span-3">Note</div>
     </div>
@@ -50,7 +50,9 @@ const noData = computed(() => !pending.value && requests.value.length === 0);
     <div v-if="!pending" v-for="request of requests" :key="request.id">
       <PaymentsRequestListItem
         :amount="request.amount"
-        :token-address="request.token_address"
+        :token-address="
+          request.token_address || '0x0000000000000000000000000000000000000000'
+        "
         :chain-id="request.chain_id"
         :created="
           request.arbitrary_data ? request.arbitrary_data.created || '' : ''

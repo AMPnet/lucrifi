@@ -1,6 +1,14 @@
 {
   "1": [
     {
+      "address": "0x0000000000000000000000000000000000000000",
+      "name": "Ethereum Native",
+      "symbol": "ETH",
+      "chainId": 1,
+      "decimals": 18,
+      "logoURI": "images/1/ethereum.webp"
+    },
+    {
       "address": "0xfF20817765cB7f73d4bde2e66e067E58D11095C2",
       "name": "Amp",
       "symbol": "AMP",
@@ -1299,6 +1307,14 @@
   ],
   "56": [
     {
+      "address": "0x0000000000000000000000000000000000000000",
+      "name": "Binance Native",
+      "symbol": "BNB",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "images/56/rsz_binance.webp"
+    },
+    {
       "address": "0xfe56d5892BDffC7BF58f2E84BE1b2C32D21C308b",
       "name": "Kyber Network Crystal",
       "symbol": "KNC",
@@ -1525,6 +1541,14 @@
   ],
   "100": [
     {
+      "address": "0x0000000000000000000000000000000000000000",
+      "name": "Gnosis/XDai Native",
+      "symbol": "GNO",
+      "chainId": 100,
+      "decimals": 18,
+      "logoURI": "images/100/rsz_xdai.webp"
+    },
+    {
       "address": "0xdfc20AE04ED70bd9c7D720F449eEDAe19F659D65",
       "name": "Badger on xDai",
       "symbol": "BADGER",
@@ -1630,6 +1654,14 @@
     }
   ],
   "137": [
+    {
+      "address": "0x0000000000000000000000000000000000000000",
+      "name": "Polygon Native",
+      "symbol": "MATIC",
+      "chainId": 137,
+      "decimals": 18,
+      "logoURI": "images/137/matic.webp"
+    },
     {
       "address": "0xc3cFFDAf8F3fdF07da6D5e3A89B8723D5E385ff8",
       "name": "Rubic (PoS)",
@@ -2009,6 +2041,14 @@
   ],
   "250": [
     {
+      "address": "0x0000000000000000000000000000000000000000",
+      "name": "Fantom Native",
+      "symbol": "FTM",
+      "chainId": 250,
+      "decimals": 18,
+      "logoURI": "images/250/rsz_fantom.webp"
+    },
+    {
       "address": "0xb3654dc3D10Ea7645f8319668E8F54d2574FBdC8",
       "name": "ChainLink",
       "symbol": "LINK",
@@ -2139,6 +2179,14 @@
   ],
   "1285": [
     {
+      "address": "0x0000000000000000000000000000000000000000",
+      "name": "Moonriver Native",
+      "symbol": "MOVR",
+      "chainId": 1285,
+      "decimals": 6,
+      "logoURI": "images/1285/rsz_moonriver.webp"
+    },
+    {
       "address": "0xE3F5a90F9cb311505cd691a46596599aA1A0AD7D",
       "name": "USD Coin",
       "symbol": "USDC",
@@ -2180,6 +2228,14 @@
     }
   ],
   "43114": [
+    {
+      "address": "0x0000000000000000000000000000000000000000",
+      "name": "Avalanche Native",
+      "symbol": "AVAX",
+      "chainId": 43114,
+      "decimals": 6,
+      "logoURI": "images/43114/rsz_avalanche.webp"
+    },
     {
       "address": "0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E",
       "name": "USD Coin",
@@ -2246,6 +2302,14 @@
     }
   ],
   "1313161554": [
+    {
+      "address": "0x0000000000000000000000000000000000000000",
+      "name": "Aurora Native",
+      "symbol": "AURORA",
+      "chainId": 1313161554,
+      "decimals": 18,
+      "logoURI": "images/1313161554/rsz_aurora.webp"
+    },
     {
       "address": "0xe3520349F477A5F6EB06107066048508498A291b",
       "name": "dai stablecoin",

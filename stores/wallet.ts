@@ -40,6 +40,7 @@ export const useWallet = defineStore("walletData", {
         chain_id: 137,
         token_address: "0x0000000000000000000000000000000000001010",
         redirect_url: runtimeConfig.public.connectWalletRedirect,
+        asset_type: "TOKEN",
       };
 
       const networksStore = useNetworksStore();

@@ -9,8 +9,7 @@ export const useNetworksStore = defineStore("networksList", {
       networks: [
         {
           name: "Polygon",
-          logoURI:
-            "https://seeklogo.com/images/P/polygon-matic-logo-86F4D6D773-seeklogo.com.png",
+          logoURI: "https://cryptologos.cc/logos/polygon-matic-logo.png",
           chainId: 137,
           rpcURL: undefined,
           apiKey: runtimeConfig.polygonApiKey,
@@ -58,7 +57,7 @@ export const useNetworksStore = defineStore("networksList", {
             "https://chainlist.org/_next/image?url=https%3A%2F%2Fdefillama.com%2Fchain-icons%2Frsz_moonriver.jpg&w=32&q=75",
           chainId: 1285,
           rpcURL: undefined,
-          apiKey: runtimeConfig.mvrApiKey,
+          apiKey: runtimeConfig.moonriverApiKey,
           blockExplorerUrl: "https://moonriver.moonscan.io/tx",
         },
         {
