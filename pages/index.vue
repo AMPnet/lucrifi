@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Ref } from "vue";
+
 import { event, pageview } from "vue-gtag";
 import { countDecimals } from "@/validators/blockchain";
 
@@ -55,7 +56,8 @@ async function createRequest() {
     arbitrary_data: {
       note: noteData.value,
       created: new Date().toISOString(),
-      tokenLogoUrl: selectedToken.value.logoURI,
+      // Hack so rsend app can display token icons
+      tokenLogoUrl: `https://${window.location.host}/tokens/${selectedToken.value.logoURI}`,
     },
     chain_id: undefined,
     asset_type: "",
