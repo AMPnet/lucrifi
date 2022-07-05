@@ -1,10 +1,19 @@
 function solNumberToDecimal(amount: string, decimals: number): string {
-  let integer = amount.slice(0, -decimals);
-  if (integer.length === 0) {
-    integer = "0";
-  }
+  let integer: string;
+  let decimal: string;
 
-  let decimal = amount.slice(-decimals);
+  if (amount.length < decimals) {
+    integer = "0";
+    const padZeros = decimals - amount.length;
+    decimal = `${"0".repeat(padZeros)}${amount}`;
+  } else {
+    integer = amount.slice(0, -decimals);
+    if (integer.length === 0) {
+      integer = "0";
+    }
+
+    decimal = amount.slice(-decimals);
+  }
 
   // Remove trailing zeros
   decimal = decimal.replace(/0+$/, "");

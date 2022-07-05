@@ -51,16 +51,21 @@ const network = computed(() => {
   );
 });
 const token = computed(() => {
-  return tokensStore.tokensList(network.value.chainId).find(
-    (token) => token.address.toLowerCase() === props.tokenAddress.toLowerCase()
-  );
+  return tokensStore
+    .tokensList(network.value.chainId)
+    .find(
+      (token) =>
+        token.address.toLowerCase() === props.tokenAddress.toLowerCase()
+    );
 });
 
 const prettyAmount = computed(() => {
-  const token: Token = tokensStore.tokensList(network.value.chainId).find(
-    (tok: Token) =>
-      tok.address.toLowerCase() === props.tokenAddress.toLowerCase()
-  );
+  const token: Token = tokensStore
+    .tokensList(network.value.chainId)
+    .find(
+      (tok: Token) =>
+        tok.address.toLowerCase() === props.tokenAddress.toLowerCase()
+    );
   return solNumberToDecimal(props.amount, token.decimals);
 });
 
@@ -97,12 +102,22 @@ const statusMapping = {
   >
     <div class="col-span-3 text-gray-700 text-base">
       <div class="flex items-center">
-        <img class="w-5 h-5 mr-2" :src="token.logoURI" alt="token logo" />
+        <img
+          class="w-5 h-5 mr-2"
+          :src="`/tokens/${token.logoURI}`"
+          loading="lazy"
+          alt="token logo"
+        />
         <span>{{ prettyAmount }} {{ token.symbol }}</span>
       </div>
     </div>
     <div class="flex items-center">
-      <img class="w-5 h-5" :src="network.logoURI" alt="network logo" />
+      <img
+        class="w-5 h-5"
+        :src="network.logoURI"
+        alt="network logo"
+        loading="lazy"
+      />
     </div>
     <div class="col-span-3 sm:col-span-2">
       <div class="flex items-center relative">
