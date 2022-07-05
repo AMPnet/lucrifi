@@ -2245,9 +2245,25 @@
       "logoURI": "images/43114/0xDDAfbb505ad214D7b80b1f830fcCc89B60fb7A83.png.webp"
     },
     {
+      "address": "0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664",
+      "name": "USD Coin (Bridged)",
+      "symbol": "USDC.e",
+      "chainId": 43114,
+      "decimals": 6,
+      "logoURI": "images/43114/0xDDAfbb505ad214D7b80b1f830fcCc89B60fb7A83.png.webp"
+    },
+    {
       "address": "0x9702230A8Ea53601f5cD2dc00fDBc13d4dF4A8c7",
       "name": "Tether USD",
       "symbol": "USDT",
+      "chainId": 43114,
+      "decimals": 6,
+      "logoURI": "images/43114/0x4ECaBa5870353805a9F068101A40E0f32ed605C6.png.webp"
+    },
+    {
+      "address": "0xc7198437980c041c805A1EDcbA50c1Ce5db95118",
+      "name": "Tether USD (Bridged)",
+      "symbol": "USDT.e",
       "chainId": 43114,
       "decimals": 6,
       "logoURI": "images/43114/0x4ECaBa5870353805a9F068101A40E0f32ed605C6.png.webp"
