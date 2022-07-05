@@ -11,9 +11,10 @@ function isValidAddress(value: string): string | boolean {
 }
 
 function countDecimals(value: string): number {
-  if (!value.includes(".")) return 0;
+  if (!value.includes(".") && !value.includes(",")) return 0;
 
-  return value.split(".")[1].length || 0;
+  let delimeter = value.includes(".") ? "." : ",";
+  return value.split(delimeter)[1].length || 0;
 }
 
 export { isValidAddress, countDecimals };

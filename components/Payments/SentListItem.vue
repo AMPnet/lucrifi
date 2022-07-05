@@ -1,9 +1,14 @@
 <script setup lang="ts">
 import { useClipboard } from "@vueuse/core";
 
-import { shortAddr } from "@/shared/wallet";
+import { useNetworksStore } from "@/stores/networks";
+import { useTokensStore } from "@/stores/tokens";
+import { Token } from "@/types/Token";
 
 const { copy } = useClipboard();
+const networkStore = useNetworksStore();
+
+const tokensStore = useTokensStore();
 
 const props = defineProps({
   id: {
@@ -11,21 +16,57 @@ const props = defineProps({
     required: true,
   },
   amount: {
+    type: String,
+    required: true,
+  },
+  tokenAddress: {
+    type: String,
+    required: true,
+  },
+  chainId: {
     type: Number,
-    required: true,
-  },
-  chainLogoUrl: {
-    type: String,
-    required: true,
-  },
-  toWalletAddr: {
-    type: String,
     required: true,
   },
   status: {
     type: String,
     required: true,
   },
+  redirectUrl: {
+    type: String,
+    required: true,
+  },
+  txHash: {
+    type: [String, null],
+    required: true,
+  },
+  toWalletAddr: {
+    type: String,
+    required: true,
+  },
+});
+
+const network = computed(() => {
+  return networkStore.networksList.find(
+    (network) => network.chainId === props.chainId
+  );
+});
+const token = computed(() => {
+  return tokensStore
+    .tokensList(network.value.chainId)
+    .find(
+      (token) =>
+        token.address.toLowerCase() === props.tokenAddress.toLowerCase()
+    );
+});
+
+const prettyAmount = computed(() => {
+  const token: Token = tokensStore
+    .tokensList(network.value.chainId)
+    .find(
+      (tok: Token) =>
+        tok.address.toLowerCase() === props.tokenAddress.toLowerCase()
+    );
+  return solNumberToDecimal(props.amount, token.decimals);
 });
 
 const showMenu = ref(false);
@@ -40,22 +81,44 @@ function copyAddr() {
   }, 1200);
 }
 
-const statusColorClass = computed(() => {
-  if (props.status.toLowerCase() === "paid") {
-    return "text-green-400";
-  } else if (props.status.toLowerCase() === "failed") {
-    return "text-red-400";
-  } else {
-    return "text-gray-400";
-  }
-});
+const statusMapping = {
+  SUCCESS: {
+    title: "Paid",
+    class: "text-green-400",
+  },
+  PENDING: {
+    title: "In progress",
+    class: "text-gray-400",
+  },
+  FAILED: {
+    title: "Failed",
+    class: "text-red-400",
+  },
+};
 </script>
 <template>
   <div
     class="grid grid-cols-5 gap-y-7 sm:gap-0 sm:grid-cols-9 py-5 items-center border-b border-slate-2 text-sm font-bold px-6 text-slate-400"
   >
-    <div class="col-span-3 text-gray-700 text-base">{{ amount }}</div>
-    <div>{{ chainLogoUrl }}</div>
+    <div class="col-span-3 text-gray-700 text-base">
+      <div class="flex items-center">
+        <img
+          class="w-5 h-5 mr-2"
+          :src="`/tokens/${token.logoURI}`"
+          loading="lazy"
+          alt="token logo"
+        />
+        <span>{{ prettyAmount }} {{ token.symbol }}</span>
+      </div>
+    </div>
+    <div class="flex items-center">
+      <img
+        class="w-5 h-5"
+        :src="network.logoURI"
+        alt="network logo"
+        loading="lazy"
+      />
+    </div>
     <div class="col-span-3 sm:col-span-2">
       <div class="flex items-center relative">
         <span>{{ shortAddr(toWalletAddr, 5, 5) }}</span>
@@ -87,10 +150,10 @@ const statusColorClass = computed(() => {
       </div>
     </div>
     <div class="col-span-2">
-      <div class="flex items-center" :class="statusColorClass">
+      <div class="flex items-center" :class="statusMapping[status].class">
         <div class="mr-1">
           <svg
-            v-if="status.toLowerCase() === 'paid'"
+            v-if="status.toLowerCase() === 'success'"
             xmlns="http://www.w3.org/2000/svg"
             class="h-6 w-6"
             fill="none"
@@ -135,10 +198,11 @@ const statusColorClass = computed(() => {
             />
           </svg>
         </div>
-        <span>{{ status }}</span>
+        <span>{{ statusMapping[status].title }}</span>
 
         <a
-          href="https://www.google.com"
+          v-if="status.toLowerCase() === 'success'"
+          :href="`${network.blockExplorerUrl}/${txHash}`"
           target="_blank"
           class="ml-2 rounded-full bg-gray-100 p-1.5 hover:bg-gray-300 text-gray-700"
         >
@@ -203,28 +267,7 @@ const statusColorClass = computed(() => {
                     d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                   />
                 </svg>
-                <span> Preview</span>
-              </div>
-            </button>
-            <button
-              class="hover:bg-slate-100 whitespace-nowrap w-full px-4 py-1.5"
-            >
-              <div class="flex items-center">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="h-6 w-6 mr-1"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  stroke-width="2"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                  />
-                </svg>
-                <span> Use as template </span>
+                <span>Preview</span>
               </div>
             </button>
             <button

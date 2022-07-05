@@ -13,7 +13,11 @@ const isOpen = ref(false);
   <div class="px-5 py-5 text-slate-500 text-sm">
     <div class="flex justify-between items-center">
       <NuxtLink to="/">
-        <img class="h-10 w-auto" src="/logos/lucrifi-logo.png" />
+        <img
+          class="h-10 w-auto"
+          src="/logos/lucrifi-logo.webp"
+          alt="Lucrifi logo"
+        />
       </NuxtLink>
 
       <button class="sm:hidden" @click="isOpen = !isOpen">

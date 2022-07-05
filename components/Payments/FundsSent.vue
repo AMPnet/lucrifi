@@ -1,64 +1,61 @@
 <script setup lang="ts">
+import { FetchERC20SendRequestsByRecipientAddress } from "@/types/ampnet/RequestPayment";
+import { useWallet } from "@/stores/wallet";
+
+const wallet = useWallet();
 const runtimeConfig = useRuntimeConfig();
 
-//const { data, error } = await useFetch(`${runtimeConfig.public.backendUrl}/`);
+const { data, error, pending, refresh } =
+  useLazyFetch<FetchERC20SendRequestsByRecipientAddress>(
+    `${runtimeConfig.public.backendUrl}/send/by-sender/${wallet.walletAddress}`
+  );
+refresh();
 
-const data = [
-  {
-    ammount: 2.2,
-    chain: 1,
-    status: "Paid",
-    id: "1",
-    toWallet: "0x6aec30c04751f512db03720a969293bf6196ca61",
-  },
-  {
-    ammount: 2342,
-    chain: 1,
-    status: "Pending",
-    id: "2",
-    toWallet: "0x6aec30c04751f512db03720a969293bf6196ca61",
-  },
-  {
-    ammount: 2342,
-    chain: 2,
-    status: "Paid",
-    id: "35",
-    toWallet: "0x6aec30c04751f512db03720a969293bf6196ca61",
-  },
-  {
-    ammount: 24982304802930,
-    chain: 1,
-    status: "Paid",
-    id: "242",
-    toWallet: "0x6aec30c04751f512db03720a969293bf6196ca61",
-  },
-  {
-    ammount: 358390.35332,
-    chain: 1,
-    status: "Paid",
-    id: "33",
-    toWallet: "0x6aec30c04751f512db03720a969293bf6196ca61",
-  },
-];
+if (error.value) {
+  navigateTo("/errorPage");
+}
+
+const requests = computed(() => data.value.requests);
+const noData = computed(() => !pending.value && requests.value.length === 0);
 </script>
 
 <template>
-  <div class="bg-white border border-slate-200 rounded-xl py-4 mx-2 lg:mx-24">
+  <div
+    class="bg-white border border-slate-200 rounded-xl py-4 mx-2 lg:mx-24"
+    :class="
+      noData
+        ? 'h-fit'
+        : 'max-h-[550px] lg:max-h-[700px] min-h-[270px] md:min-h-[200px]'
+    "
+  >
     <div class="hidden sm:grid grid-cols-9 text-sm font-bold pb-5 px-6">
       <div class="col-span-3">Amount & token</div>
       <div>Chain</div>
       <div class="col-span-2">To wallet</div>
       <div class="col-span-2">Status</div>
     </div>
-
-    <div v-for="transaction of data" :key="transaction.ammount">
+    <div v-if="!pending" v-for="request of requests" :key="request.id">
       <PaymentsSentListItem
-        :amount="transaction.ammount"
-        chain-logo-url="P"
-        :status="transaction.status"
-        :id="transaction.id"
-        :to-wallet-addr="transaction.toWallet"
+        :amount="request.amount"
+        :token-address="
+          request.token_address || '0x0000000000000000000000000000000000000000'
+        "
+        :chain-id="request.chain_id"
+        :to-wallet-addr="request.recipient_address"
+        :status="request.status"
+        :id="request.id"
+        :redirect-url="request.redirect_url"
+        :tx-hash="request.send_tx.tx_hash"
       />
     </div>
+    <div v-else class="text-center py-5 text-slate-400">
+      <h3>Loading...</h3>
+    </div>
+    <h3
+      class="text-center py-5 text-slate-400"
+      v-if="!pending && requests.length === 0"
+    >
+      No transactions found
+    </h3>
   </div>
 </template>

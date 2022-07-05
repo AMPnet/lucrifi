@@ -1,29 +1,34 @@
 <script setup lang="ts">
 import { useField } from "vee-validate";
 import { useTokensStore } from "@/stores/tokens";
-
 import { isValidAddress, countDecimals } from "@/validators/blockchain";
 import { Network } from "@/types/Network";
 
 const tokensListStore = useTokensStore();
-const uniswapTokenListAll = await tokensListStore.tokensList;
-
 const selectedNetwork = useState("selectedNetwork", (): Network => {
   return {
     chainId: undefined,
     logoURI: "",
     rpcURL: undefined,
     name: "",
+    blockExplorerUrl: "",
+    apiKey: "",
   };
 });
 
-const uniswapTokenList = computed(() => {
-  return uniswapTokenListAll.tokens.filter(
-    (token) => token.chainId === selectedNetwork.value.chainId
-  );
+watch(selectedNetwork, (newNetwork) => {
+  // Reset amount and token if the network changes
+  validatedAmount.value = "";
+  selectedToken.value = tokensListStore
+    .tokensList(newNetwork.chainId)
+    .find((token) => token.symbol === "USDC");
+});
+
+const filteredTokenList = computed(() => {
+  return tokensListStore.tokensList(selectedNetwork.value.chainId);
 });
 const selectedToken = useState("selectedToken", () => {
-  return uniswapTokenList.value.filter((token) => token.symbol === "USDC")[0];
+  return filteredTokenList.value.find((token) => token.symbol === "USDC");
 });
 const tokenLogoUri = computed(() => selectedToken.value.logoURI);
 const tokenSymbol = computed(() => selectedToken.value.symbol);
@@ -31,12 +36,12 @@ const tokenSymbol = computed(() => selectedToken.value.symbol);
 function isValidCurrencyAmount(value: string): string | boolean {
   if (!value) return "Please set amount";
 
-  let regex = /^(0|[1-9]\d*)(\.\d+)?$/;
+  let regex = /^(0|[1-9]\d*)((\.|,)\d+)?$/;
   if (!regex.test(value)) {
     return "Please set valid amount";
   }
 
-  const valueFloat = parseFloat(value);
+  const valueFloat = parseFloat(value.replace(",", "."));
 
   if (valueFloat <= 0) {
     return "Please set positive amount";
@@ -115,7 +120,7 @@ const isCustomRpc = computed(() => selectedNetwork.value.chainId === undefined);
   <div>
     <NewRequestSelectTokenModal
       :chain-id="selectedNetwork.chainId"
-      :tokens="uniswapTokenList"
+      :tokens="filteredTokenList"
       v-if="showTokenModal"
       @close="showTokenModal = false"
     />
@@ -144,7 +149,7 @@ const isCustomRpc = computed(() => selectedNetwork.value.chainId === undefined);
           @click="showTokenModal = true"
         >
           <div class="flex items-center">
-            <img :src="tokenLogoUri" class="h-5 w-5" />
+            <img :src="`/tokens/${tokenLogoUri}`" class="h-5 w-5" />
 
             <span class="mx-2.5"> {{ tokenSymbol }}</span>
             <svg

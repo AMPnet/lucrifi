@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { event, pageview } from "vue-gtag";
 import QrcodeVue from "qrcode.vue";
+import { useClipboard } from "@vueuse/core";
 
 import { useTokensStore } from "@/stores/tokens";
 import { useNetworksStore } from "@/stores/networks";
 
-import { useClipboard } from "@vueuse/core";
 import { FetchSendRequestResponse } from "@/types/ampnet/RequestPayment";
 import { Token } from "@/types/Token";
 import { Network } from "@/types/Network";
@@ -35,51 +35,48 @@ const { data: requestData } = await useFetch<FetchSendRequestResponse>(
   }
 );
 
-const tokensList = await tokensListStore.tokensList;
+const network = computed((): Network => {
+  return networkStore.networks.find(
+    (network) => network.chainId === requestData.value.chain_id
+  );
+});
+
 const transferUrl = computed(() => requestData.value.redirect_url);
 const recepientAddress = computed(() => requestData.value.recipient_address);
+
+let address = "";
+if (requestData.value.token_address) {
+  address = requestData.value.token_address.toLowerCase();
+} else {
+  // It's native token
+  address = "0x0000000000000000000000000000000000000000";
+}
+
 const amount = computed(() => {
-  const addr = requestData.value.token_address.toLowerCase();
-  const token = tokensList.tokens.find(
-    (tok: Token) => tok.address.toLowerCase() === addr
-  );
-  const integer = requestData.value.amount.slice(0, -token.decimals);
-  let decimal = requestData.value.amount.slice(-token.decimals);
-
-  // Remove trailing zeros
-  decimal = decimal.replace(/0+$/, "");
-  if (decimal.length === 0) {
-    return integer;
-  }
-
-  return `${integer}.${decimal}`;
+  const token: Token = tokensListStore
+    .tokensList(network.value.chainId)
+    .find((tok: Token) => tok.address.toLowerCase() === address);
+  return solNumberToDecimal(requestData.value.amount, token.decimals);
 });
 
 const note = computed(() => requestData.value.arbitrary_data.note);
 
 const tokenMeta = computed((): Token => {
-  const addr = requestData.value.token_address.toLowerCase();
-  const token = tokensList.tokens.find(
-    (tok: Token) => tok.address.toLowerCase() === addr
-  );
+  const token = tokensListStore
+    .tokensList(requestData.value.chain_id)
+    .find((tok: Token) => tok.address.toLowerCase() === address);
 
   if (token) return token;
 
   return {
     // Custom RPC was selected
-    address: addr,
+    address: address,
     logoURI: "/icons/questionmark.svg",
     symbol: "Custom Token",
     chainId: undefined,
     decimals: 18,
     name: "Custom",
   };
-});
-
-const network = computed((): Network => {
-  return networkStore.networks.find(
-    (network) => network.chainId === requestData.value.chain_id
-  );
 });
 
 const showCopyDialog = ref(false);
@@ -100,14 +97,24 @@ function openCopiedDialog() {
       <div class="w-full sm:w-96">
         <h2 class="text-lg font-bold">Transfer request</h2>
         <div class="flex items-center justify-center mt-5">
-          <img :src="tokenMeta.logoURI" class="w-5 h-5" />
+          <img
+            :src="`/tokens/${tokenMeta.logoURI}`"
+            class="w-5 h-5"
+            alt="token logo"
+            loading="lazy"
+          />
           <span class="ml-1.5 text-2xl font-bold"
             >{{ amount }} {{ tokenMeta.symbol }}</span
           >
         </div>
 
         <div class="flex items-center justify-center mt-1.5">
-          <img :src="network.logoURI" class="w-4 h-4" />
+          <img
+            :src="network.logoURI"
+            class="w-4 h-4"
+            alt="token logo"
+            loading="lazy"
+          />
           <span class="ml-1.5 text-sm font-bold">{{ network.name }}</span>
         </div>
 

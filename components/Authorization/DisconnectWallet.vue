@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { event } from "vue-gtag";
-import { useWallet } from "@/stores/wallet";
 import { useClipboard } from "@vueuse/core";
-import { shortAddr } from "@/shared/wallet";
+import { useWallet } from "@/stores/wallet";
 
 const { copy } = useClipboard();
 
 const wallet = useWallet();
+
+const { data, refresh } = await wallet.preFetchConnectData();
 
 const showCopied = ref(false);
 
@@ -17,6 +17,14 @@ function copyAddr() {
   setTimeout(function () {
     showCopied.value = false;
   }, 1200);
+}
+
+async function disconnectWallet() {
+  wallet.disconnectWallet();
+  await refresh(); // Refresh the redirect link in case user wants to connect wallet again without page refresh
+
+  wallet.connectData.id = data.value.id;
+  wallet.connectData.redirectUrl = data.value.redirect_url;
 }
 </script>
 
@@ -61,10 +69,7 @@ function copyAddr() {
 
         <div>
           <button
-            @click="
-              wallet.disconnectWallet;
-              event('disconnect_wallet');
-            "
+            @click="disconnectWallet"
             class="text-sm rounded-full py-1 px-2 border border-pink-500 text-pink-500 hover:bg-pink-500 hover:text-white"
           >
             Disconnect

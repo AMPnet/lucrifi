@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { Ref } from "vue";
+
 import { event, pageview } from "vue-gtag";
-import { countDecimals } from "@/validators/blockchain";
+import { decimalToSolNumber } from "@/composables/token";
 
 import { Network } from "@/types/Network";
 import { Token } from "@/types/Token";
@@ -43,9 +44,10 @@ const formValid = computed(() => {
 });
 
 async function createRequest() {
-  const nDecimals = countDecimals(selectedAmount.value);
-  const zeros = "0".repeat(selectedToken.value.decimals - nDecimals);
-  const shiftedAmount = `${selectedAmount.value.replace(".", "")}${zeros}`;
+  const shiftedAmount = decimalToSolNumber(
+    selectedAmount.value,
+    selectedToken.value.decimals
+  );
 
   let payload = {
     redirect_url: runtimeConfig.public.requestPaymentRedirect,
@@ -53,31 +55,39 @@ async function createRequest() {
     amount: shiftedAmount,
     arbitrary_data: {
       note: noteData.value,
+      created: new Date().toISOString(),
+      // Hack so rsend app can display token icons
+      tokenLogoUrl: `https://${window.location.host}/tokens/${selectedToken.value.logoURI}`,
     },
     chain_id: undefined,
-    token_address: "",
+    asset_type: "",
   };
-  let headers = {};
+  let headers = {
+    "X-API-KEY": `${selectedNetwork.value.apiKey}`,
+  };
   let queryParams = {};
 
+  const isNativeToken =
+    selectedToken.value.address ===
+    "0x0000000000000000000000000000000000000000";
+
   if (selectedNetwork.value.chainId !== undefined) {
-    payload = {
-      ...payload,
-      chain_id: selectedNetwork.value.chainId,
-      token_address: selectedToken.value.address,
-    };
+    payload["chain_id"] = selectedNetwork.value.chainId;
+    if (!isNativeToken) {
+      payload["token_address"] = selectedToken.value.address;
+    }
   } else {
-    payload = {
-      ...payload,
-      token_address: selectedCustomTokenAddres.value,
-    };
-    headers = {
-      ...headers,
-      "X-RPC-URL": selectedNetwork.value.rpcURL,
-    };
+    payload["token_address"] = selectedCustomTokenAddres.value;
+    headers["X-RPC-URL"] = selectedNetwork.value.rpcURL;
     queryParams = {
       rpcURL: selectedNetwork.value.rpcURL,
     };
+  }
+
+  if (isNativeToken) {
+    payload["asset_type"] = "NATIVE";
+  } else {
+    payload["asset_type"] = "TOKEN";
   }
 
   const { data, error } = await useFetch<FetchSendRequestResponse>(
@@ -139,7 +149,7 @@ async function createRequest() {
               <input
                 v-model="noteData"
                 type="text"
-                placeholder="Add note (optional)"
+                placeholder="Add note (e.g. invoice link)"
                 class="w-full focus:outline-none mx-2"
               />
             </div>
