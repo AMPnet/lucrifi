@@ -2,7 +2,7 @@
 import { Ref } from "vue";
 
 import { event, pageview } from "vue-gtag";
-import { countDecimals } from "@/validators/blockchain";
+import { decimalToSolNumber } from "@/composables/token";
 
 import { Network } from "@/types/Network";
 import { Token } from "@/types/Token";
@@ -44,10 +44,10 @@ const formValid = computed(() => {
 });
 
 async function createRequest() {
-  const uniformAmountFormat = selectedAmount.value.replace(",", ".");
-  const nDecimals = countDecimals(uniformAmountFormat);
-  const zeros = "0".repeat(selectedToken.value.decimals - nDecimals);
-  const shiftedAmount = `${uniformAmountFormat.replace(".", "")}${zeros}`;
+  const shiftedAmount = decimalToSolNumber(
+    selectedAmount.value,
+    selectedToken.value.decimals
+  );
 
   let payload = {
     redirect_url: runtimeConfig.public.requestPaymentRedirect,

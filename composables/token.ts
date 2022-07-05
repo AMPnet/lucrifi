@@ -1,3 +1,5 @@
+import { countDecimals } from "../validators/blockchain";
+
 function solNumberToDecimal(amount: string, decimals: number): string {
   let integer: string;
   let decimal: string;
@@ -24,4 +26,17 @@ function solNumberToDecimal(amount: string, decimals: number): string {
   return `${integer}.${decimal}`;
 }
 
-export { solNumberToDecimal };
+function decimalToSolNumber(decimalAmount: string, decimals: number): string {
+  const uniformAmountFormat = decimalAmount.replace(",", ".");
+  const nDecimals = countDecimals(uniformAmountFormat);
+  const zeros = "0".repeat(decimals - nDecimals);
+
+  let solAmount = `${uniformAmountFormat.replace(".", "")}${zeros}`;
+  solAmount = solAmount.replace(/^0+/, "");
+
+  if (solAmount.length === 0) {
+    return "0";
+  } else return solAmount;
+}
+
+export { solNumberToDecimal, decimalToSolNumber };
