@@ -21,7 +21,7 @@ const topTokens = computed(() => {
   const top = [];
 
   for (const token of props.tokens) {
-    if (["USDC", "WETH", "DAI", "USDT"].includes(token.symbol)) {
+    if (["USDC", "USDC.e", "WETH", "DAI", "USDT", "USDT.e"].includes(token.symbol)) {
       top.push(token);
     }
   }
@@ -126,14 +126,18 @@ const queriedTokens = computed(() => {
                 $emit('close');
               "
             >
-              <div class="flex items-center">
-                <img
-                  :src="`/tokens/${token.logoURI}`"
-                  class="w-5 h-5 mr-2.5"
-                  alt="token logo"
-                  loading="lazy"
-                />
-                {{ token.symbol }}
+              <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                  <img
+                      :src="`/tokens/${token.logoURI}`"
+                      class="w-5 h-5 mr-2.5"
+                      alt="token logo"
+                      loading="lazy"
+                  />
+                  <span>
+                    {{ token.symbol }}
+                  </span>
+                </div>
               </div>
             </button>
           </div>
