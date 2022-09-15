@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Token } from "@/types/Token";
 import { Recipient } from "@/types/payrolls/TemplateRecpient";
+import { AddressAlias } from "@/types/payrolls/AddressAlias";
 import type { PropType, Ref } from "vue";
 
 const props = defineProps({
@@ -50,10 +51,24 @@ function deleteFromList() {
     (x) => x.id !== recipientData.value.id
   );
 }
+
+function selectAddressBook(alias: AddressAlias) {
+  recipientData.value.address = alias.address;
+  recipientData.value.name = alias.alias;
+  showSearchAddressBookModal.value = false;
+}
+
+const showSearchAddressBookModal = ref(false);
 </script>
 
 <template>
   <div>
+    <PayrollsAddressBookSearchBook
+      v-if="showSearchAddressBookModal"
+      @close="showSearchAddressBookModal = false"
+      @selectAlias="selectAddressBook"
+    />
+
     <div
       v-if="editRecipient"
       class="bg-slate-100 rounded-lg p-2 flex items-center justify-between gap-4"
@@ -74,16 +89,26 @@ function deleteFromList() {
           />
         </svg>
 
-        <input
-          v-model="recipientData.address"
-          type="text"
-          class="w-full focus:outline-none bg-inherit"
-          id="transfer-to"
-          placeholder="Wallet address"
-        />
+        <div v-if="recipientData.name" class="flex items-center w-full gap-3">
+          <span @click="recipientData.name = null">
+            {{ shortAddr(recipientData.address, 5, 4) }}
+          </span>
+          <span class="font-bold">{{ recipientData.name }}</span>
+        </div>
+
+        <div v-else class="w-full">
+          <input
+            v-model="recipientData.address"
+            type="text"
+            class="w-full focus:outline-none bg-inherit"
+            id="transfer-to"
+            placeholder="Wallet address"
+          />
+        </div>
 
         <button
           class="bg-slate-800 p-2 rounded-lg text-white whitespace-nowrap"
+          @click="showSearchAddressBookModal = true"
         >
           Address Book
         </button>
@@ -154,8 +179,10 @@ function deleteFromList() {
       v-else
       class="bg-white-100 rounded-lg p-2 flex items-center justify-between gap-4 text-slate-800"
     >
-      <div class="flex items-center gap-x-10 p-2 rounded-lg text-sm">
-        <div class="flex items-center gap-2">
+      <div
+        class="grid grid-cols-12 items-center w-full gap-x-2 p-2 rounded-lg text-sm"
+      >
+        <div class="col-span-5 flex items-center gap-2">
           <svg
             class="w-5 h-5 stroke-current"
             fill="none"
@@ -169,12 +196,17 @@ function deleteFromList() {
             />
           </svg>
 
-          <span>
-            {{ shortAddr(recipientData.address, 5, 4) }}
-          </span>
+          <div class="flex items-center gap-2.5" v-if="recipientData.name">
+            <span>{{ shortAddr(recipientData.address, 5, 4) }}</span>
+            <span class="font-bold">{{ recipientData.name }}</span>
+          </div>
+
+          <div v-else>
+            <span>{{ shortAddr(recipientData.address, 5, 4) }}</span>
+          </div>
         </div>
 
-        <div class="flex items-center">
+        <div class="flex items-center col-span-7">
           <img :src="`/tokens/${selectedToken.logoURI}`" class="h-5 w-5 mr-2" />
           <span class="font-bold mr-3">{{ selectedToken.symbol }}</span>
           <span>
@@ -185,7 +217,7 @@ function deleteFromList() {
 
       <div class="flex items-center gap-3">
         <button
-          class="bg-slate-800 text-xs py-1 px-4 rounded-full text-white whitespace-nowrap flex items-center gap-1.5"
+          class="bg-slate-800 text-xs py-1 px-4 rounded-full text-white whitespace-nowrap flex items-center gap-2"
           @click="editRecipient = true"
         >
           <svg

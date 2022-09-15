@@ -28,6 +28,8 @@ const templateRecipients = useState<Array<Recipient>>(
   "newTemplateRecipients",
   () => []
 );
+
+const templateName = useState<string>("templateName", () => "");
 </script>
 
 <template>
@@ -43,7 +45,11 @@ const templateRecipients = useState<Array<Recipient>>(
       @close="showNetworkModal = false"
     />
     <div class="flex items-center mb-6">
-      <h1 class="text-xl mr-6">Template name</h1>
+      <input
+        v-model="templateName"
+        class="text-xl mr-2 p-1 focus:outline-none bg-inherit rounded-lg border border-transparent hover:border-gray-200 focus:border-violet-500"
+        placeholder="Enter template name"
+      />
       <div class="text-xs flex items-center gap-1.5">
         <svg
           xmlns="http://www.w3.org/2000/svg"
