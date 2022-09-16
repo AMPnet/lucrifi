@@ -30,6 +30,10 @@ const templateRecipients = useState<Array<Recipient>>(
 );
 
 const templateName = useState<string>("templateName", () => "");
+
+function saveTemplate() {
+  // TODO
+}
 </script>
 
 <template>
@@ -50,24 +54,6 @@ const templateName = useState<string>("templateName", () => "");
         class="text-xl mr-2 p-1 focus:outline-none bg-inherit rounded-lg border border-transparent hover:border-gray-200 focus:border-violet-500"
         placeholder="Enter template name"
       />
-      <div class="text-xs flex items-center gap-1.5">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          stroke="currentColor"
-          class="w-4 h-4"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M15 15l6-6m0 0l-6-6m6 6H9a6 6 0 000 12h3"
-          />
-        </svg>
-
-        <span>Get payment link</span>
-      </div>
     </div>
 
     <h2 class="text-sm font-semibold mb-3">Select Network and Token</h2>
@@ -134,8 +120,33 @@ const templateName = useState<string>("templateName", () => "");
       </div>
     </div>
 
-    <div>
+    <div class="mb-14">
       <PayrollsRecipientItem></PayrollsRecipientItem>
+    </div>
+
+    <div class="flex justify-center">
+      <button
+        class="rounded-full bg-slate-800 text-white py-2 px-6 text-xs"
+        @click="saveTemplate"
+      >
+        <div class="flex items-center gap-1.5">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-5 h-5"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M4.5 12.75l6 6 9-13.5"
+            />
+          </svg>
+          <span>Save Template</span>
+        </div>
+      </button>
     </div>
   </div>
 </template>

@@ -12,17 +12,16 @@ export const useAddressBook = defineStore("addressBook", {
         {
           alias: "bartol",
           address: "0xD6eB5f17209140825d8A79bF23147B5A2AE5C374",
-          company: null,
+          organization: null,
         },
         {
           alias: "Jonnny",
           address: "0xD6eB5f17209140825d8A79bF23147B5A2AE5C374",
-          company: null,
+          organization: null,
         },
       ],
     };
   },
-  getters: {},
   actions: {
     addToAddressBook(address: AddressAlias) {
       // TODO sync with backend API
