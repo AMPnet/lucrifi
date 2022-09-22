@@ -24,14 +24,15 @@
   },
   "dependencies": {
     "@nuxtjs/tailwindcss": "^5.1.2",
-    "@pinia/nuxt": "^0.1.9",
-    "@vueuse/core": "^8.6.0",
-    "@vueuse/nuxt": "^8.6.0",
+    "@pinia/nuxt": "^0.4.2",
+    "@vueuse/core": "^9.2.0",
+    "@vueuse/nuxt": "^9.2.0",
     "ethers": "^5.6.8",
-    "nuxt": "3.0.0-rc.4",
+    "nuxt": "^3.0.0-rc.4",
     "pinia": "^2.0.14",
     "qrcode.vue": "^3.3.3",
     "vee-validate": "^4.5.11",
-    "vue-gtag": "^2.0.1"
+    "vue-gtag": "^2.0.1",
+    "vue-tsc": "^0.40.13"
   }
 }

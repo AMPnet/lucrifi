@@ -126,7 +126,7 @@ function saveTemplate() {
 
     <div class="flex justify-start">
       <button
-        class="rounded-full bg-gradient-to-r font-bold from-violet-700 to-purple-500 text-white py-2.5 px-8 text-sm"
+        class="rounded-full bg-gradient-to-r font-bold from-violet-700 to-purple-500 text-white py-2.5 px-8 text-lg"
         @click="saveTemplate"
       >
         <div class="flex items-center gap-2">
@@ -136,7 +136,7 @@ function saveTemplate() {
             viewBox="0 0 24 24"
             stroke-width="1.5"
             stroke="currentColor"
-            class="w-5 h-5"
+            class="w-6 h-6"
           >
             <path
               stroke-linecap="round"
