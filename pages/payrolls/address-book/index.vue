@@ -8,7 +8,6 @@ definePageMeta({
 });
 
 const searchQuery = ref("");
-const selectedTab = ref(0);
 
 const queriedAliases = computed(() => {
   if (searchQuery.value == "") {
@@ -39,15 +38,7 @@ const showAddAliasModal = ref(false);
     <div>
       <div class="flex items-center justify-between pl-10">
         <div class="flex items-center gap-16">
-          <button
-            @click="selectedTab = 0"
-            class="text-slate-500 font-bold text-base p-2"
-            :class="
-              selectedTab === 0
-                ? 'border-b-2 border-violet-700 text-violet-700'
-                : ''
-            "
-          >
+          <button class="text-slate-500 font-bold text-base p-2">
             <div class="flex items-center gap-2">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -91,10 +82,7 @@ const showAddAliasModal = ref(false);
             </div>
           </button>
         </div>
-        <div
-          v-show="selectedTab === 0"
-          class="border-b-2 border-slate-300 text-slate-600 pl-4 py-1.5"
-        >
+        <div class="border-b-2 border-slate-300 text-slate-600 pl-4 py-1.5">
           <div class="flex items-center gap-3">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -122,13 +110,8 @@ const showAddAliasModal = ref(false);
       </div>
     </div>
 
-    <div
-      v-show="selectedTab === 0"
-      id="table"
-      class="rounded-t-md border-t border-x border-slate-200 mt-6"
-    >
+    <div class="rounded-t-md border-t border-x border-slate-200 mt-6">
       <div
-        id="table-header"
         class="bg-slate-100 rounded-t-md text-black font-bold text-sm grid grid-cols-9 py-4 px-5"
       >
         <span class="col-span-4">Name</span>
@@ -137,15 +120,13 @@ const showAddAliasModal = ref(false);
         <span class="col-span-1 text-center">Actions</span>
       </div>
 
-      <div id="table-content">
+      <div>
         <PayrollsAddressBookListItem
-          v-for="alias in queriedAliases"
-          :key="alias.id"
+          v-for="(alias, index) in queriedAliases"
+          :key="index"
           :alias="alias"
         ></PayrollsAddressBookListItem>
       </div>
     </div>
-
-    <div v-show="selectedTab === 1"></div>
   </div>
 </template>

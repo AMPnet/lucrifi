@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Token } from "@/types/Token";
-import { Recipient } from "@/types/payrolls/TemplateRecpient";
+import { Recipient } from "~~/types/payrolls/TemplateData";
 import { AddressAlias } from "@/types/payrolls/AddressAlias";
 import { useAddressBook } from "@/stores/addressBook";
 

@@ -110,7 +110,10 @@ const showEditAliasModal = ref(false);
               </button>
 
               <button
-                @click="addressBook.removeFromAddressBook(props.alias)"
+                @click="
+                  addressBook.removeFromAddressBook(props.alias.id);
+                  showMenu = false;
+                "
                 class="hover:bg-slate-100 text-red-700 whitespace-nowrap w-full px-4 py-1.5"
               >
                 <div class="flex items-center gap-2">

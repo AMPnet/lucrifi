@@ -36,9 +36,9 @@ export const useAddressBook = defineStore("addressBook", {
     editAddressBookItem(address: AddressAlias) {
       // TODO sync with backend API
     },
-    removeFromAddressBook(address: AddressAlias) {
+    removeFromAddressBook(id: String) {
       // TODO Call api
-      this.data = this.data.filter((x: AddressAlias) => x.id !== address.id);
+      this.data = this.data.filter((x: AddressAlias) => x.id !== id);
     },
   },
 });

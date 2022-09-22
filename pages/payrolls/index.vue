@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useTokensStore } from "@/stores/tokens";
 import { useNetworksStore } from "@/stores/networks";
-import { Recipient } from "@/types/payrolls/TemplateRecpient";
+import { Recipient } from "~~/types/payrolls/TemplateData";
 
 definePageMeta({
   layout: "payrolls",
