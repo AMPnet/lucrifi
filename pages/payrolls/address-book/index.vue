@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useAddressBook } from "@/stores/addressBook";
-import { NewAddressAlias, AddressAlias } from "@/types/payrolls/AddressAlias";
 
 const addressBook = useAddressBook();
 
@@ -9,6 +8,7 @@ definePageMeta({
 });
 
 const searchQuery = ref("");
+const selectedTab = ref(0);
 
 const queriedAliases = computed(() => {
   if (searchQuery.value == "") {
@@ -24,34 +24,30 @@ const queriedAliases = computed(() => {
     return queried;
   }
 });
+
+const showAddAliasModal = ref(false);
 </script>
 
 <template>
   <div>
+    <PayrollsAddressBookAddAlias
+      v-if="showAddAliasModal"
+      address=""
+      @close="showAddAliasModal = false"
+    />
+
     <div>
       <div class="flex items-center justify-between pl-10">
         <div class="flex items-center gap-16">
-          <button class="text-slate-500 font-bold text-base">
-            <div class="flex items-center gap-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                class="w-5 h-5"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M12 4.5v15m7.5-7.5h-15"
-                />
-              </svg>
-              <span class="uppercase">ADD NEW</span>
-            </div>
-          </button>
-
-          <button class="text-slate-500 font-bold text-base">
+          <button
+            @click="selectedTab = 0"
+            class="text-slate-500 font-bold text-base p-2"
+            :class="
+              selectedTab === 0
+                ? 'border-b-2 border-violet-700 text-violet-700'
+                : ''
+            "
+          >
             <div class="flex items-center gap-2">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -71,8 +67,34 @@ const queriedAliases = computed(() => {
               <span class="uppercase">Address Book</span>
             </div>
           </button>
+
+          <button
+            @click="showAddAliasModal = true"
+            class="text-slate-500 font-bold text-base py-2 px-4 border border-slate-300 rounded-full"
+          >
+            <div class="flex items-center gap-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="w-5 h-5"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M12 4.5v15m7.5-7.5h-15"
+                />
+              </svg>
+              <span class="uppercase">ADD NEW</span>
+            </div>
+          </button>
         </div>
-        <div class="border-b-2 border-slate-300 text-slate-600 pl-4 py-1.5">
+        <div
+          v-show="selectedTab === 0"
+          class="border-b-2 border-slate-300 text-slate-600 pl-4 py-1.5"
+        >
           <div class="flex items-center gap-3">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -101,6 +123,7 @@ const queriedAliases = computed(() => {
     </div>
 
     <div
+      v-show="selectedTab === 0"
       id="table"
       class="rounded-t-md border-t border-x border-slate-200 mt-6"
     >
@@ -122,5 +145,7 @@ const queriedAliases = computed(() => {
         ></PayrollsAddressBookListItem>
       </div>
     </div>
+
+    <div v-show="selectedTab === 1"></div>
   </div>
 </template>

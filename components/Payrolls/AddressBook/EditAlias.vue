@@ -62,9 +62,7 @@ function saveToAddressBook() {
                 </svg>
               </button>
             </div>
-            <h3 class="text-center font-bold mb-10">
-              Edit Address Book Recipient
-            </h3>
+            <h3 class="text-center font-bold mb-10">Edit Address Book Item</h3>
             <div class="text-left flex flex-col gap-8 mb-10">
               <div>
                 <h4 class="font-bold text-sm">Wallet Address</h4>
