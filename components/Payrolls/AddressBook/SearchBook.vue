@@ -3,17 +3,16 @@ import { useAddressBook } from "@/stores/addressBook";
 import { AddressAlias } from "@/types/payrolls/AddressAlias";
 
 const addressBook = useAddressBook();
-const aliases = addressBook.data;
 
 const searchQuery = ref("");
 const queriedAliases = computed(() => {
   if (searchQuery.value == "") {
-    return aliases;
+    return addressBook.aliases;
   } else {
     const queried: Array<AddressAlias> = [];
     const queryLowerCase = searchQuery.value.toLowerCase();
 
-    for (const alias of aliases) {
+    for (const alias of addressBook.aliases) {
       if (alias.alias.toLowerCase().includes(queryLowerCase)) {
         queried.push(alias);
       }

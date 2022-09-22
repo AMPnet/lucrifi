@@ -120,16 +120,16 @@ function saveTemplate() {
       </div>
     </div>
 
-    <div class="mb-14">
+    <div class="mb-10">
       <PayrollsRecipientItem></PayrollsRecipientItem>
     </div>
 
-    <div class="flex justify-center">
+    <div class="flex justify-start">
       <button
-        class="rounded-full bg-slate-800 text-white py-2 px-6 text-xs"
+        class="rounded-full bg-gradient-to-r font-bold from-violet-700 to-purple-500 text-white py-2.5 px-8 text-sm"
         @click="saveTemplate"
       >
-        <div class="flex items-center gap-1.5">
+        <div class="flex items-center gap-2">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"

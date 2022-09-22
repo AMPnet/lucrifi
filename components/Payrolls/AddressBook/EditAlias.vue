@@ -1,29 +1,28 @@
 <script setup lang="ts">
 import { useAddressBook } from "@/stores/addressBook";
-import { NewAddressAlias } from "@/types/payrolls/AddressAlias";
+import { AddressAlias } from "@/types/payrolls/AddressAlias";
+import { PropType } from "vue";
 
 const emit = defineEmits(["close"]);
 
 const addressBook = useAddressBook();
 
 const props = defineProps({
-  address: {
-    type: String,
-    required: true,
-  },
+  alias: Object as PropType<AddressAlias>,
 });
 
-const address = ref(props.address);
-const name = ref("");
-const organization = ref("");
+const address = ref(props.alias.address);
+const name = ref(props.alias.alias);
+const organization = ref(props.alias.organization);
 
 function saveToAddressBook() {
-  const alias: NewAddressAlias = {
+  const alias: AddressAlias = {
     address: address.value,
     alias: name.value,
     organization: organization.value,
+    id: props.alias.id,
   };
-  addressBook.addToAddressBook(alias);
+  addressBook.editAddressBookItem(alias);
   emit("close");
 }
 </script>
@@ -63,14 +62,12 @@ function saveToAddressBook() {
                 </svg>
               </button>
             </div>
-            <h3 class="text-center font-bold mb-10">Add to Address Book</h3>
+            <h3 class="text-center font-bold mb-10">
+              Edit Address Book Recipient
+            </h3>
             <div class="text-left flex flex-col gap-8 mb-10">
               <div>
                 <h4 class="font-bold text-sm">Wallet Address</h4>
-                <label class="text-xs"
-                  >Paste the wallet address you want to add to your Address
-                  Book</label
-                >
                 <input
                   class="w-full px-4 py-3 mt-3 border border-slate-300 rounded focus:outline-none text-sm"
                   v-model="address"
@@ -117,7 +114,7 @@ function saveToAddressBook() {
                     d="M4.5 12.75l6 6 9-13.5"
                   />
                 </svg>
-                <span>Save Address</span>
+                <span>Save changes</span>
               </div>
             </button>
           </div>
