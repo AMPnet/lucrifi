@@ -2,6 +2,7 @@
 import { useAddressBook } from "@/stores/addressBook";
 import { AddressAlias } from "@/types/payrolls/AddressAlias";
 import { PropType } from "vue";
+import { validateAlias } from "@/validators/addressBook";
 
 const emit = defineEmits(["close"]);
 
@@ -25,6 +26,9 @@ function saveToAddressBook() {
   addressBook.editAddressBookItem(alias);
   emit("close");
 }
+const isValidData = computed(() => {
+  return validateAlias(address.value, name.value);
+});
 </script>
 
 <template>
@@ -88,13 +92,14 @@ function saveToAddressBook() {
                   class="w-full px-4 py-3 mt-3 border border-slate-300 rounded focus:outline-none text-sm"
                   v-model="organization"
                   type="text"
-                  placeholder="e.g. Google"
+                  placeholder="e.g. Google - optional"
                 />
               </div>
             </div>
 
             <button
-              class="rounded-full bg-slate-700 text-white py-2 px-3 text-xs"
+              :disabled="!isValidData"
+              class="rounded-full bg-slate-700 text-white py-2 px-3 text-xs disabled:bg-slate-200 disabled:text-gray-400"
               @click="saveToAddressBook"
             >
               <div class="flex items-center gap-1.5">

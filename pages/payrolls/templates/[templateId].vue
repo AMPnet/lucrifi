@@ -60,6 +60,12 @@ function saveTemplate() {
   // TODO sync with API
   templateChanged.value = false;
 }
+
+const templateValid = computed(() => {
+  const nameValid = templateName.value.length > 0;
+  const recipientsValid = templateRecipients.value.length > 0;
+  return nameValid && recipientsValid;
+});
 </script>
 
 <template>
@@ -72,7 +78,7 @@ function saveTemplate() {
       />
 
       <div class="px-4 py-2 bg-indigo-100 rounded-xl font-bold text-sm">
-        <span>Sum: {{ payrollSum }} {{ selectedToken.symbol }} </span>
+        <span>Total: {{ payrollSum }} {{ selectedToken.symbol }} </span>
       </div>
     </div>
 
@@ -92,8 +98,9 @@ function saveTemplate() {
 
     <div class="flex justify-start">
       <button
+        :disabled="!templateValid"
         v-if="templateChanged"
-        class="rounded-full bg-gradient-to-r font-bold from-violet-700 to-purple-500 text-white py-2.5 px-8 text-lg"
+        class="rounded-full bg-gradient-to-r font-bold from-violet-700 to-purple-500 text-white py-2.5 px-8 text-lg disabled:from-slate-200 disabled:to-slate-200 disabled:text-gray-400"
         @click="saveTemplate"
       >
         <div class="flex items-center gap-2">

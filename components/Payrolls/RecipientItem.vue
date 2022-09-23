@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { Token } from "@/types/Token";
-import { Recipient } from "~~/types/payrolls/TemplateData";
+import { Recipient } from "@/types/payrolls/TemplateData";
 import { AddressAlias } from "@/types/payrolls/AddressAlias";
 import { useAddressBook } from "@/stores/addressBook";
+import { isValidAddress, countDecimals } from "@/validators/blockchain";
 
 import type { PropType, Ref } from "vue";
 
@@ -15,6 +16,27 @@ const props = defineProps({
     required: false,
   },
 });
+
+function isValidCurrencyAmount(value: string): boolean {
+  if (!value) return false;
+
+  let regex = /^(0|[1-9]\d*)((\.|,)\d+)?$/;
+  if (!regex.test(value)) {
+    return false;
+  }
+
+  const valueFloat = parseFloat(value.replace(",", "."));
+
+  if (valueFloat <= 0) {
+    return false;
+  }
+
+  if (countDecimals(value) > selectedToken.value.decimals) {
+    return false;
+  }
+
+  return true;
+}
 
 let editRecipient: Ref<boolean>;
 
@@ -33,6 +55,12 @@ if (editRecipient.value) {
 } else {
   recipientData = ref(props.recipient);
 }
+
+const isValidRecipient = computed(() => {
+  const addressValid = isValidAddress(recipientData.value.address) === true;
+  const isValidAmount = isValidCurrencyAmount(recipientData.value.amount);
+  return addressValid && isValidAmount;
+});
 
 function editOrAddToList() {
   const existingRecipient = templateRecipients.value.find(
@@ -112,7 +140,10 @@ const showAddAliasModal = ref(false);
           </svg>
 
           <div v-if="recipientData.name" class="flex items-center w-full gap-3">
-            <span @click="recipientData.name = null">
+            <span
+              :title="recipientData.address"
+              @click="recipientData.name = null"
+            >
               {{ shortAddr(recipientData.address, 5, 4) }}
             </span>
             <span class="font-bold">{{ recipientData.name }}</span>
@@ -151,7 +182,8 @@ const showAddAliasModal = ref(false);
           </div>
 
           <button
-            class="bg-slate-800 text-xs py-1 px-4 rounded-full text-white whitespace-nowrap flex items-center gap-1.5"
+            :disabled="!isValidRecipient"
+            class="bg-slate-800 text-xs py-1 px-4 rounded-full text-white whitespace-nowrap flex items-center gap-1.5 disabled:bg-slate-200 disabled:text-gray-400"
             @click="editOrAddToList"
           >
             <svg
@@ -260,12 +292,14 @@ const showAddAliasModal = ref(false);
           </svg>
 
           <div class="flex items-center gap-2.5" v-if="recipientData.name">
-            <span>{{ shortAddr(recipientData.address, 5, 4) }}</span>
+            <span :title="recipientData.address">{{
+              shortAddr(recipientData.address, 5, 4)
+            }}</span>
             <span class="font-bold">{{ recipientData.name }}</span>
           </div>
 
           <div v-else>
-            <span>{{ shortAddr(recipientData.address, 5, 4) }}</span>
+            <span>{{ recipientData.address }}</span>
           </div>
         </div>
 

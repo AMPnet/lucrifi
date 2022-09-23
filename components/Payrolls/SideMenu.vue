@@ -11,7 +11,7 @@ const route = useRoute();
       :class="
         route.path.endsWith('/payrolls')
           ? 'opacity-100 bg-violet-500 rounded-lg'
-          : 'opacity-50'
+          : 'opacity-60'
       "
     >
       <div class="flex items-center gap-x-2.5 p-2">
@@ -38,7 +38,7 @@ const route = useRoute();
       :class="
         route.path.includes('templates')
           ? 'opacity-100 bg-violet-500 rounded-lg'
-          : 'opacity-50'
+          : 'opacity-60'
       "
     >
       <div class="flex items-center gap-x-2.5 p-2">
@@ -66,7 +66,7 @@ const route = useRoute();
       :class="
         route.path.includes('address-book')
           ? 'opacity-100 bg-violet-500 rounded-lg'
-          : 'opacity-50'
+          : 'opacity-60'
       "
     >
       <div class="flex items-center gap-x-2.5 p-2">
@@ -94,7 +94,7 @@ const route = useRoute();
       :class="
         route.path.includes('previous-payments')
           ? 'opacity-100 bg-violet-500 rounded-lg'
-          : 'opacity-50'
+          : 'opacity-60'
       "
     >
       <div class="flex items-center gap-x-2.5 p-2">

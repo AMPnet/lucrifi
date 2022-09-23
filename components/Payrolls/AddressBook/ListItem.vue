@@ -42,7 +42,9 @@ const showEditAliasModal = ref(false);
     <span class="col-span-4 self-center">{{ props.alias.alias }}</span>
 
     <div class="col-span-2 flex items-center gap-1.5">
-      <span>{{ shortAddr(props.alias.address, 5, 4) }}</span>
+      <span :title="props.alias.address">{{
+        shortAddr(props.alias.address, 5, 4)
+      }}</span>
       <div class="relative">
         <div
           v-show="showCopied"

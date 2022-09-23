@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useTokensStore } from "@/stores/tokens";
 import { useNetworksStore } from "@/stores/networks";
-import { Recipient } from "~~/types/payrolls/TemplateData";
+import { Recipient } from "@/types/payrolls/TemplateData";
 
 definePageMeta({
   layout: "payrolls",
@@ -30,6 +30,12 @@ const templateRecipients = useState<Array<Recipient>>(
 );
 
 const templateName = useState<string>("templateName", () => "");
+
+const templateValid = computed(() => {
+  const nameValid = templateName.value.length > 0;
+  const recipientsValid = templateRecipients.value.length > 0;
+  return nameValid && recipientsValid;
+});
 
 function saveTemplate() {
   // TODO
@@ -126,7 +132,8 @@ function saveTemplate() {
 
     <div class="flex justify-start">
       <button
-        class="rounded-full bg-gradient-to-r font-bold from-violet-700 to-purple-500 text-white py-2.5 px-8 text-lg"
+        :disabled="!templateValid"
+        class="rounded-full bg-gradient-to-r font-bold from-violet-700 to-purple-500 text-white py-2.5 px-8 text-lg disabled:from-slate-200 disabled:to-slate-200 disabled:text-gray-400"
         @click="saveTemplate"
       >
         <div class="flex items-center gap-2">
