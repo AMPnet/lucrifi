@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { useTokensStore } from "@/stores/tokens";
 import { useNetworksStore } from "@/stores/networks";
+import { useTemplates } from "@/stores/templates";
 import { Recipient } from "@/types/payrolls/TemplateData";
 
 definePageMeta({
   layout: "payrolls",
 });
+
+const templatesStore = useTemplates();
 
 const networkStore = useNetworksStore();
 const networks = networkStore.networksList;
@@ -36,10 +39,6 @@ const templateValid = computed(() => {
   const recipientsValid = templateRecipients.value.length > 0;
   return nameValid && recipientsValid;
 });
-
-function saveTemplate() {
-  // TODO
-}
 </script>
 
 <template>
@@ -134,7 +133,14 @@ function saveTemplate() {
       <button
         :disabled="!templateValid"
         class="rounded-full bg-gradient-to-r font-bold from-violet-700 to-purple-500 text-white py-2.5 px-8 text-lg disabled:from-slate-200 disabled:to-slate-200 disabled:text-gray-400"
-        @click="saveTemplate"
+        @click="
+          templatesStore.addTemplate({
+            name: templateName,
+            recipients: templateRecipients,
+            chainId: selectedNetwork.chainId,
+            tokenAddress: selectedToken.address,
+          })
+        "
       >
         <div class="flex items-center gap-2">
           <svg

@@ -11,3 +11,10 @@ export interface TemplateListItem {
   lastEdited: string;
   id: string;
 }
+
+export interface NewTemplate {
+  name: string;
+  recipients: Array<Recipient>;
+  chainId: number;
+  tokenAddress: string;
+}

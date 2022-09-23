@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { TemplateListItem } from "@/types/payrolls/TemplateData";
+import { TemplateListItem, NewTemplate } from "@/types/payrolls/TemplateData";
 
 interface templateItems {
   data: Array<TemplateListItem>;
@@ -28,10 +28,13 @@ export const useTemplates = defineStore("templatesStore", {
     templates: (state) => state.data,
   },
   actions: {
-    addTemplate(template: TemplateListItem) {
+    addTemplate(template: NewTemplate) {
       // TODO sync with backend API
       const newTemplate = { ...template, id: "3049" };
       this.data.push(newTemplate);
+    },
+    updateTemplate(id: String) {
+      // TODO sync with backend API
     },
     removeTemplate(id: String) {
       // TODO Call api

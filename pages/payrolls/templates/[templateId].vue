@@ -2,11 +2,14 @@
 import { useTokensStore } from "@/stores/tokens";
 import { useNetworksStore } from "@/stores/networks";
 import { Recipient } from "@/types/payrolls/TemplateData";
+import { useTemplates } from "@/stores/templates";
 
 definePageMeta({
   layout: "payrolls",
 });
 
+const route = useRoute();
+const templatesStore = useTemplates();
 const networkStore = useNetworksStore();
 const networks = networkStore.networksList;
 const selectedNetwork = useState("selectedNetwork", () => networks[0]);
@@ -101,7 +104,7 @@ const templateValid = computed(() => {
         :disabled="!templateValid"
         v-if="templateChanged"
         class="rounded-full bg-gradient-to-r font-bold from-violet-700 to-purple-500 text-white py-2.5 px-8 text-lg disabled:from-slate-200 disabled:to-slate-200 disabled:text-gray-400"
-        @click="saveTemplate"
+        @click="templatesStore.updateTemplate(String(route.params.templateId))"
       >
         <div class="flex items-center gap-2">
           <svg
