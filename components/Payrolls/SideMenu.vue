@@ -1,4 +1,6 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const route = useRoute();
+</script>
 
 <template>
   <div
@@ -6,8 +8,11 @@
   >
     <NuxtLink
       to="/payrolls"
-      activeClass="opacity-100 bg-violet-500 rounded-lg"
-      class="opacity-75"
+      :class="
+        route.path.endsWith('/payrolls')
+          ? 'opacity-100 bg-violet-500 rounded-lg'
+          : 'opacity-50'
+      "
     >
       <div class="flex items-center gap-x-2.5 p-2">
         <svg
@@ -30,10 +35,13 @@
 
     <NuxtLink
       to="/payrolls/templates"
-      activeClass="opacity-100 bg-violet-500 rounded-lg"
-      class="opacity-75"
+      :class="
+        route.path.includes('templates')
+          ? 'opacity-100 bg-violet-500 rounded-lg'
+          : 'opacity-50'
+      "
     >
-      <div class="flex items-center gap-x-2.5 opacity-75 p-2">
+      <div class="flex items-center gap-x-2.5 p-2">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -55,10 +63,13 @@
 
     <NuxtLink
       to="/payrolls/address-book"
-      activeClass="opacity-100 bg-violet-500 rounded-lg"
-      class="opacity-75"
+      :class="
+        route.path.includes('address-book')
+          ? 'opacity-100 bg-violet-500 rounded-lg'
+          : 'opacity-50'
+      "
     >
-      <div class="flex items-center gap-x-2.5 opacity-75 p-2">
+      <div class="flex items-center gap-x-2.5 p-2">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -80,10 +91,13 @@
 
     <NuxtLink
       to="/payrolls/previous-payments"
-      activeClass="opacity-100 bg-violet-500 rounded-lg"
-      class="opacity-75"
+      :class="
+        route.path.includes('previous-payments')
+          ? 'opacity-100 bg-violet-500 rounded-lg'
+          : 'opacity-50'
+      "
     >
-      <div class="flex items-center gap-x-2.5 opacity-75 p-2">
+      <div class="flex items-center gap-x-2.5 p-2">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"

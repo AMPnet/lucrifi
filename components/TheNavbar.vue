@@ -3,6 +3,7 @@ import { ref } from "vue";
 import { useWallet } from "@/stores/wallet";
 
 const wallet = useWallet();
+const route = useRoute();
 
 const walletConnected = computed(() => wallet.isWalletConnected);
 
@@ -42,7 +43,10 @@ const isOpen = ref(false);
           <NuxtLink
             to="/payrolls"
             class="flex items-center py-2 hover:text-violet-700"
-            activeClass="text-violet-700 border-b-2 border-violet-700"
+            :class="{
+              'text-violet-700 border-b-2 border-violet-700':
+                route.path.includes('payrolls'),
+            }"
           >
             <div class="flex items-center">
               <svg
@@ -182,3 +186,5 @@ const isOpen = ref(false);
     </nav>
   </div>
 </template>
+
+<style scoped></style>
