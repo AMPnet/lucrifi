@@ -16,7 +16,7 @@ const filteredTokenList = computed(() => {
   return tokensListStore.tokensList(selectedNetwork.value.chainId);
 });
 
-useState("selectedToken", () => {
+const selectedToken = useState("selectedToken", () => {
   return filteredTokenList.value.find((token) => token.symbol === "USDC");
 });
 
@@ -48,8 +48,17 @@ watch(templateName, () => {
   templateChanged.value = true;
 });
 
+const payrollSum = computed(() => {
+  const sum = templateRecipients.value.reduce(
+    (a, b) => a + Number(b.amount),
+    0
+  );
+  return new Intl.NumberFormat("en-US").format(sum);
+});
+
 function saveTemplate() {
-  // TODO
+  // TODO sync with API
+  templateChanged.value = false;
 }
 </script>
 
@@ -61,6 +70,10 @@ function saveTemplate() {
         class="text-xl mr-2 p-1 focus:outline-none bg-inherit rounded-lg border border-transparent hover:border-gray-200 focus:border-violet-500"
         placeholder="Enter template name"
       />
+
+      <div class="px-4 py-2 bg-indigo-100 rounded-xl font-bold text-sm">
+        <span>Sum: {{ payrollSum }} {{ selectedToken.symbol }} </span>
+      </div>
     </div>
 
     <div class="mb-4" v-show="templateRecipients">

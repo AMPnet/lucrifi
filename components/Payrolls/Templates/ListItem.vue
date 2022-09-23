@@ -90,7 +90,8 @@ const showMenu = ref(false);
                   </div>
                 </button>
 
-                <button
+                <NuxtLink
+                  :to="`/payrolls/templates/${template.id}`"
                   @click="showMenu = false"
                   class="hover:bg-slate-100 whitespace-nowrap w-full px-4 py-1.5"
                 >
@@ -117,7 +118,7 @@ const showMenu = ref(false);
 
                     <span>Preview</span>
                   </div>
-                </button>
+                </NuxtLink>
 
                 <button
                   @click="templatesStore.removeTemplate(props.template.id)"

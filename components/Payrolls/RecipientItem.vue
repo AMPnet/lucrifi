@@ -16,7 +16,7 @@ const props = defineProps({
   },
 });
 
-let editRecipient: Ref<Boolean>;
+let editRecipient: Ref<boolean>;
 
 if (props.recipient) {
   editRecipient = ref(false);

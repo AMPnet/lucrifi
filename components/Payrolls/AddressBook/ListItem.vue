@@ -1,7 +1,10 @@
 <script setup lang="ts">
+import { useClipboard } from "@vueuse/core";
 import { AddressAlias } from "@/types/payrolls/AddressAlias";
 import { useAddressBook } from "@/stores/addressBook";
 import { PropType } from "vue";
+
+const { copy } = useClipboard();
 
 const props = defineProps({
   alias: {
@@ -9,6 +12,16 @@ const props = defineProps({
     required: true,
   },
 });
+
+const showCopied = ref(false);
+function copyAddr() {
+  copy(props.alias.address);
+  showCopied.value = true;
+
+  setTimeout(function () {
+    showCopied.value = false;
+  }, 1200);
+}
 
 const addressBook = useAddressBook();
 
@@ -30,27 +43,33 @@ const showEditAliasModal = ref(false);
 
     <div class="col-span-2 flex items-center gap-1.5">
       <span>{{ shortAddr(props.alias.address, 5, 4) }}</span>
-      <a
-        href="#"
-        target="_blank"
-        rel="noopener"
-        class="ml-2 rounded-full bg-gray-100 p-1.5 hover:bg-gray-300 text-gray-700"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-5 w-5"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          stroke-width="2"
+      <div class="relative">
+        <div
+          v-show="showCopied"
+          class="absolute rounded-xl px-2 py-1 bg-violet-700 text-white text-xs z-11 left-8 -top-4"
         >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-          />
-        </svg>
-      </a>
+          Copied
+        </div>
+        <button
+          @click="copyAddr"
+          class="ml-2 rounded-full bg-gray-100 p-1.5 hover:bg-gray-300 text-gray-700"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-5 h-5"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M8.25 7.5V6.108c0-1.135.845-2.098 1.976-2.192.373-.03.748-.057 1.123-.08M15.75 18H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08M15.75 18.75v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5A3.375 3.375 0 006.375 7.5H5.25m11.9-3.664A2.251 2.251 0 0015 2.25h-1.5a2.251 2.251 0 00-2.15 1.586m5.8 0c.065.21.1.433.1.664v.75h-6V4.5c0-.231.035-.454.1-.664M6.75 7.5H4.875c-.621 0-1.125.504-1.125 1.125v12c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V16.5a9 9 0 00-9-9z"
+            />
+          </svg>
+        </button>
+      </div>
     </div>
     <span class="col-span-2 text-xs text-slate-500 self-center">{{
       props.alias.organization
