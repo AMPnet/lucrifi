@@ -14,16 +14,15 @@ const props = defineProps({
 
 const address = ref(props.alias.address);
 const name = ref(props.alias.alias);
-const organization = ref(props.alias.organization);
+const email = ref(props.alias.email);
 
 function saveToAddressBook() {
-  const alias: AddressAlias = {
-    address: address.value,
-    alias: name.value,
-    organization: organization.value,
-    id: props.alias.id,
-  };
-  addressBook.editAddressBookItem(alias);
+  addressBook.editAddressBookItem(
+    props.alias.id,
+    name.value,
+    email.value,
+    address.value
+  );
   emit("close");
 }
 const isValidData = computed(() => {
@@ -87,10 +86,10 @@ const isValidData = computed(() => {
                 />
               </div>
               <div>
-                <h4 class="font-bold text-sm">Organization</h4>
+                <h4 class="font-bold text-sm">Email</h4>
                 <input
                   class="w-full px-4 py-3 mt-3 border border-slate-300 rounded focus:outline-none text-sm"
-                  v-model="organization"
+                  v-model="email"
                   type="text"
                   placeholder="e.g. Google - optional"
                 />

@@ -74,7 +74,7 @@ const showEditAliasModal = ref(false);
       </div>
     </div>
     <span class="col-span-2 text-xs text-slate-500 self-center">{{
-      props.alias.organization
+      props.alias.email
     }}</span>
     <div class="col-span-1 flex items-center justify-center">
       <div class="relative flex justify-start sm:justify-end">

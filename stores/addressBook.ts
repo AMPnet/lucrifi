@@ -8,20 +8,7 @@ interface addressBookObject {
 export const useAddressBook = defineStore("addressBook", {
   state: (): addressBookObject => {
     return {
-      data: [
-        {
-          alias: "bartol",
-          address: "0xD6eB5f17209140825d8A79bF23147B5A2AE5C374",
-          organization: "aimages",
-          id: "1",
-        },
-        {
-          alias: "Jonnny",
-          address: "0xD6eB5f17209140825d8A79bF23147B5A2AE5C374",
-          organization: "Emirates",
-          id: "2",
-        },
-      ],
+      data: [],
     };
   },
   getters: {
@@ -33,7 +20,12 @@ export const useAddressBook = defineStore("addressBook", {
       const newAddress = { ...address, id: "3049" };
       this.data.push(newAddress);
     },
-    editAddressBookItem(address: AddressAlias) {
+    editAddressBookItem(
+      id: string,
+      name: string,
+      email: string,
+      address: string
+    ) {
       // TODO sync with backend API
     },
     removeFromAddressBook(id: String) {

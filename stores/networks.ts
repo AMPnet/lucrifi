@@ -12,7 +12,7 @@ export const useNetworksStore = defineStore("networksList", {
           logoURI: "https://cryptologos.cc/logos/polygon-matic-logo.png",
           chainId: 137,
           rpcURL: undefined,
-          apiKey: runtimeConfig.polygonApiKey,
+          apiKey: runtimeConfig.public.polygonApiKey,
           blockExplorerUrl: "https://polygonscan.com/tx",
         },
         {
@@ -21,7 +21,7 @@ export const useNetworksStore = defineStore("networksList", {
             "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Ethereum-icon-purple.svg/480px-Ethereum-icon-purple.svg.png",
           chainId: 1,
           rpcURL: undefined,
-          apiKey: runtimeConfig.ethereumApiKey,
+          apiKey: runtimeConfig.public.ethereumApiKey,
           blockExplorerUrl: "https://etherscan.io/tx",
         },
         {

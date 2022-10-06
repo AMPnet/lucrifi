@@ -1,6 +1,3 @@
-import { defineNuxtConfig } from "nuxt";
-
-// https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
   app: {
     head: {
@@ -24,9 +21,9 @@ export default defineNuxtConfig({
     },
   },
   css: ["~/assets/css/tailwind.css"],
-  modules: ["@nuxtjs/tailwindcss"],
+  modules: ["@nuxtjs/tailwindcss", "@pinia/nuxt"],
 
-  buildModules: ["@pinia/nuxt"],
+  //buildModules: ["@pinia/nuxt"],
 
   build: {
     // https://github.com/nuxt/framework/discussions/3301#discussioncomment-2816743
@@ -54,7 +51,8 @@ export default defineNuxtConfig({
       backendUrl: "https://eth-staging.ampnet.io/api/blockchain-api/v1",
       requestPaymentRedirect:
         "https://rsend.vercel.app/request-send/${id}/action",
-      connectWalletRedirect: "https://staging.ampnet.io/connect/${id}",
+      connectWalletRedirect:
+        "https://demo.dev3.sh:80001/demo-project/connect/${id}",
     },
   },
 

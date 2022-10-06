@@ -11,18 +11,22 @@ function connectWallet() {
   wallet.connectWallet();
 }
 
-const { data, pending, refresh } = await wallet.preFetchConnectData();
-
-watch(data, (newData) => {
-  if (newData) {
-    wallet.connectData.id = newData.id;
-    wallet.connectData.redirectUrl = newData.redirect_url;
-  }
-});
-
+const pending = ref(false);
 if (!wallet.isWalletConnected) {
-  // Fetch new wallet connect data only if the user hasn't connected wallet
-  await refresh();
+  pending.value = true;
+  wallet
+    .preFetchConnectData()
+    .then(({ data, error }) => {
+      if (error) {
+      } else {
+        // Fetch new wallet connect data only if the user hasn't connected wallet
+        wallet.connectData.id = data.value.id;
+        wallet.connectData.redirectUrl = data.value.redirect_url;
+      }
+    })
+    .finally(() => {
+      pending.value = false;
+    });
 }
 
 const { value: validAddress, meta } = useField(

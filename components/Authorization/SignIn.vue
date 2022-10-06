@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useWallet } from "@/stores/wallet";
+import { PerformanceNodeTiming } from "perf_hooks";
 
 const wallet = useWallet();
 
@@ -8,17 +9,17 @@ function connectWallet() {
   wallet.connectWallet();
 }
 
-const { data, pending, refresh } = await wallet.preFetchConnectData();
-
-watch(data, (newData) => {
-  if (newData) {
-    wallet.connectData.id = newData.id;
-    wallet.connectData.redirectUrl = newData.redirect_url;
-  }
-});
+const pending = ref(false);
 
 if (!wallet.isWalletConnected) {
-  await refresh();
+  pending.value = true;
+  wallet
+    .preFetchConnectData()
+    .then(({ data }) => {
+      wallet.connectData.id = data.value.id;
+      wallet.connectData.redirectUrl = data.value.redirect_url;
+    })
+    .finally(() => (pending.value = true));
 }
 </script>
 

@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { TemplateListItem, NewTemplate } from "@/types/payrolls/TemplateData";
+import { useWallet } from "@/stores/wallet";
 
 interface templateItems {
   data: Array<TemplateListItem>;
@@ -30,6 +31,8 @@ export const useTemplates = defineStore("templatesStore", {
   actions: {
     addTemplate(template: NewTemplate) {
       // TODO sync with backend API
+      const wallet = useWallet();
+
       const newTemplate = { ...template, id: "3049" };
       this.data.push(newTemplate);
     },

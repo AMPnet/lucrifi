@@ -1,7 +1,18 @@
 <script setup lang="ts">
 import { useAddressBook } from "@/stores/addressBook";
+import { useWallet } from "@/stores/wallet";
+import { AddressAlias } from "@/types/payrolls/AddressAlias";
 
 const addressBook = useAddressBook();
+const wallet = useWallet();
+const runtimeConfig = useRuntimeConfig();
+
+if (wallet.isWalletConnected) {
+  const { data: addressBookData } = await useFetch<Array<AddressAlias>>(
+    `${runtimeConfig.public.backendUrl}/address-book/by-wallet-address/${wallet.walletAddress}`
+  );
+  addressBook.data = addressBookData.value;
+}
 
 definePageMeta({
   layout: "payrolls",
@@ -93,7 +104,7 @@ const showAddAliasModal = ref(false);
       >
         <span class="col-span-4">Name</span>
         <span class="col-span-2">Address</span>
-        <span class="col-span-2">Company</span>
+        <span class="col-span-2">Email</span>
         <span class="col-span-1 text-center">Actions</span>
       </div>
 

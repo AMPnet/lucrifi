@@ -5,7 +5,12 @@ import { event } from "vue-gtag";
 
 import { useNetworksStore } from "@/stores/networks";
 
-import { BalanceCheckRequestResponse } from "@/types/ampnet/BalanceCheck";
+import {
+  FetchWalletAuthRequest,
+  CreateWalletAuthRequest,
+  GetPayloadByMessage,
+  GetJWTByMessage,
+} from "@/types/ampnet/BalanceCheck";
 
 export const useWallet = defineStore("walletData", {
   state: () => {
@@ -15,6 +20,15 @@ export const useWallet = defineStore("walletData", {
       connectData: {
         redirectUrl: "",
         id: "",
+      },
+      jwt: {
+        accessToken: useLocalStorage("accessToken", ""),
+        refreshToken: useLocalStorage("accessToken", ""),
+        expires: useLocalStorage("expires", Date.now()),
+        refresh_token_expires: useLocalStorage(
+          "refresh_token_expires",
+          Date.now()
+        ),
       },
     };
   },
@@ -27,6 +41,9 @@ export const useWallet = defineStore("walletData", {
 
   getters: {
     isWalletConnected: (state) => ethers.utils.isAddress(state.walletAddress),
+    accessToken: (state): string => state.jwt.accessToken,
+    accessTokenValid: (state): boolean =>
+      state.jwt.expires > Date.now() + 2 * 60 * 1000,
   },
 
   actions: {
@@ -34,13 +51,18 @@ export const useWallet = defineStore("walletData", {
       /*
       Fetches redirect URL and request ID that will be used to connect wallet
       */
-      const runtimeConfig = useRuntimeConfig();
+
+      const { data: payloadData } = await useFetch<GetPayloadByMessage>(
+        "https://eth-staging.ampnet.io/api/identity/authorize/by-message",
+        {
+          method: "post",
+          body: {},
+          pick: ["payload"],
+        }
+      );
 
       const payload = {
-        chain_id: 137,
-        token_address: "0x0000000000000000000000000000000000001010",
-        redirect_url: runtimeConfig.public.connectWalletRedirect,
-        asset_type: "TOKEN",
+        message_to_sign: payloadData.value.payload,
       };
 
       const networksStore = useNetworksStore();
@@ -48,8 +70,10 @@ export const useWallet = defineStore("walletData", {
       const headers = {
         "X-API-KEY": `${apiKey}`,
       };
-      const data = await useFetch<BalanceCheckRequestResponse>(
-        `${runtimeConfig.public.backendUrl}/balance/`,
+
+      const runtimeConfig = useRuntimeConfig();
+      const data = await useFetch<CreateWalletAuthRequest>(
+        `${runtimeConfig.public.backendUrl}/wallet-authorization`,
         {
           method: "post",
           headers: headers,
@@ -74,10 +98,15 @@ export const useWallet = defineStore("walletData", {
         data: statusData,
         refresh,
         error,
-      } = await useFetch<BalanceCheckRequestResponse>(
-        `${runtimeConfig.public.backendUrl}/balance/${this.connectData.id}`,
+      } = await useFetch<FetchWalletAuthRequest>(
+        `${runtimeConfig.public.backendUrl}/wallet-authorization/${this.connectData.id}`,
         {
-          pick: ["status", "balance"],
+          pick: [
+            "status",
+            "wallet_address",
+            "message_to_sign",
+            "signed_message",
+          ],
           headers: headers,
         }
       );
@@ -94,7 +123,27 @@ export const useWallet = defineStore("walletData", {
         }
 
         if (statusData.value.status === "SUCCESS") {
-          this.walletAddress = statusData.value.balance.wallet;
+          const payload = {
+            address: statusData.value.wallet_address,
+            message_to_sign: statusData.value.message_to_sign,
+            signed_payload: statusData.value.signed_message,
+          };
+          const { data: jwtData } = await useFetch<GetJWTByMessage>(
+            `https://eth-staging.ampnet.io/api/identity/authorize/jwt/by-message`,
+            {
+              method: "post",
+              headers: headers,
+              body: payload,
+            }
+          );
+          this.jwt.accessToken = jwtData.value.access_token;
+          this.jwt.refreshToken = jwtData.value.refresh_token;
+
+          this.jwt.expires = jwtData.value.expires_in * 1000 + Date.now();
+          this.jwt.refresh_token_expires =
+            jwtData.value.refresh_token_expires_in * 1000 + Date.now();
+
+          this.walletAddress = statusData.value.wallet_address;
           this.isConnecting = false;
           event("login", { method: "Wallet" });
         } else if (statusData.value.status === "FAILED") {
@@ -105,8 +154,27 @@ export const useWallet = defineStore("walletData", {
       }
     },
 
+    async refreshAccessToken() {
+      const { data } = await useFetch<GetJWTByMessage>(
+        "https://eth-staging.ampnet.io/api/identity/authorize/refresh",
+        {
+          method: "post",
+          body: {
+            refresh_token: this.jwt.refreshToken,
+          },
+        }
+      );
+      this.jwt.accessToken = data.value.access_token;
+      this.jwt.expires = data.value.expires_in * 1000 + Date.now();
+    },
+
     disconnectWallet() {
       this.walletAddress = "";
+      this.jwt.accessToken = "";
+      this.jwt.refreshToken = "";
+      this.jwt.expires = Date.now();
+      this.jwt.refresh_token_expires = Date.now();
+
       event("logout", {
         event_category: "engagement",
         event_label: "wallet_disconnect",
