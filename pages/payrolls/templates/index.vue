@@ -1,30 +1,12 @@
 <script setup lang="ts">
 import { useTemplates } from "@/stores/templates";
-import { useWallet } from "@/stores/wallet";
-import { TemplateItem } from "@/types/payrolls/TemplateData";
 
 definePageMeta({
   layout: "payrolls",
 });
 
-interface TemplatesList {
-  templates: Array<TemplateItem>;
-}
-
-const wallet = useWallet();
-const runtimeConfig = useRuntimeConfig();
-
 const templatesStore = useTemplates();
-
-if (wallet.isWalletConnected) {
-  const data = await $fetch<TemplatesList>(
-    `${runtimeConfig.public.backendUrl}/multi-payment-template/by-wallet-address/${wallet.walletAddress}`,
-    {
-      headers: { Authorization: `Bearer ${wallet.jwt.accessToken}` },
-    }
-  );
-  templatesStore.data = data.templates;
-}
+templatesStore.fetchTemplates();
 </script>
 
 <template>

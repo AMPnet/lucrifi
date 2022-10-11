@@ -24,7 +24,7 @@ const showMenu = ref(false);
         :to="`/payrolls/templates/${template.id}`"
         class="col-span-1 self-center text-xs text-slate-500"
       >
-        {{ props.template.created_at }}</NuxtLink
+        {{ parseDatetime(props.template.created_at) }}</NuxtLink
       >
 
       <NuxtLink
@@ -37,7 +37,7 @@ const showMenu = ref(false);
       <NuxtLink
         :to="`/payrolls/templates/${template.id}`"
         class="col-span-1 text-xs text-slate-500 self-center"
-        >{{ props.template.updated_at }}</NuxtLink
+        >{{ parseDatetime(props.template.updated_at) }}</NuxtLink
       >
       <div class="col-span-1 flex items-center justify-center">
         <div class="relative flex justify-start sm:justify-end">
@@ -121,7 +121,10 @@ const showMenu = ref(false);
                 </NuxtLink>
 
                 <button
-                  @click="templatesStore.removeTemplate(props.template.id)"
+                  @click="
+                    templatesStore.removeTemplate(props.template.id);
+                    showMenu = false;
+                  "
                   class="hover:bg-slate-100 text-red-700 whitespace-nowrap w-full px-4 py-1.5"
                 >
                   <div class="flex items-center gap-2">

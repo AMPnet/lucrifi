@@ -91,7 +91,6 @@ const isValidData = computed(() => {
                   class="w-full px-4 py-3 mt-3 border border-slate-300 rounded focus:outline-none text-sm"
                   v-model="email"
                   type="text"
-                  placeholder="e.g. Google - optional"
                 />
               </div>
             </div>

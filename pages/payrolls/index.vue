@@ -38,7 +38,7 @@ const templateRecipients = useState<Array<Recipient>>(
   () => []
 );
 
-const templateName = useState<string>("templateName", () => "");
+const templateName = useState<string>("newTemplateName", () => "");
 
 const templateValid = computed(() => {
   const nameValid = templateName.value.length > 0;
@@ -127,12 +127,14 @@ const templateValid = computed(() => {
         :key="index"
         class="gap-y-2 flex flex-col"
       >
-        <PayrollsRecipientItem :recipient="recipient"></PayrollsRecipientItem>
+        <PayrollsNewRecipientItem
+          :recipient="recipient"
+        ></PayrollsNewRecipientItem>
       </div>
     </div>
 
     <div class="mb-10">
-      <PayrollsRecipientItem></PayrollsRecipientItem>
+      <PayrollsNewRecipientItem></PayrollsNewRecipientItem>
     </div>
 
     <div class="flex justify-start">

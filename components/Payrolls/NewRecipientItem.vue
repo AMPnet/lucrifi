@@ -2,10 +2,9 @@
 import { Token } from "@/types/Token";
 import { Recipient } from "@/types/payrolls/TemplateData";
 import { AddressAlias } from "@/types/payrolls/AddressAlias";
-import { useTemplates } from "@/stores/templates";
+import { useAddressBook } from "@/stores/addressBook";
 import { isValidAddress } from "@/validators/blockchain";
 import { isValidCurrencyAmount } from "@/composables/token";
-import { useAddressBook } from "@/stores/addressBook";
 
 import type { PropType, Ref } from "vue";
 
@@ -18,9 +17,6 @@ const props = defineProps({
   },
 });
 
-const templatesStore = useTemplates();
-const router = useRoute();
-
 let editRecipient: Ref<boolean>;
 
 if (props.recipient) {
@@ -30,7 +26,7 @@ if (props.recipient) {
 }
 
 const selectedToken = useState<Token>("selectedToken");
-const templateRecipients = useState<Array<Recipient>>("templateRecipients");
+const templateRecipients = useState<Array<Recipient>>("newTemplateRecipients");
 
 let recipientData: Ref<Recipient>;
 if (editRecipient.value) {
@@ -47,6 +43,7 @@ if (editRecipient.value) {
 const isValidRecipient = computed(() => {
   const addressValid =
     isValidAddress(recipientData.value.wallet_address) === true;
+
   const isValidAmount = isValidCurrencyAmount(
     recipientData.value.amount,
     selectedToken.value.decimals
@@ -54,44 +51,27 @@ const isValidRecipient = computed(() => {
   return addressValid && isValidAmount;
 });
 
-async function editOrAddToList() {
+function editOrAddToList() {
   const existingRecipient = templateRecipients.value.find(
     (x) => x.id === recipientData.value.id
   );
   if (existingRecipient) {
-    templatesStore
-      .updateTemplateRecipient(
-        router.params.templateId.toString(),
-        existingRecipient.id,
-        recipientData.value.wallet_address,
-        recipientData.value.amount
-      )
-      .then(() => {
-        editRecipient.value = false;
-      });
+    editRecipient.value = false;
   } else {
-    templatesStore
-      .addTemplateRecipient(router.params.templateId.toString(), {
-        amount: recipientData.value.amount,
-        item_name: recipientData.value.item_name,
-        wallet_address: recipientData.value.wallet_address,
-      })
-      .then(() => {
-        templateRecipients.value.push(recipientData.value);
-      });
+    // Add new recipient
+    templateRecipients.value.push(recipientData.value);
+    recipientData.value = {
+      item_name: null,
+      wallet_address: "",
+      amount: "",
+      id: Date.now().toString(),
+    };
   }
 }
-async function deleteFromList() {
-  templatesStore
-    .removeTemplateRecipient(
-      router.params.templateId.toString(),
-      recipientData.value.id
-    )
-    .then(() => {
-      templateRecipients.value = templateRecipients.value.filter(
-        (x) => x.id !== recipientData.value.id
-      );
-    });
+function deleteFromList() {
+  templateRecipients.value = templateRecipients.value.filter(
+    (x) => x.id !== recipientData.value.id
+  );
 }
 
 function selectAddressBook(alias: AddressAlias) {
