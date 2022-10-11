@@ -132,7 +132,6 @@ export const useWallet = defineStore("walletData", {
             `https://eth-staging.ampnet.io/api/identity/authorize/jwt/by-message`,
             {
               method: "post",
-              headers: headers,
               body: payload,
             }
           );

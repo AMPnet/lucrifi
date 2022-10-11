@@ -2462,5 +2462,23 @@
       "decimals": 18,
       "logoURI": "images/1313161554/0x0f00576d07B594Bdc1caf44b6014A6A02E5AFd48.png.webp"
     }
+  ],
+  "80001": [
+    {
+      "address": "0x0d500B1d8E8eF31E21C99d1Db9A6444d1ADf1270",
+      "name": "MATIC",
+      "symbol": "MATIC",
+      "chainId": 80001,
+      "decimals": 18,
+      "logoURI": "images/137/0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270.png.webp"
+    },
+    {
+      "address": "0x0d500B1d8E8eF31E21C99d1Db9A6444d8ADf1270",
+      "name": "USDC",
+      "symbol": "USDC",
+      "chainId": 80001,
+      "decimals": 18,
+      "logoURI": "images/137/0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270.png.webp"
+    }
   ]
 }

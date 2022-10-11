@@ -37,16 +37,16 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
-    polygonApiKey: "",
-    ethereumApiKey: "",
-    bscApiKey: "",
-    avaxApiKey: "",
-    moonriverApiKey: "",
-    gnosisApiKey: "",
-    fantomApiKey: "",
-    auroraApiKey: "",
-
     public: {
+      mumbaiApiKey: "",
+      ethereumApiKey: "",
+      bscApiKey: "",
+      avaxApiKey: "",
+      moonriverApiKey: "",
+      gnosisApiKey: "",
+      fantomApiKey: "",
+      auroraApiKey: "",
+
       gtagId: "",
       backendUrl: "https://eth-staging.ampnet.io/api/blockchain-api/v1",
       requestPaymentRedirect:

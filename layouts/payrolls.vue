@@ -10,7 +10,7 @@ let wallet = useWallet();
       <TheNavbar />
 
       <div
-        v-if="wallet.isWalletConnected"
+        v-show="wallet.isWalletConnected"
         class="pt-5 md:pt-20 pb-5 grid grid-cols-12 px-8 xl:px-14 gap-x-3"
       >
         <div class="col-span-2">
@@ -22,7 +22,7 @@ let wallet = useWallet();
       </div>
 
       <div
-        v-else
+        v-show="!wallet.isWalletConnected"
         class="col-span-12 bg-white rounded-2xl py-10 px-6 text-center text-lg"
       >
         <h3 class="mb-8">Please connect your wallet to see this screen</h3>
