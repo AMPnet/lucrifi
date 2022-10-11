@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { AddressAlias, NewAddressAlias } from "@/types/payrolls/AddressAlias";
+import { useWallet } from "@/stores/wallet";
 
 interface addressBookObject {
   data: Array<AddressAlias>;
@@ -15,21 +16,56 @@ export const useAddressBook = defineStore("addressBook", {
     aliases: (state) => state.data,
   },
   actions: {
-    addToAddressBook(address: NewAddressAlias) {
+    async addToAddressBook(address: NewAddressAlias) {
+      const runtimeConfig = useRuntimeConfig();
+      const wallet = useWallet();
+
       // TODO sync with backend API
-      const newAddress = { ...address, id: "3049" };
+      const data = await $fetch<AddressAlias>(
+        `${runtimeConfig.public.backendUrl}/address-book/`,
+        {
+          method: "POST",
+          headers: { Authorization: `Bearer ${wallet.jwt.accessToken}` },
+          body: { ...address },
+        }
+      );
+
+      const newAddress = { ...address, id: data.id };
       this.data.push(newAddress);
     },
-    editAddressBookItem(
+    async editAddressBookItem(
       id: string,
       name: string,
       email: string,
       address: string
     ) {
-      // TODO sync with backend API
+      const runtimeConfig = useRuntimeConfig();
+      const wallet = useWallet();
+      const item = this.data.find((x: AddressAlias) => x.id === id);
+
+      await $fetch<AddressAlias>(
+        `${runtimeConfig.public.backendUrl}/address-book/${id}`,
+        {
+          method: "PATCH",
+          headers: { Authorization: `Bearer ${wallet.jwt.accessToken}` },
+          body: { name, email, address },
+        }
+      );
+      item.alias = name;
+      item.email = email;
+      item.address = address;
     },
-    removeFromAddressBook(id: String) {
-      // TODO Call api
+    async removeFromAddressBook(id: String) {
+      const runtimeConfig = useRuntimeConfig();
+      const wallet = useWallet();
+
+      await $fetch<AddressAlias>(
+        `${runtimeConfig.public.backendUrl}/address-book/${id}`,
+        {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${wallet.jwt.accessToken}` },
+        }
+      );
       this.data = this.data.filter((x: AddressAlias) => x.id !== id);
     },
   },

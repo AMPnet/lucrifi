@@ -7,11 +7,15 @@ const addressBook = useAddressBook();
 const wallet = useWallet();
 const runtimeConfig = useRuntimeConfig();
 
+interface addressesList {
+  entries: Array<AddressAlias>;
+}
+
 if (wallet.isWalletConnected) {
-  const { data: addressBookData } = await useFetch<Array<AddressAlias>>(
+  const data = await $fetch<addressesList>(
     `${runtimeConfig.public.backendUrl}/address-book/by-wallet-address/${wallet.walletAddress}`
   );
-  addressBook.data = addressBookData.value;
+  addressBook.data = data["entries"];
 }
 
 definePageMeta({

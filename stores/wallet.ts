@@ -23,12 +23,9 @@ export const useWallet = defineStore("walletData", {
       },
       jwt: {
         accessToken: useLocalStorage("accessToken", ""),
-        refreshToken: useLocalStorage("accessToken", ""),
+        refreshToken: useLocalStorage("refreshToken", ""),
         expires: useLocalStorage("expires", Date.now()),
-        refresh_token_expires: useLocalStorage(
-          "refresh_token_expires",
-          Date.now()
-        ),
+        refreshTokenExpires: useLocalStorage("refreshTokenExpires", Date.now()),
       },
     };
   },
@@ -37,6 +34,17 @@ export const useWallet = defineStore("walletData", {
     // https://pinia.vuejs.org/api/interfaces/pinia.DefineStoreOptions.html#hydrate
     // @ts-expect-error: https://github.com/microsoft/TypeScript/issues/43826
     storeState.walletAddress = useLocalStorage("wallet-address", "");
+    // @ts-expect-error: https://github.com/microsoft/TypeScript/issues/43826
+    storeState.jwt.accessToken = useLocalStorage("accessToken", "");
+    // @ts-expect-error: https://github.com/microsoft/TypeScript/issues/43826
+    storeState.jwt.refreshToken = useLocalStorage("refreshToken", "");
+    // @ts-expect-error: https://github.com/microsoft/TypeScript/issues/43826
+    storeState.jwt.expires = useLocalStorage("expires", Date.now());
+    // @ts-expect-error: https://github.com/microsoft/TypeScript/issues/43826
+    storeState.jwt.refreshTokenExpires = useLocalStorage(
+      "refreshTokenExpires",
+      Date.now()
+    );
   },
 
   getters: {
@@ -139,7 +147,7 @@ export const useWallet = defineStore("walletData", {
           this.jwt.refreshToken = jwtData.value.refresh_token;
 
           this.jwt.expires = jwtData.value.expires_in * 1000 + Date.now();
-          this.jwt.refresh_token_expires =
+          this.jwt.refreshTokenExpires =
             jwtData.value.refresh_token_expires_in * 1000 + Date.now();
 
           this.walletAddress = statusData.value.wallet_address;
