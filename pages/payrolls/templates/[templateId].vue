@@ -25,20 +25,7 @@ const selectedToken = useState("selectedToken", () => {
 
 const templateRecipients = useState<Array<Recipient>>(
   "newTemplateRecipients",
-  () => [
-    {
-      address: "oxjfiejfiejfijfie",
-      amount: "13",
-      id: 1,
-      name: null,
-    },
-    {
-      address: "oxjfiejfiejfijfie",
-      amount: "12",
-      id: 2,
-      name: null,
-    },
-  ]
+  () => []
 );
 
 const templateChanged = useState<boolean>("templateChanged", () => false);
@@ -87,8 +74,8 @@ const templateValid = computed(() => {
 
     <div class="mb-4" v-show="templateRecipients">
       <div
-        v-for="recipient in templateRecipients"
-        :key="recipient.id"
+        v-for="(recipient, index) in templateRecipients"
+        :key="index"
         class="gap-y-2 flex flex-col"
       >
         <PayrollsRecipientItem :recipient="recipient"></PayrollsRecipientItem>

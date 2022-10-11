@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { TemplateListItem } from "@/types/payrolls/TemplateData";
+import { TemplateItem } from "@/types/payrolls/TemplateData";
 import { useTemplates } from "@/stores/templates";
 import { PropType } from "vue";
 
@@ -7,7 +7,7 @@ const templatesStore = useTemplates();
 
 const props = defineProps({
   template: {
-    type: Object as PropType<TemplateListItem>,
+    type: Object as PropType<TemplateItem>,
     required: true,
   },
 });
@@ -24,20 +24,20 @@ const showMenu = ref(false);
         :to="`/payrolls/templates/${template.id}`"
         class="col-span-1 self-center text-xs text-slate-500"
       >
-        {{ props.template.createdAt }}</NuxtLink
+        {{ props.template.created_at }}</NuxtLink
       >
 
       <NuxtLink
         :to="`/payrolls/templates/${template.id}`"
         class="col-span-4 flex items-center gap-1.5"
       >
-        <span>{{ props.template.name }}</span>
+        <span>{{ props.template.template_name }}</span>
       </NuxtLink>
 
       <NuxtLink
         :to="`/payrolls/templates/${template.id}`"
         class="col-span-1 text-xs text-slate-500 self-center"
-        >{{ props.template.lastEdited }}</NuxtLink
+        >{{ props.template.updated_at }}</NuxtLink
       >
       <div class="col-span-1 flex items-center justify-center">
         <div class="relative flex justify-start sm:justify-end">

@@ -1,47 +1,53 @@
 import { defineStore } from "pinia";
-import { TemplateListItem, NewTemplate } from "@/types/payrolls/TemplateData";
+import {
+  TemplateItemWRecipients,
+  TemplateItem,
+  NewTemplate,
+} from "@/types/payrolls/TemplateData";
 import { useWallet } from "@/stores/wallet";
 
-interface templateItems {
-  data: Array<TemplateListItem>;
+interface TemplateItems {
+  data: Array<TemplateItem>;
 }
 
 export const useTemplates = defineStore("templatesStore", {
-  state: (): templateItems => {
+  state: (): TemplateItems => {
     return {
-      data: [
-        {
-          name: "AMpnet payroll",
-          createdAt: "25. Aug 2022",
-          id: "1",
-          lastEdited: "25. Aug 2022",
-        },
-        {
-          name: "Shell payroll",
-          createdAt: "25. Aug 2022",
-          id: "2",
-          lastEdited: "25. Aug 2022",
-        },
-      ],
+      data: [],
     };
   },
   getters: {
     templates: (state) => state.data,
   },
   actions: {
-    addTemplate(template: NewTemplate) {
-      // TODO sync with backend API
+    async fetchTemplateDetails(id: string) {
+      //TODO
+    },
+    async fetchTemplates() {
+      //TODO
+    },
+    async addTemplate(template: NewTemplate) {
       const wallet = useWallet();
+      const runtimeConfig = useRuntimeConfig();
 
-      const newTemplate = { ...template, id: "3049" };
+      const data = await $fetch<TemplateItemWRecipients>(
+        `${runtimeConfig.public.backendUrl}/multi-payment-template`,
+        {
+          method: "POST",
+          headers: { Authorization: `Bearer ${wallet.jwt.accessToken}` },
+          body: template,
+        }
+      );
+
+      const newTemplate = { ...template, id: data.id };
       this.data.push(newTemplate);
     },
-    updateTemplate(id: String) {
+    updateTemplate(id: string) {
       // TODO sync with backend API
     },
-    removeTemplate(id: String) {
+    removeTemplate(id: string) {
       // TODO Call api
-      this.data = this.data.filter((x: TemplateListItem) => x.id !== id);
+      this.data = this.data.filter((x: TemplateItem) => x.id !== id);
     },
   },
 });

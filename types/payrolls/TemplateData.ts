@@ -1,20 +1,30 @@
-export interface Recipient {
-  address: string;
-  name: string | undefined;
+export interface NewRecipient {
+  wallet_address: string;
+  item_name: string | undefined;
   amount: string;
-  id: number;
 }
-
-export interface TemplateListItem {
-  createdAt: string;
-  name: string;
-  lastEdited: string;
+export interface Recipient extends NewRecipient {
   id: string;
 }
 
 export interface NewTemplate {
-  name: string;
-  recipients: Array<Recipient>;
-  chainId: number;
-  tokenAddress: string;
+  template_name: string;
+  chain_id: number;
+  token_address: string;
+  asset_type: "NATIVE" | "TOKEN";
+  items: Array<NewRecipient>;
+}
+
+export interface TemplateItem {
+  id: string;
+  template_list: string;
+  template_name: string;
+  asset_type: "NATIVE" | "TOKEN";
+  chain_id: number;
+  created_at: string;
+  updated_at: string | undefined;
+}
+
+export interface TemplateItemWRecipients extends TemplateItem {
+  items: Array<Recipient>;
 }

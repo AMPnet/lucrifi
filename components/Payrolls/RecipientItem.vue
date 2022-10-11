@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Token } from "@/types/Token";
-import { Recipient } from "@/types/payrolls/TemplateData";
+import { Recipient, NewRecipient } from "@/types/payrolls/TemplateData";
 import { AddressAlias } from "@/types/payrolls/AddressAlias";
 import { useAddressBook } from "@/stores/addressBook";
 import { isValidAddress, countDecimals } from "@/validators/blockchain";
@@ -51,13 +51,19 @@ const templateRecipients = useState<Array<Recipient>>("newTemplateRecipients");
 
 let recipientData: Ref<Recipient>;
 if (editRecipient.value) {
-  recipientData = ref({ name: null, address: "", amount: "", id: Date.now() });
+  recipientData = ref({
+    item_name: null,
+    wallet_address: "",
+    amount: "",
+    id: Date.now().toString(),
+  });
 } else {
   recipientData = ref(props.recipient);
 }
 
 const isValidRecipient = computed(() => {
-  const addressValid = isValidAddress(recipientData.value.address) === true;
+  const addressValid =
+    isValidAddress(recipientData.value.wallet_address) === true;
   const isValidAmount = isValidCurrencyAmount(recipientData.value.amount);
   return addressValid && isValidAmount;
 });
@@ -72,10 +78,10 @@ function editOrAddToList() {
     // Add new recipient
     templateRecipients.value.push(recipientData.value);
     recipientData.value = {
-      name: null,
-      address: "",
+      item_name: null,
+      wallet_address: "",
       amount: "",
-      id: Date.now(),
+      id: Date.now().toString(),
     };
   }
 }
@@ -86,16 +92,17 @@ function deleteFromList() {
 }
 
 function selectAddressBook(alias: AddressAlias) {
-  recipientData.value.address = alias.address;
-  recipientData.value.name = alias.alias;
+  recipientData.value.wallet_address = alias.address;
+  recipientData.value.item_name = alias.alias;
   showSearchAddressBookModal.value = false;
 }
 
 const recipientInAddressBook = computed(() => {
-  if (recipientData.value.address.length > 0) {
+  if (recipientData.value.wallet_address.length > 0) {
     const alias = aliases.find(
       (x) =>
-        x.address.toLowerCase() === recipientData.value.address.toLowerCase()
+        x.address.toLowerCase() ===
+        recipientData.value.wallet_address.toLowerCase()
     );
     return true ? alias : false;
   } else {
@@ -117,7 +124,7 @@ const showAddAliasModal = ref(false);
 
     <PayrollsAddressBookAddAlias
       v-if="showAddAliasModal"
-      :address="recipientData.address"
+      :address="recipientData.wallet_address"
       @close="showAddAliasModal = false"
     />
 
@@ -139,19 +146,22 @@ const showAddAliasModal = ref(false);
             />
           </svg>
 
-          <div v-if="recipientData.name" class="flex items-center w-full gap-3">
+          <div
+            v-if="recipientData.item_name"
+            class="flex items-center w-full gap-3"
+          >
             <span
-              :title="recipientData.address"
-              @click="recipientData.name = null"
+              :title="recipientData.wallet_address"
+              @click="recipientData.item_name = null"
             >
-              {{ shortAddr(recipientData.address, 5, 4) }}
+              {{ shortAddr(recipientData.wallet_address, 5, 4) }}
             </span>
-            <span class="font-bold">{{ recipientData.name }}</span>
+            <span class="font-bold">{{ recipientData.item_name }}</span>
           </div>
 
           <div v-else class="w-full">
             <input
-              v-model="recipientData.address"
+              v-model="recipientData.wallet_address"
               type="text"
               class="w-full focus:outline-none bg-inherit"
               id="transfer-to"
@@ -291,15 +301,15 @@ const showAddAliasModal = ref(false);
             />
           </svg>
 
-          <div class="flex items-center gap-2.5" v-if="recipientData.name">
-            <span :title="recipientData.address">{{
-              shortAddr(recipientData.address, 5, 4)
+          <div class="flex items-center gap-2.5" v-if="recipientData.item_name">
+            <span :title="recipientData.wallet_address">{{
+              shortAddr(recipientData.wallet_address, 5, 4)
             }}</span>
-            <span class="font-bold">{{ recipientData.name }}</span>
+            <span class="font-bold">{{ recipientData.item_name }}</span>
           </div>
 
           <div v-else>
-            <span>{{ recipientData.address }}</span>
+            <span>{{ recipientData.wallet_address }}</span>
           </div>
         </div>
 

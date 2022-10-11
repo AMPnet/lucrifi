@@ -2,11 +2,17 @@
 import { useTokensStore } from "@/stores/tokens";
 import { useNetworksStore } from "@/stores/networks";
 import { useTemplates } from "@/stores/templates";
+import { useAddressBook } from "@/stores/addressBook";
 import { Recipient } from "@/types/payrolls/TemplateData";
 
 definePageMeta({
   layout: "payrolls",
 });
+
+const router = useRouter();
+
+const addressBook = useAddressBook();
+addressBook.fetchAliases();
 
 const templatesStore = useTemplates();
 
@@ -117,8 +123,8 @@ const templateValid = computed(() => {
 
     <div class="mb-4" v-show="templateRecipients">
       <div
-        v-for="recipient in templateRecipients"
-        :key="recipient.id"
+        v-for="(recipient, index) in templateRecipients"
+        :key="index"
         class="gap-y-2 flex flex-col"
       >
         <PayrollsRecipientItem :recipient="recipient"></PayrollsRecipientItem>
@@ -135,11 +141,13 @@ const templateValid = computed(() => {
         class="rounded-full bg-gradient-to-r font-bold from-violet-700 to-purple-500 text-white py-2.5 px-8 text-lg disabled:from-slate-200 disabled:to-slate-200 disabled:text-gray-400"
         @click="
           templatesStore.addTemplate({
-            name: templateName,
-            recipients: templateRecipients,
-            chainId: selectedNetwork.chainId,
-            tokenAddress: selectedToken.address,
-          })
+            template_name: templateName,
+            items: templateRecipients,
+            chain_id: selectedNetwork.chainId,
+            token_address: selectedToken.address,
+            asset_type: 'TOKEN',
+          });
+          router.push('/payrolls/templates');
         "
       >
         <div class="flex items-center gap-2">

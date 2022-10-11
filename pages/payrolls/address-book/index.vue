@@ -1,22 +1,9 @@
 <script setup lang="ts">
 import { useAddressBook } from "@/stores/addressBook";
-import { useWallet } from "@/stores/wallet";
-import { AddressAlias } from "@/types/payrolls/AddressAlias";
 
 const addressBook = useAddressBook();
-const wallet = useWallet();
-const runtimeConfig = useRuntimeConfig();
 
-interface addressesList {
-  entries: Array<AddressAlias>;
-}
-
-if (wallet.isWalletConnected) {
-  const data = await $fetch<addressesList>(
-    `${runtimeConfig.public.backendUrl}/address-book/by-wallet-address/${wallet.walletAddress}`
-  );
-  addressBook.data = data["entries"];
-}
+addressBook.fetchAliases();
 
 definePageMeta({
   layout: "payrolls",

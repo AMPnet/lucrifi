@@ -6,6 +6,10 @@ interface addressBookObject {
   data: Array<AddressAlias>;
 }
 
+interface addressesList {
+  entries: Array<AddressAlias>;
+}
+
 export const useAddressBook = defineStore("addressBook", {
   state: (): addressBookObject => {
     return {
@@ -16,6 +20,18 @@ export const useAddressBook = defineStore("addressBook", {
     aliases: (state) => state.data,
   },
   actions: {
+    async fetchAliases() {
+      const wallet = useWallet();
+
+      if (wallet.isWalletConnected) {
+        const runtimeConfig = useRuntimeConfig();
+
+        const data = await $fetch<addressesList>(
+          `${runtimeConfig.public.backendUrl}/address-book/by-wallet-address/${wallet.walletAddress}`
+        );
+        this.data = data["entries"];
+      }
+    },
     async addToAddressBook(address: NewAddressAlias) {
       const runtimeConfig = useRuntimeConfig();
       const wallet = useWallet();
