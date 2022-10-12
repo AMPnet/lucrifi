@@ -64,7 +64,10 @@ async function editOrAddToList() {
         router.params.templateId.toString(),
         existingRecipient.id,
         recipientData.value.wallet_address,
-        recipientData.value.amount,
+        decimalToSolNumber(
+          recipientData.value.amount.replace(",", "."),
+          selectedToken.value.decimals
+        ),
         recipientData.value.item_name
       );
       editRecipient.value = false;
@@ -76,12 +79,17 @@ async function editOrAddToList() {
       const data = await templatesStore.addTemplateRecipient(
         router.params.templateId.toString(),
         {
-          amount: recipientData.value.amount,
+          amount: decimalToSolNumber(
+            recipientData.value.amount,
+            selectedToken.value.decimals
+          ),
           item_name: recipientData.value.item_name,
           wallet_address: recipientData.value.wallet_address,
         }
       );
       recipientData.value.id = data.items.pop().id;
+      recipientData.value.amount = recipientData.value.amount.replace(",", ".");
+
       templateRecipients.value.push(recipientData.value);
 
       recipientData.value = {

@@ -3,7 +3,10 @@ import { useAddressBook } from "@/stores/addressBook";
 
 const addressBook = useAddressBook();
 
-addressBook.fetchAliases();
+const pending = ref(true);
+addressBook.fetchAliases().finally(() => {
+  pending.value = false;
+});
 
 definePageMeta({
   layout: "payrolls",
@@ -99,12 +102,25 @@ const showAddAliasModal = ref(false);
         <span class="col-span-1 text-center">Actions</span>
       </div>
 
-      <div>
-        <PayrollsAddressBookListItem
-          v-for="(alias, index) in queriedAliases"
-          :key="index"
-          :alias="alias"
-        ></PayrollsAddressBookListItem>
+      <div v-if="pending" class="border-b">
+        <h3 class="text-slate-400 text-base my-8 text-center">
+          Loading data...
+        </h3>
+      </div>
+
+      <div v-else>
+        <div v-if="queriedAliases.length > 0">
+          <PayrollsAddressBookListItem
+            v-for="(alias, index) in queriedAliases"
+            :key="index"
+            :alias="alias"
+          ></PayrollsAddressBookListItem>
+        </div>
+        <div v-else class="border-b">
+          <h3 class="text-slate-400 text-base my-8 text-center">
+            No aliases found
+          </h3>
+        </div>
       </div>
     </div>
   </div>

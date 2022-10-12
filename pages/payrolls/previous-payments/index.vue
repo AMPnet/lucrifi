@@ -65,7 +65,9 @@ watch(data, (newData) => {
         <span class="col-span-2 text-center">Actions</span>
       </div>
       <div v-if="pending">
-        <h3 class="text-center text-lg mt-8 text-slate-400">Loading data...</h3>
+        <h3 class="text-center text-base mt-8 text-slate-400">
+          Loading data...
+        </h3>
       </div>
 
       <div v-else>
@@ -80,7 +82,7 @@ watch(data, (newData) => {
           ></PayrollsPreviousPayment>
         </div>
         <div class="border-b border-slate-200">
-          <h3 class="text-center text-lg my-8 text-slate-400">
+          <h3 class="text-center text-base my-8 text-slate-400">
             No previous payments found
           </h3>
         </div>

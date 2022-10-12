@@ -23,6 +23,7 @@ export interface TemplateItem {
   chain_id: number;
   created_at: string;
   updated_at: string | undefined;
+  token_address: string | undefined;
 }
 
 export interface TemplateItemWRecipients extends TemplateItem {

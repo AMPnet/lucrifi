@@ -16,6 +16,7 @@ const route = useRoute();
 const templatesStore = useTemplates();
 const networkStore = useNetworksStore();
 const networks = networkStore.networksList;
+
 const selectedNetwork = useState("selectedNetwork", () => networks[0]);
 
 const tokensListStore = useTokensStore();
@@ -40,7 +41,23 @@ try {
     route.params.templateId
   );
   templateName.value = data.template_name;
-  templateRecipients.value = data.items;
+
+  selectedNetwork.value = networks.find((x) => x.chainId === data.chain_id);
+  selectedToken.value = filteredTokenList.value.find(
+    (token) => token.address.toLowerCase() === data.token_address.toLowerCase()
+  );
+
+  const itemsDecimalAmounts = data.items.map((item) => {
+    const decimalAmount = solNumberToDecimal(
+      item.amount,
+      selectedToken.value.decimals
+    );
+    item.amount = decimalAmount;
+    return item;
+  });
+
+  templateRecipients.value = itemsDecimalAmounts;
+
   watch(templateName, (oldName, newName) => {
     templateUpdated.value = oldName !== newName;
   });
@@ -52,6 +69,12 @@ const payrollSum = computed(() => {
     0
   );
   return new Intl.NumberFormat("en-US").format(sum);
+});
+
+const templateExecutable = computed(() => {
+  const validName = templateName.value.length > 0;
+  const validRecipients = templateRecipients.value.length > 0;
+  return validName && validRecipients;
 });
 
 async function saveTemplateName() {
@@ -66,7 +89,9 @@ async function saveTemplateName() {
   }
 }
 
-function executePayment() {}
+function executePayment() {
+  // TODO
+}
 </script>
 
 <template>
@@ -121,7 +146,8 @@ function executePayment() {}
 
     <div class="flex justify-start">
       <button
-        class="rounded-full bg-gradient-to-r font-bold from-violet-700 to-purple-500 text-white py-2.5 px-12 text-lg"
+        :disabled="!templateExecutable"
+        class="rounded-full bg-gradient-to-r font-bold from-violet-700 to-purple-500 text-white py-2.5 px-12 text-lg disabled:from-slate-200 disabled:to-slate-200 disabled:text-gray-400"
         @click="executePayment"
       >
         <span>Execute Payment</span>

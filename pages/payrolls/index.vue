@@ -47,12 +47,25 @@ const templateValid = computed(() => {
 });
 
 function saveTemplate() {
+  // Convert amounts to Solidity supported amounts
+  const itemsSolAmounts = templateRecipients.value.map((item) => {
+    const solAmount = decimalToSolNumber(
+      item.amount,
+      selectedToken.value.decimals
+    );
+    item.amount = solAmount;
+    return item;
+  });
   templatesStore.addTemplate({
     template_name: templateName.value,
-    items: templateRecipients.value,
+    items: itemsSolAmounts,
     chain_id: selectedNetwork.value.chainId,
     token_address: selectedToken.value.address,
-    asset_type: "TOKEN", // TODO change token type
+    asset_type:
+      selectedToken.value.address ===
+      "0x0000000000000000000000000000000000000000"
+        ? "NATIVE"
+        : "TOKEN",
   });
   templateName.value = "";
   templateRecipients.value = [];

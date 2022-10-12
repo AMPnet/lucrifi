@@ -6,7 +6,12 @@ definePageMeta({
 });
 
 const templatesStore = useTemplates();
-templatesStore.fetchTemplates();
+
+const pending = ref(true);
+
+templatesStore.fetchTemplates().finally(() => {
+  pending.value = false;
+});
 </script>
 
 <template>
@@ -21,12 +26,26 @@ templatesStore.fetchTemplates();
         <span class="col-span-1 text-center">Actions</span>
       </div>
 
-      <div>
-        <PayrollsTemplatesListItem
-          v-for="(template, index) in templatesStore.templates"
-          :key="index"
-          :template="template"
-        ></PayrollsTemplatesListItem>
+      <div v-if="pending" class="border-b">
+        <h3 class="text-slate-400 text-base my-8 text-center">
+          Loading data...
+        </h3>
+      </div>
+
+      <div v-else>
+        <div v-if="templatesStore.templates.length > 0">
+          <PayrollsTemplatesListItem
+            v-for="(template, index) in templatesStore.templates"
+            :key="index"
+            :template="template"
+          ></PayrollsTemplatesListItem>
+        </div>
+        <div v-else class="border-b">
+          <h3 class="text-slate-400 text-base my-8 text-center">
+            No templates found. Create a new template by clicking on "New
+            template" menu.
+          </h3>
+        </div>
       </div>
     </div>
   </div>

@@ -59,7 +59,9 @@ function editOrAddToList() {
     editRecipient.value = false;
   } else {
     // Add new recipient
+    recipientData.value.amount = recipientData.value.amount.replace(",", ".");
     templateRecipients.value.push(recipientData.value);
+
     recipientData.value = {
       item_name: null,
       wallet_address: "",
