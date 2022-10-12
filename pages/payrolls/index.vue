@@ -45,6 +45,20 @@ const templateValid = computed(() => {
   const recipientsValid = templateRecipients.value.length > 0;
   return nameValid && recipientsValid;
 });
+
+function saveTemplate() {
+  templatesStore.addTemplate({
+    template_name: templateName.value,
+    items: templateRecipients.value,
+    chain_id: selectedNetwork.value.chainId,
+    token_address: selectedToken.value.address,
+    asset_type: "TOKEN", // TODO change token type
+  });
+  templateName.value = "";
+  templateRecipients.value = [];
+
+  router.push("/payrolls/templates");
+}
 </script>
 
 <template>
@@ -141,16 +155,7 @@ const templateValid = computed(() => {
       <button
         :disabled="!templateValid"
         class="rounded-full bg-gradient-to-r font-bold from-violet-700 to-purple-500 text-white py-2.5 px-8 text-lg disabled:from-slate-200 disabled:to-slate-200 disabled:text-gray-400"
-        @click="
-          templatesStore.addTemplate({
-            template_name: templateName,
-            items: templateRecipients,
-            chain_id: selectedNetwork.chainId,
-            token_address: selectedToken.address,
-            asset_type: 'TOKEN',
-          });
-          router.push('/payrolls/templates');
-        "
+        @click="saveTemplate"
       >
         <div class="flex items-center gap-2">
           <svg

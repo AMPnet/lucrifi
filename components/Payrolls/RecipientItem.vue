@@ -59,39 +59,54 @@ async function editOrAddToList() {
     (x) => x.id === recipientData.value.id
   );
   if (existingRecipient) {
-    templatesStore
-      .updateTemplateRecipient(
+    try {
+      await templatesStore.updateTemplateRecipient(
         router.params.templateId.toString(),
         existingRecipient.id,
         recipientData.value.wallet_address,
-        recipientData.value.amount
-      )
-      .then(() => {
-        editRecipient.value = false;
-      });
+        recipientData.value.amount,
+        recipientData.value.item_name
+      );
+      editRecipient.value = false;
+    } catch (error) {
+      console.log(error);
+    }
   } else {
-    templatesStore
-      .addTemplateRecipient(router.params.templateId.toString(), {
-        amount: recipientData.value.amount,
-        item_name: recipientData.value.item_name,
-        wallet_address: recipientData.value.wallet_address,
-      })
-      .then(() => {
-        templateRecipients.value.push(recipientData.value);
-      });
+    try {
+      const data = await templatesStore.addTemplateRecipient(
+        router.params.templateId.toString(),
+        {
+          amount: recipientData.value.amount,
+          item_name: recipientData.value.item_name,
+          wallet_address: recipientData.value.wallet_address,
+        }
+      );
+      recipientData.value.id = data.items.pop().id;
+      templateRecipients.value.push(recipientData.value);
+
+      recipientData.value = {
+        item_name: null,
+        wallet_address: "",
+        amount: "",
+        id: Date.now().toString(),
+      };
+    } catch (error) {
+      console.log(error);
+    }
   }
 }
 async function deleteFromList() {
-  templatesStore
-    .removeTemplateRecipient(
+  try {
+    await templatesStore.removeTemplateRecipient(
       router.params.templateId.toString(),
       recipientData.value.id
-    )
-    .then(() => {
-      templateRecipients.value = templateRecipients.value.filter(
-        (x) => x.id !== recipientData.value.id
-      );
-    });
+    );
+    templateRecipients.value = templateRecipients.value.filter(
+      (x) => x.id !== recipientData.value.id
+    );
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 function selectAddressBook(alias: AddressAlias) {

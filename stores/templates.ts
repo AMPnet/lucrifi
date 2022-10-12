@@ -25,52 +25,59 @@ export const useTemplates = defineStore("templatesStore", {
     templates: (state) => state.data,
   },
   actions: {
-    async fetchTemplateDetails(id: string | string[]) {
+    fetchTemplateDetails(id: string | string[]) {
       const wallet = useWallet();
       const runtimeConfig = useRuntimeConfig();
-      const data = await $fetch<TemplateItemWRecipients>(
+      return $fetch<TemplateItemWRecipients>(
         `${runtimeConfig.public.backendUrl}/multi-payment-template/${id}`,
         {
           headers: { Authorization: `Bearer ${wallet.jwt.accessToken}` },
         }
       );
-      return data;
     },
     async fetchTemplates() {
       const wallet = useWallet();
       const runtimeConfig = useRuntimeConfig();
 
       if (wallet.isWalletConnected) {
-        const data = await $fetch<TemplatesFetchList>(
-          `${runtimeConfig.public.backendUrl}/multi-payment-template/by-wallet-address/${wallet.walletAddress}`,
-          {
-            headers: { Authorization: `Bearer ${wallet.jwt.accessToken}` },
-          }
-        );
-        this.data = data.templates;
+        try {
+          const data = await $fetch<TemplatesFetchList>(
+            `${runtimeConfig.public.backendUrl}/multi-payment-template/by-wallet-address/${wallet.walletAddress}`,
+            {
+              headers: { Authorization: `Bearer ${wallet.jwt.accessToken}` },
+            }
+          );
+          this.data = data.templates;
+        } catch (error) {}
       }
     },
     async addTemplate(template: NewTemplate) {
       const wallet = useWallet();
       const runtimeConfig = useRuntimeConfig();
 
-      const data = await $fetch<TemplateItemWRecipients>(
-        `${runtimeConfig.public.backendUrl}/multi-payment-template`,
-        {
-          method: "POST",
-          headers: { Authorization: `Bearer ${wallet.jwt.accessToken}` },
-          body: template,
-        }
-      );
-
-      const newTemplate = { ...template, id: data.id };
-      this.data.push(newTemplate);
+      try {
+        const data = await $fetch<TemplateItemWRecipients>(
+          `${runtimeConfig.public.backendUrl}/multi-payment-template`,
+          {
+            method: "POST",
+            headers: { Authorization: `Bearer ${wallet.jwt.accessToken}` },
+            body: template,
+          }
+        );
+        const newTemplate = {
+          ...template,
+          id: data.id,
+          created_at: data.created_at,
+          updated_at: data.updated_at,
+        };
+        this.data.push(newTemplate);
+      } catch (error) {}
     },
-    async addTemplateRecipient(template_id: string, recipient: NewRecipient) {
+    addTemplateRecipient(template_id: string, recipient: NewRecipient) {
       const wallet = useWallet();
       const runtimeConfig = useRuntimeConfig();
 
-      await $fetch<TemplateItemWRecipients>(
+      return $fetch<TemplateItemWRecipients>(
         `${runtimeConfig.public.backendUrl}/multi-payment-template/${template_id}/items`,
         {
           method: "POST",
@@ -79,11 +86,11 @@ export const useTemplates = defineStore("templatesStore", {
         }
       );
     },
-    async removeTemplateRecipient(template_id: string, recipient_id: string) {
+    removeTemplateRecipient(template_id: string, recipient_id: string) {
       const wallet = useWallet();
       const runtimeConfig = useRuntimeConfig();
 
-      await $fetch<TemplateItemWRecipients>(
+      return $fetch<TemplateItemWRecipients>(
         `${runtimeConfig.public.backendUrl}/multi-payment-template/${template_id}/items/${recipient_id}`,
         {
           method: "DELETE",
@@ -91,19 +98,34 @@ export const useTemplates = defineStore("templatesStore", {
         }
       );
     },
-    async updateTemplateRecipient(
+    updateTemplateRecipient(
       template_id: string,
-      recpient_id: string,
+      recipient_id: string,
       walletAddress: string,
-      amount: string
+      amount: string,
+      itemName: string
     ) {
-      // TODO sync with backend API
+      const wallet = useWallet();
+      const runtimeConfig = useRuntimeConfig();
+
+      return $fetch<TemplateItemWRecipients>(
+        `${runtimeConfig.public.backendUrl}/multi-payment-template/${template_id}/items/${recipient_id}`,
+        {
+          method: "PATCH",
+          headers: { Authorization: `Bearer ${wallet.jwt.accessToken}` },
+          body: {
+            wallet_addres: walletAddress,
+            amount: amount,
+            item_name: itemName,
+          },
+        }
+      );
     },
     async updateTemplate(template_id: string, template_name: string) {
       const wallet = useWallet();
       const runtimeConfig = useRuntimeConfig();
 
-      return await $fetch<TemplateItemWRecipients>(
+      return $fetch<TemplateItemWRecipients>(
         `${runtimeConfig.public.backendUrl}/multi-payment-template/${template_id}`,
         {
           method: "PATCH",
@@ -119,15 +141,17 @@ export const useTemplates = defineStore("templatesStore", {
       const wallet = useWallet();
       const runtimeConfig = useRuntimeConfig();
 
-      await $fetch<TemplateItemWRecipients>(
-        `${runtimeConfig.public.backendUrl}/multi-payment-template/${id}`,
-        {
-          method: "DELETE",
-          headers: { Authorization: `Bearer ${wallet.jwt.accessToken}` },
-        }
-      );
+      try {
+        await $fetch<TemplateItemWRecipients>(
+          `${runtimeConfig.public.backendUrl}/multi-payment-template/${id}`,
+          {
+            method: "DELETE",
+            headers: { Authorization: `Bearer ${wallet.jwt.accessToken}` },
+          }
+        );
 
-      this.data = this.data.filter((x: TemplateItem) => x.id !== id);
+        this.data = this.data.filter((x: TemplateItem) => x.id !== id);
+      } catch (error) {}
     },
   },
 });

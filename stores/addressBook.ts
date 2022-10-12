@@ -26,28 +26,30 @@ export const useAddressBook = defineStore("addressBook", {
       if (wallet.isWalletConnected) {
         const runtimeConfig = useRuntimeConfig();
 
-        const data = await $fetch<addressesList>(
-          `${runtimeConfig.public.backendUrl}/address-book/by-wallet-address/${wallet.walletAddress}`
-        );
-        this.data = data["entries"];
+        try {
+          const data = await $fetch<addressesList>(
+            `${runtimeConfig.public.backendUrl}/address-book/by-wallet-address/${wallet.walletAddress}`
+          );
+          this.data = data["entries"];
+        } catch (error) {}
       }
     },
     async addToAddressBook(address: NewAddressAlias) {
       const runtimeConfig = useRuntimeConfig();
       const wallet = useWallet();
 
-      // TODO sync with backend API
-      const data = await $fetch<AddressAlias>(
-        `${runtimeConfig.public.backendUrl}/address-book/`,
-        {
-          method: "POST",
-          headers: { Authorization: `Bearer ${wallet.jwt.accessToken}` },
-          body: { ...address },
-        }
-      );
-
-      const newAddress = { ...address, id: data.id };
-      this.data.push(newAddress);
+      try {
+        const data = await $fetch<AddressAlias>(
+          `${runtimeConfig.public.backendUrl}/address-book/`,
+          {
+            method: "POST",
+            headers: { Authorization: `Bearer ${wallet.jwt.accessToken}` },
+            body: { ...address },
+          }
+        );
+        const newAddress = { ...address, id: data.id };
+        this.data.push(newAddress);
+      } catch (error) {}
     },
     async editAddressBookItem(
       id: string,
@@ -59,30 +61,34 @@ export const useAddressBook = defineStore("addressBook", {
       const wallet = useWallet();
       const item = this.data.find((x: AddressAlias) => x.id === id);
 
-      await $fetch<AddressAlias>(
-        `${runtimeConfig.public.backendUrl}/address-book/${id}`,
-        {
-          method: "PATCH",
-          headers: { Authorization: `Bearer ${wallet.jwt.accessToken}` },
-          body: { name, email, address },
-        }
-      );
-      item.alias = name;
-      item.email = email;
-      item.address = address;
+      try {
+        await $fetch<AddressAlias>(
+          `${runtimeConfig.public.backendUrl}/address-book/${id}`,
+          {
+            method: "PATCH",
+            headers: { Authorization: `Bearer ${wallet.jwt.accessToken}` },
+            body: { name, email, address },
+          }
+        );
+        item.alias = name;
+        item.email = email;
+        item.address = address;
+      } catch (error) {}
     },
     async removeFromAddressBook(id: String) {
       const runtimeConfig = useRuntimeConfig();
       const wallet = useWallet();
 
-      await $fetch<AddressAlias>(
-        `${runtimeConfig.public.backendUrl}/address-book/${id}`,
-        {
-          method: "DELETE",
-          headers: { Authorization: `Bearer ${wallet.jwt.accessToken}` },
-        }
-      );
-      this.data = this.data.filter((x: AddressAlias) => x.id !== id);
+      try {
+        await $fetch<AddressAlias>(
+          `${runtimeConfig.public.backendUrl}/address-book/${id}`,
+          {
+            method: "DELETE",
+            headers: { Authorization: `Bearer ${wallet.jwt.accessToken}` },
+          }
+        );
+        this.data = this.data.filter((x: AddressAlias) => x.id !== id);
+      } catch (error) {}
     },
   },
 });

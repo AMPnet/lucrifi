@@ -35,14 +35,16 @@ let templateRecipients = useState<Array<Recipient>>(
 
 const templateUpdated = ref(false);
 
-templatesStore.fetchTemplateDetails(route.params.templateId).then((data) => {
+try {
+  const data = await templatesStore.fetchTemplateDetails(
+    route.params.templateId
+  );
   templateName.value = data.template_name;
   templateRecipients.value = data.items;
-
   watch(templateName, (oldName, newName) => {
     templateUpdated.value = oldName !== newName;
   });
-});
+} catch (error) {}
 
 const payrollSum = computed(() => {
   const sum = templateRecipients.value.reduce(
@@ -52,12 +54,16 @@ const payrollSum = computed(() => {
   return new Intl.NumberFormat("en-US").format(sum);
 });
 
-function saveTemplateName() {
-  templatesStore
-    .updateTemplate(route.params.templateId.toString(), templateName.value)
-    .then(() => {
-      templateUpdated.value = false;
-    });
+async function saveTemplateName() {
+  try {
+    await templatesStore.updateTemplate(
+      route.params.templateId.toString(),
+      templateName.value
+    );
+    templateUpdated.value = false;
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 function executePayment() {}
