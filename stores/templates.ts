@@ -140,7 +140,7 @@ export const useTemplates = defineStore("templatesStore", {
           method: "PATCH",
           headers: { Authorization: `Bearer ${wallet.jwt.accessToken}` },
           body: {
-            wallet_addres: walletAddress,
+            wallet_address: walletAddress,
             amount: amount,
             item_name: itemName,
           },

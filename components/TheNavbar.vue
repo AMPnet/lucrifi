@@ -115,9 +115,11 @@ const isOpen = ref(false);
               <span>PAYMENTS </span>
             </div>
           </NuxtLink>
-          <div v-if="walletConnected">
-            <WalletBtn :wallet-addr="wallet.walletAddress" />
-          </div>
+          <ClientOnly>
+            <div v-if="walletConnected">
+              <WalletBtn :wallet-addr="wallet.walletAddress" />
+            </div>
+          </ClientOnly>
         </div>
       </nav>
     </div>

@@ -109,7 +109,13 @@ watch(recipientData, (oldData, newData) => {
       (x) => x.address === newData.wallet_address
     );
     if (alias) {
+      recipientData.value.item_name = alias.alias;
+      return true;
+    } else {
+      return false;
     }
+  } else {
+    return true;
   }
 });
 </script>

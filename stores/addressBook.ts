@@ -67,7 +67,7 @@ export const useAddressBook = defineStore("addressBook", {
           {
             method: "PATCH",
             headers: { Authorization: `Bearer ${wallet.jwt.accessToken}` },
-            body: { name, email, address },
+            body: { alias: name, email, address },
           }
         );
         item.alias = name;

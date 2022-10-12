@@ -59,18 +59,15 @@ export const useWallet = defineStore("walletData", {
       /*
       Fetches redirect URL and request ID that will be used to connect wallet
       */
-
-      const { data: payloadData } = await useFetch<GetPayloadByMessage>(
+      const data = await $fetch<GetPayloadByMessage>(
         "https://eth-staging.ampnet.io/api/identity/authorize/by-message",
         {
-          method: "post",
-          body: {},
-          pick: ["payload"],
+          method: "POST",
         }
       );
 
       const payload = {
-        message_to_sign: payloadData.value.payload,
+        message_to_sign: data.payload,
       };
 
       const networksStore = useNetworksStore();
@@ -79,18 +76,19 @@ export const useWallet = defineStore("walletData", {
         "X-API-KEY": `${apiKey}`,
       };
 
-      const runtimeConfig = useRuntimeConfig();
-      const data = await useFetch<CreateWalletAuthRequest>(
-        `${runtimeConfig.public.backendUrl}/wallet-authorization`,
-        {
-          method: "post",
-          headers: headers,
-          body: payload,
-          pick: ["id", "redirect_url"],
-        }
-      );
-
-      return data;
+      const { public: publicKey } = useRuntimeConfig();
+      try {
+        const walletData = await $fetch<CreateWalletAuthRequest>(
+          `${publicKey.backendUrl}/wallet-authorization`,
+          {
+            method: "post",
+            headers: headers,
+            body: payload,
+          }
+        );
+        this.connectData.id = walletData.id;
+        this.connectData.redirectUrl = walletData.redirect_url;
+      } catch (error) {}
     },
     async connectWallet() {
       const networksStore = useNetworksStore();
