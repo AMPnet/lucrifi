@@ -1,25 +1,9 @@
 <script setup lang="ts">
+import { PropType } from "vue";
+import { MultiSendPaymentListItem } from "@/types/payrolls/MultiSend";
+
 const props = defineProps({
-  templateName: {
-    type: String,
-    required: true,
-  },
-  totalPayment: {
-    type: Number,
-    required: true,
-  },
-  currencySymbol: {
-    type: String,
-    required: true,
-  },
-  processedDate: {
-    type: String,
-    required: true,
-  },
-  status: {
-    type: String,
-    required: true,
-  },
+  payment: Object as PropType<MultiSendPaymentListItem>,
 });
 
 const statusMapping = {
@@ -40,33 +24,29 @@ const statusMapping = {
 const showMenu = ref(false);
 
 const prettyAmount = computed(() => {
-  return new Intl.NumberFormat().format(props.totalPayment);
+  return new Intl.NumberFormat().format(props.payment.totalPayment);
 });
 </script>
 
 <template>
   <div class="bg-white text-gray-700 py-6 px-5 border-b border-slate-200">
     <div class="grid grid-cols-12">
-      <span class="col-span-4 self-center text-sm font-bold">
-        {{ props.templateName }}</span
-      >
-
-      <span class="col-span-2 flex items-center gap-1.5 text-xs">
-        <span>{{ prettyAmount }} {{ props.currencySymbol }}</span>
+      <span class="col-span-4 flex items-center gap-1.5 text-xs">
+        <span>{{ prettyAmount }} {{ props.payment.currencySymbol }}</span>
       </span>
 
       <span class="col-span-2 text-xs text-slate-500 self-center">{{
-        props.processedDate
+        props.payment.processedOn
       }}</span>
 
-      <div class="col-span-2">
+      <div class="col-span-4">
         <div
           class="flex items-center"
-          :class="statusMapping[props.status].class"
+          :class="statusMapping[props.payment.status].class"
         >
           <div class="mr-1">
             <svg
-              v-if="props.status.toLowerCase() === 'success'"
+              v-if="props.payment.status.toLowerCase() === 'success'"
               xmlns="http://www.w3.org/2000/svg"
               class="h-6 w-6"
               fill="none"
@@ -81,7 +61,7 @@ const prettyAmount = computed(() => {
               />
             </svg>
             <svg
-              v-else-if="props.status.toLowerCase() === 'failed'"
+              v-else-if="props.payment.status.toLowerCase() === 'failed'"
               xmlns="http://www.w3.org/2000/svg"
               class="h-6 w-6"
               fill="none"
@@ -111,10 +91,10 @@ const prettyAmount = computed(() => {
               />
             </svg>
           </div>
-          <span>{{ statusMapping[props.status].title }}</span>
+          <span>{{ statusMapping[props.payment.status].title }}</span>
 
           <a
-            v-if="props.status.toLowerCase() === 'success'"
+            v-if="props.payment.status.toLowerCase() === 'success'"
             href="#"
             target="_blank norelopener"
             class="ml-2 rounded-full bg-gray-100 p-1.5 hover:bg-gray-300 text-gray-700"

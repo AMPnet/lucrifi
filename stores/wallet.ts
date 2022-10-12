@@ -146,9 +146,9 @@ export const useWallet = defineStore("walletData", {
           this.jwt.accessToken = jwtData.value.access_token;
           this.jwt.refreshToken = jwtData.value.refresh_token;
 
-          this.jwt.expires = jwtData.value.expires_in * 1000 + Date.now();
+          this.jwt.expires = jwtData.value.expires_in + Date.now();
           this.jwt.refreshTokenExpires =
-            jwtData.value.refresh_token_expires_in * 1000 + Date.now();
+            jwtData.value.refresh_token_expires_in + Date.now();
 
           this.walletAddress = statusData.value.wallet_address;
           this.isConnecting = false;
@@ -162,17 +162,21 @@ export const useWallet = defineStore("walletData", {
     },
 
     async refreshAccessToken() {
-      const { data } = await useFetch<GetJWTByMessage>(
-        "https://eth-staging.ampnet.io/api/identity/authorize/refresh",
-        {
-          method: "post",
-          body: {
-            refresh_token: this.jwt.refreshToken,
-          },
-        }
-      );
-      this.jwt.accessToken = data.value.access_token;
-      this.jwt.expires = data.value.expires_in * 1000 + Date.now();
+      try {
+        const data = await $fetch<GetJWTByMessage>(
+          "https://eth-staging.ampnet.io/api/identity/authorize/refresh",
+          {
+            method: "post",
+            body: {
+              refresh_token: this.jwt.refreshToken,
+            },
+          }
+        );
+        this.jwt.accessToken = data.access_token;
+        this.jwt.expires = data.expires_in + Date.now();
+      } catch (error) {
+        console.log(error);
+      }
     },
 
     disconnectWallet() {

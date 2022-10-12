@@ -28,6 +28,11 @@ export const useTemplates = defineStore("templatesStore", {
     fetchTemplateDetails(id: string | string[]) {
       const wallet = useWallet();
       const runtimeConfig = useRuntimeConfig();
+
+      if (!wallet.accessTokenValid) {
+        wallet.refreshAccessToken();
+      }
+
       return $fetch<TemplateItemWRecipients>(
         `${runtimeConfig.public.backendUrl}/multi-payment-template/${id}`,
         {
@@ -40,6 +45,9 @@ export const useTemplates = defineStore("templatesStore", {
       const runtimeConfig = useRuntimeConfig();
 
       if (wallet.isWalletConnected) {
+        if (!wallet.accessTokenValid) {
+          wallet.refreshAccessToken();
+        }
         try {
           const data = await $fetch<TemplatesFetchList>(
             `${runtimeConfig.public.backendUrl}/multi-payment-template/by-wallet-address/${wallet.walletAddress}`,
@@ -54,6 +62,10 @@ export const useTemplates = defineStore("templatesStore", {
     async addTemplate(template: NewTemplate) {
       const wallet = useWallet();
       const runtimeConfig = useRuntimeConfig();
+
+      if (!wallet.accessTokenValid) {
+        wallet.refreshAccessToken();
+      }
 
       try {
         const data = await $fetch<TemplateItemWRecipients>(
@@ -77,6 +89,10 @@ export const useTemplates = defineStore("templatesStore", {
       const wallet = useWallet();
       const runtimeConfig = useRuntimeConfig();
 
+      if (!wallet.accessTokenValid) {
+        wallet.refreshAccessToken();
+      }
+
       return $fetch<TemplateItemWRecipients>(
         `${runtimeConfig.public.backendUrl}/multi-payment-template/${template_id}/items`,
         {
@@ -89,6 +105,10 @@ export const useTemplates = defineStore("templatesStore", {
     removeTemplateRecipient(template_id: string, recipient_id: string) {
       const wallet = useWallet();
       const runtimeConfig = useRuntimeConfig();
+
+      if (!wallet.accessTokenValid) {
+        wallet.refreshAccessToken();
+      }
 
       return $fetch<TemplateItemWRecipients>(
         `${runtimeConfig.public.backendUrl}/multi-payment-template/${template_id}/items/${recipient_id}`,
@@ -108,6 +128,10 @@ export const useTemplates = defineStore("templatesStore", {
       const wallet = useWallet();
       const runtimeConfig = useRuntimeConfig();
 
+      if (!wallet.accessTokenValid) {
+        wallet.refreshAccessToken();
+      }
+
       return $fetch<TemplateItemWRecipients>(
         `${runtimeConfig.public.backendUrl}/multi-payment-template/${template_id}/items/${recipient_id}`,
         {
@@ -125,6 +149,10 @@ export const useTemplates = defineStore("templatesStore", {
       const wallet = useWallet();
       const runtimeConfig = useRuntimeConfig();
 
+      if (!wallet.accessTokenValid) {
+        wallet.refreshAccessToken();
+      }
+
       return $fetch<TemplateItemWRecipients>(
         `${runtimeConfig.public.backendUrl}/multi-payment-template/${template_id}`,
         {
@@ -140,6 +168,10 @@ export const useTemplates = defineStore("templatesStore", {
     async removeTemplate(id: string) {
       const wallet = useWallet();
       const runtimeConfig = useRuntimeConfig();
+
+      if (!wallet.accessTokenValid) {
+        wallet.refreshAccessToken();
+      }
 
       try {
         await $fetch<TemplateItemWRecipients>(
