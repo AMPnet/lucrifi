@@ -33,6 +33,6 @@
     "qrcode.vue": "^3.3.3",
     "vee-validate": "^4.5.11",
     "vue-gtag": "^2.0.1",
-    "vue-tsc": "^0.40.13"
+    "vue-tsc": "^1.0.6"
   }
 }

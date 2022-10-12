@@ -89,7 +89,12 @@ const recipientInAddressBook = computed(() => {
         x.address.toLowerCase() ===
         recipientData.value.wallet_address.toLowerCase()
     );
-    return true ? alias : false;
+    if (alias) {
+      recipientData.value.item_name = alias.alias;
+      return true;
+    } else {
+      return false;
+    }
   } else {
     return true;
   }
@@ -97,6 +102,16 @@ const recipientInAddressBook = computed(() => {
 
 const showSearchAddressBookModal = ref(false);
 const showAddAliasModal = ref(false);
+
+watch(recipientData, (oldData, newData) => {
+  if (oldData.wallet_address !== newData.wallet_address) {
+    const alias = addressBook.aliases.find(
+      (x) => x.address === newData.wallet_address
+    );
+    if (alias) {
+    }
+  }
+});
 </script>
 
 <template>
@@ -134,11 +149,9 @@ const showAddAliasModal = ref(false);
           <div
             v-if="recipientData.item_name"
             class="flex items-center w-full gap-3"
+            @click="recipientData.item_name = null"
           >
-            <span
-              :title="recipientData.wallet_address"
-              @click="recipientData.item_name = null"
-            >
+            <span :title="recipientData.wallet_address">
               {{ shortAddr(recipientData.wallet_address, 5, 4) }}
             </span>
             <span class="font-bold">{{ recipientData.item_name }}</span>

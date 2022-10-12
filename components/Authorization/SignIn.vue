@@ -8,7 +8,7 @@ function connectWallet() {
   wallet.connectWallet();
 }
 
-const pending = ref(false);
+const pending = ref(wallet.connectData.redirectUrl.length === 0);
 
 if (!wallet.isWalletConnected) {
   pending.value = true;

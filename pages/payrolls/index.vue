@@ -46,7 +46,7 @@ const templateValid = computed(() => {
   return nameValid && recipientsValid;
 });
 
-function saveTemplate() {
+async function saveTemplate() {
   // Convert amounts to Solidity supported amounts
   const itemsSolAmounts = templateRecipients.value.map((item) => {
     const solAmount = decimalToSolNumber(
@@ -56,21 +56,24 @@ function saveTemplate() {
     item.amount = solAmount;
     return item;
   });
-  templatesStore.addTemplate({
-    template_name: templateName.value,
-    items: itemsSolAmounts,
-    chain_id: selectedNetwork.value.chainId,
-    token_address: selectedToken.value.address,
-    asset_type:
-      selectedToken.value.address ===
-      "0x0000000000000000000000000000000000000000"
-        ? "NATIVE"
-        : "TOKEN",
-  });
-  templateName.value = "";
-  templateRecipients.value = [];
 
-  router.push("/payrolls/templates");
+  try {
+    templatesStore.addTemplate({
+      template_name: templateName.value,
+      items: itemsSolAmounts,
+      chain_id: selectedNetwork.value.chainId,
+      token_address: selectedToken.value.address,
+      asset_type:
+        selectedToken.value.address ===
+        "0x0000000000000000000000000000000000000000"
+          ? "NATIVE"
+          : "TOKEN",
+    });
+    templateName.value = "";
+    templateRecipients.value = [];
+
+    router.push("/payrolls/templates");
+  } catch (error) {}
 }
 </script>
 

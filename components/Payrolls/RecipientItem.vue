@@ -130,7 +130,12 @@ const recipientInAddressBook = computed(() => {
         x.address.toLowerCase() ===
         recipientData.value.wallet_address.toLowerCase()
     );
-    return true ? alias : false;
+    if (alias) {
+      recipientData.value.item_name = alias.alias;
+      return true;
+    } else {
+      return false;
+    }
   } else {
     return true;
   }

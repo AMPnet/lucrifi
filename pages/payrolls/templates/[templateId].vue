@@ -89,8 +89,19 @@ async function saveTemplateName() {
   }
 }
 
-function executePayment() {
-  // TODO
+async function executePayment() {
+  const assetType =
+    selectedToken.value.address === "0x0000000000000000000000000000000000000000"
+      ? "NATIVE"
+      : "TOKEN";
+
+  try {
+    const data = await templatesStore.executeTemplatePayment(
+      templateRecipients.value,
+      assetType
+    );
+    console.log("multi payment status", data.approve_status);
+  } catch (error) {}
 }
 </script>
 

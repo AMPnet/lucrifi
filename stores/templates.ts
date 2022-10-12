@@ -4,8 +4,10 @@ import {
   TemplateItem,
   NewTemplate,
   NewRecipient,
+  Recipient,
 } from "@/types/payrolls/TemplateData";
 import { useWallet } from "@/stores/wallet";
+import { MultiSendPayment } from "@/types/payrolls/MultiSend";
 
 interface TemplateItems {
   data: Array<TemplateItem>;
@@ -184,6 +186,24 @@ export const useTemplates = defineStore("templatesStore", {
 
         this.data = this.data.filter((x: TemplateItem) => x.id !== id);
       } catch (error) {}
+    },
+
+    executeTemplatePayment(items: Recipient[], assetType: "TOKEN" | "NATIVE") {
+      const wallet = useWallet();
+      const runtimeConfig = useRuntimeConfig();
+
+      return $fetch<MultiSendPayment>(
+        `${runtimeConfig.public.backendUrl}/multi-send`,
+        {
+          method: "POST",
+          headers: { Authorization: `Bearer ${wallet.jwt.accessToken}` },
+          body: {
+            asset_type: assetType,
+            items: items,
+            disperse_contract_address: "TODO",
+          },
+        }
+      );
     },
   },
 });

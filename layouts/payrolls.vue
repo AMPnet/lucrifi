@@ -29,5 +29,6 @@ let wallet = useWallet();
         <AuthorizationSignIn />
       </div>
     </div>
+    <TheFooter />
   </div>
 </template>
