@@ -10,9 +10,9 @@ export interface Recipient extends NewRecipient {
 export interface NewTemplate {
   template_name: string;
   chain_id: number;
-  token_address: string;
   asset_type: "NATIVE" | "TOKEN";
   items: Array<NewRecipient>;
+  token_address: string | undefined;
 }
 
 export interface TemplateItem {
@@ -28,4 +28,12 @@ export interface TemplateItem {
 
 export interface TemplateItemWRecipients extends TemplateItem {
   items: Array<Recipient>;
+}
+
+export interface UpdateTemplate {
+  id: string;
+  template_name: string;
+  asset_type: "NATIVE" | "TOKEN";
+  chain_id: number;
+  token_address: string | undefined;
 }

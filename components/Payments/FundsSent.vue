@@ -37,9 +37,7 @@ const noData = computed(() => !pending.value && requests.value.length === 0);
     <div v-if="!pending" v-for="request of requests" :key="request.id">
       <PaymentsSentListItem
         :amount="request.amount"
-        :token-address="
-          request.token_address || '0x0000000000000000000000000000000000000000'
-        "
+        :token-address="request.token_address || NATIVE_TOKEN_ADDR"
         :chain-id="request.chain_id"
         :to-wallet-addr="request.recipient_address"
         :status="request.status"

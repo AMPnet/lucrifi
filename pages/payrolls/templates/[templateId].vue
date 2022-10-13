@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useTokensStore } from "@/stores/tokens";
 import { useNetworksStore } from "@/stores/networks";
-import { Recipient } from "@/types/payrolls/TemplateData";
+import { Recipient, UpdateTemplate } from "@/types/payrolls/TemplateData";
 import { useTemplates } from "@/stores/templates";
 import { useAddressBook } from "@/stores/addressBook";
 
@@ -43,8 +43,13 @@ try {
   templateName.value = data.template_name;
 
   selectedNetwork.value = networks.find((x) => x.chainId === data.chain_id);
+
+  let tokenAddr = NATIVE_TOKEN_ADDR;
+  if (data.asset_type === "TOKEN") {
+    tokenAddr = data.token_address;
+  }
   selectedToken.value = filteredTokenList.value.find(
-    (token) => token.address.toLowerCase() === data.token_address.toLowerCase()
+    (token) => token.address.toLowerCase() === tokenAddr
   );
 
   const itemsDecimalAmounts = data.items.map((item) => {
@@ -61,7 +66,9 @@ try {
   watch(templateName, (oldName, newName) => {
     templateUpdated.value = oldName !== newName;
   });
-} catch (error) {}
+} catch (error) {
+  console.log(error);
+}
 
 const payrollSum = computed(() => {
   const sum = templateRecipients.value.reduce(
@@ -78,11 +85,16 @@ const templateExecutable = computed(() => {
 });
 
 async function saveTemplateName() {
+  const template: UpdateTemplate = {
+    template_name: templateName.value,
+    id: route.params.templateId.toString(),
+    asset_type:
+      selectedToken.value.address === NATIVE_TOKEN_ADDR ? "NATIVE" : "TOKEN",
+    chain_id: selectedNetwork.value.chainId,
+    token_address: selectedToken.value.address,
+  };
   try {
-    await templatesStore.updateTemplate(
-      route.params.templateId.toString(),
-      templateName.value
-    );
+    await templatesStore.updateTemplate(template);
     templateUpdated.value = false;
   } catch (error) {
     console.log(error);
@@ -91,9 +103,7 @@ async function saveTemplateName() {
 
 async function executePayment() {
   const assetType =
-    selectedToken.value.address === "0x0000000000000000000000000000000000000000"
-      ? "NATIVE"
-      : "TOKEN";
+    selectedToken.value.address === NATIVE_TOKEN_ADDR ? "NATIVE" : "TOKEN";
 
   try {
     const data = await templatesStore.executeTemplatePayment(

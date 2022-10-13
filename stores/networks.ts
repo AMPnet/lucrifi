@@ -13,7 +13,7 @@ export const useNetworksStore = defineStore("networksList", {
           chainId: 80001,
           rpcURL: undefined,
           apiKey: publicKey.mumbaiApiKey,
-          blockExplorerUrl: "https://polygonscan.com/tx",
+          blockExplorerUrl: "https://mumbai.polygonscan.com/tx",
         },
         {
           name: "Polygon",

@@ -5,6 +5,7 @@ import {
   NewTemplate,
   NewRecipient,
   Recipient,
+  UpdateTemplate,
 } from "@/types/payrolls/TemplateData";
 import { useWallet } from "@/stores/wallet";
 import { MultiSendPayment } from "@/types/payrolls/MultiSend";
@@ -69,13 +70,18 @@ export const useTemplates = defineStore("templatesStore", {
         wallet.refreshAccessToken();
       }
 
+      const payload = template;
+      if (template.asset_type === "NATIVE") {
+        delete payload.token_address;
+      }
+
       try {
         const data = await $fetch<TemplateItemWRecipients>(
           `${runtimeConfig.public.backendUrl}/multi-payment-template`,
           {
             method: "POST",
             headers: { Authorization: `Bearer ${wallet.jwt.accessToken}` },
-            body: template,
+            body: payload,
           }
         );
         const newTemplate = {
@@ -147,22 +153,29 @@ export const useTemplates = defineStore("templatesStore", {
         }
       );
     },
-    async updateTemplate(template_id: string, template_name: string) {
+    async updateTemplate(templateData: UpdateTemplate) {
       const wallet = useWallet();
       const runtimeConfig = useRuntimeConfig();
 
       if (!wallet.accessTokenValid) {
         wallet.refreshAccessToken();
       }
+      const payload = {
+        template_name: templateData.template_name,
+        asset_type: templateData.asset_type,
+        chain_id: templateData.chain_id,
+      };
+
+      if (templateData.asset_type === "TOKEN") {
+        payload["token_address"] = templateData.token_address;
+      }
 
       return $fetch<TemplateItemWRecipients>(
-        `${runtimeConfig.public.backendUrl}/multi-payment-template/${template_id}`,
+        `${runtimeConfig.public.backendUrl}/multi-payment-template/${templateData.id}`,
         {
           method: "PATCH",
           headers: { Authorization: `Bearer ${wallet.jwt.accessToken}` },
-          body: {
-            template_name: template_name,
-          },
+          body: payload,
         }
       );
     },

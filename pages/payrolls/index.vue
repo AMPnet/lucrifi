@@ -3,7 +3,7 @@ import { useTokensStore } from "@/stores/tokens";
 import { useNetworksStore } from "@/stores/networks";
 import { useTemplates } from "@/stores/templates";
 import { useAddressBook } from "@/stores/addressBook";
-import { Recipient } from "@/types/payrolls/TemplateData";
+import { NewTemplate, Recipient } from "@/types/payrolls/TemplateData";
 
 definePageMeta({
   layout: "payrolls",
@@ -57,18 +57,19 @@ async function saveTemplate() {
     return item;
   });
 
+  const assetType =
+    selectedToken.value.address === NATIVE_TOKEN_ADDR ? "NATIVE" : "TOKEN";
+
+  const newTemplate: NewTemplate = {
+    template_name: templateName.value,
+    items: itemsSolAmounts,
+    chain_id: selectedNetwork.value.chainId,
+    asset_type: assetType,
+    token_address: selectedToken.value.address,
+  };
+
   try {
-    templatesStore.addTemplate({
-      template_name: templateName.value,
-      items: itemsSolAmounts,
-      chain_id: selectedNetwork.value.chainId,
-      token_address: selectedToken.value.address,
-      asset_type:
-        selectedToken.value.address ===
-        "0x0000000000000000000000000000000000000000"
-          ? "NATIVE"
-          : "TOKEN",
-    });
+    templatesStore.addTemplate(newTemplate);
     templateName.value = "";
     templateRecipients.value = [];
 

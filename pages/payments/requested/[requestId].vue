@@ -32,6 +32,7 @@ const { data: requestData } = await useFetch<FetchSendRequestResponse>(
   `${runtimeConfig.public.backendUrl}/send/${route.params.requestId}`,
   {
     headers: headers,
+    key: route.params.requestId.toString(),
   }
 );
 
