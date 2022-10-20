@@ -3,7 +3,6 @@ import { useTokensStore } from "@/stores/tokens";
 import { useNetworksStore } from "@/stores/networks";
 import { Recipient, UpdateTemplate } from "@/types/payrolls/TemplateData";
 import { useTemplates } from "@/stores/templates";
-import { FunctionCallResponse } from "@/types/ampnet/FunctionCall";
 import { useAddressBook } from "@/stores/addressBook";
 
 definePageMeta({

@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { Ref } from "vue";
 import { useWallet } from "@/stores/wallet";
+import { useTokensStore } from "@/stores/tokens";
+import { useNetworksStore } from "@/stores/networks";
 import {
   MultiSendPayment,
   MultiSendPaymentListItem,
 } from "@/types/payrolls/MultiSend";
-import { useTokensStore } from "@/stores/tokens";
 import { parseDatetime } from "@/composables/util";
 
 definePageMeta({
@@ -16,7 +17,6 @@ interface MultiSendResponse {
   requests: Array<MultiSendPayment>;
 }
 
-const tokensStore = useTokensStore();
 const wallet = useWallet();
 const runtimeConfig = useRuntimeConfig();
 
@@ -26,27 +26,56 @@ onMounted(() => {
   }
 });
 
-const { data, error, pending } = await useFetch<MultiSendResponse>(
-  `${runtimeConfig.public.backendUrl}/multi-send/by-sender/${wallet.walletAddress}`
-);
+const networkStore = useNetworksStore();
+const tokensListStore = useTokensStore();
 
 const prevPayments: Ref<Array<MultiSendPaymentListItem>> = ref([]);
 
+const { data, pending } = useFetch<MultiSendResponse>(
+  `${runtimeConfig.public.backendUrl}/multi-send/by-sender/${wallet.walletAddress}`,
+  {
+    key: String(Date.now()),
+  }
+);
+
 watch(data, (newData) => {
   for (const request of newData.requests) {
+    const network = networkStore.networksList.find(
+      (network) => network.chainId == request.chain_id
+    );
+    const tokensList = tokensListStore.tokensList(network.chainId);
+    const token = tokensList.find(
+      (token) => token.address.toLowerCase() === request.token_address
+    );
+
     const totalPayment = request.items.reduce(
-      (a, b) => a + Number(b.amount),
+      (a, b) => a + Number(solNumberToDecimal(b.amount, token.decimals)),
       0
     );
-    const tokensList = tokensStore.tokensList(request.chain_id);
-    const token = tokensList.find(
-      (x) => x.address.toLowerCase() === request.token_address.toLowerCase()
-    );
+
+    let status = "PENDING_APPROVE";
+    if (
+      request.approve_status === "FAILED" ||
+      request.disperse_status === "FAILED"
+    ) {
+      status = "FAILED";
+    } else if (
+      request.approve_status === "SUCCESS" &&
+      request.disperse_status === "SUCCESS"
+    ) {
+      status = "SUCCESS";
+    } else if (
+      request.approve_status === "SUCCESS" &&
+      request.disperse_status === "PENDING"
+    ) {
+      status = "PENDING_EXECUTION";
+    }
+
     const payment = {
       totalPayment: totalPayment,
       currencySymbol: token.symbol,
       processedOn: parseDatetime(request.created_at),
-      status: request.approve_status,
+      status: status,
     };
     prevPayments.value.push(payment);
   }
@@ -75,13 +104,10 @@ watch(data, (newData) => {
           <PayrollsPreviousPayment
             v-for="(payment, index) in prevPayments"
             :key="index"
-            :total-payment="payment.totalPayment"
-            :currency-symbol="payment.currencySymbol"
-            :processed-date="payment.processedOn"
-            :status="payment.status"
+            :payment="payment"
           ></PayrollsPreviousPayment>
         </div>
-        <div class="border-b border-slate-200">
+        <div v-else class="border-b border-slate-200">
           <h3 class="text-center text-base my-8 text-slate-400">
             No previous payments found
           </h3>

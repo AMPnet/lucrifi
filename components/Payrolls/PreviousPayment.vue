@@ -11,8 +11,12 @@ const statusMapping = {
     title: "Paid",
     class: "text-green-400",
   },
-  PENDING: {
-    title: "Waiting payment",
+  PENDING_APPROVE: {
+    title: "Pending Authorization",
+    class: "text-gray-400",
+  },
+  PENDING_EXECUTION: {
+    title: "Pending Execution",
     class: "text-gray-400",
   },
   FAILED: {
