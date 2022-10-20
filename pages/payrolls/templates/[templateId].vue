@@ -3,6 +3,7 @@ import { useTokensStore } from "@/stores/tokens";
 import { useNetworksStore } from "@/stores/networks";
 import { Recipient, UpdateTemplate } from "@/types/payrolls/TemplateData";
 import { useTemplates } from "@/stores/templates";
+import { FunctionCallResponse } from "@/types/ampnet/FunctionCall";
 import { useAddressBook } from "@/stores/addressBook";
 
 definePageMeta({
@@ -101,17 +102,66 @@ async function saveTemplateName() {
   }
 }
 
-async function executePayment() {
+const multiSendId = ref("");
+const paymentLoading = ref(false);
+
+async function authorizePayment() {
   const assetType =
     selectedToken.value.address === NATIVE_TOKEN_ADDR ? "NATIVE" : "TOKEN";
 
-  try {
-    const data = await templatesStore.executeTemplatePayment(
-      templateRecipients.value,
-      assetType
+  const sumSol = decimalToSolNumber(
+    String(payrollSum.value),
+    selectedToken.value.decimals
+  );
+  const itemsSol = templateRecipients.value.map((item) => {
+    const decimalAmount = decimalToSolNumber(
+      item.amount,
+      selectedToken.value.decimals
     );
-    console.log("multi payment status", data.approve_status);
-  } catch (error) {}
+    const newData = { ...item }; // must create a copy otherwise the ref is modified in place
+    newData.amount = decimalAmount;
+    return newData;
+  });
+
+  paymentLoading.value = true;
+  try {
+    const data = await templatesStore.createMultiPayment(
+      itemsSol,
+      assetType,
+      "0xb853e8b0dc7542391f095070a75af57e3f0427be",
+      selectedToken.value.address,
+      sumSol
+    );
+    multiSendId.value = data;
+  } catch (error) {
+    multiSendId.value = "";
+    console.log(error);
+  } finally {
+    paymentLoading.value = false;
+  }
+}
+
+async function executePayment() {
+  const addresses = templateRecipients.value.map((x) => x.wallet_address);
+  const amounts = templateRecipients.value.map((x) =>
+    decimalToSolNumber(x.amount, selectedToken.value.decimals)
+  );
+
+  paymentLoading.value = true;
+  try {
+    await templatesStore.disperseFunctionCall(
+      "05dcc94a-1a96-4309-957c-36a31eb1e840",
+      selectedToken.value.address,
+      addresses,
+      amounts,
+      multiSendId.value
+    );
+  } catch (err) {
+    console.error(err);
+  } finally {
+    multiSendId.value = "";
+    paymentLoading.value = false;
+  }
 }
 </script>
 
@@ -167,11 +217,60 @@ async function executePayment() {
 
     <div class="flex justify-start">
       <button
-        :disabled="!templateExecutable"
+        v-if="multiSendId.length === 0"
+        :disabled="!templateExecutable || paymentLoading"
+        class="rounded-full bg-gradient-to-r font-bold from-violet-700 to-purple-500 text-white py-2.5 px-12 text-lg disabled:from-slate-200 disabled:to-slate-200 disabled:text-gray-400"
+        @click="authorizePayment"
+      >
+        <div v-if="paymentLoading" class="flex items-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-5 h-5 animate-spin mr-2"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"
+            />
+          </svg>
+
+          <span>Authorizing</span>
+        </div>
+        <div v-else>
+          <span>Step 1: Authorize</span>
+        </div>
+      </button>
+
+      <button
+        v-else
+        :disabled="paymentLoading"
         class="rounded-full bg-gradient-to-r font-bold from-violet-700 to-purple-500 text-white py-2.5 px-12 text-lg disabled:from-slate-200 disabled:to-slate-200 disabled:text-gray-400"
         @click="executePayment"
       >
-        <span>Execute Payment</span>
+        <div v-if="paymentLoading" class="flex items-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-5 h-5 animate-spin mr-2"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"
+            />
+          </svg>
+          <span>Executing</span>
+        </div>
+        <div v-else>
+          <span>Step 2: Execute payment</span>
+        </div>
       </button>
     </div>
   </div>

@@ -9,6 +9,8 @@ import {
 } from "@/types/payrolls/TemplateData";
 import { useWallet } from "@/stores/wallet";
 import { MultiSendPayment } from "@/types/payrolls/MultiSend";
+import { useNetworksStore } from "@/stores/networks";
+import { FunctionCallResponse } from "@/types/ampnet/FunctionCall";
 
 interface TemplateItems {
   data: Array<TemplateItem>;
@@ -201,22 +203,170 @@ export const useTemplates = defineStore("templatesStore", {
       } catch (error) {}
     },
 
-    executeTemplatePayment(items: Recipient[], assetType: "TOKEN" | "NATIVE") {
-      const wallet = useWallet();
+    async createMultiPayment(
+      items: Recipient[],
+      assetType: "TOKEN" | "NATIVE",
+      disperseAddress: string,
+      tokenAddress: string | undefined,
+      tokenSum: string
+    ): Promise<string> {
       const runtimeConfig = useRuntimeConfig();
 
-      return $fetch<MultiSendPayment>(
+      const networksStore = useNetworksStore();
+      const apiKey = networksStore.networksList[0].apiKey;
+      const headers = {
+        "X-API-KEY": `${apiKey}`,
+      };
+
+      const payload = {
+        asset_type: assetType,
+        items: items,
+        disperse_contract_address: disperseAddress,
+      };
+
+      if (assetType === "TOKEN") {
+        payload["token_address"] = tokenAddress;
+      }
+
+      const multiSendResp = await $fetch<MultiSendPayment>(
         `${runtimeConfig.public.backendUrl}/multi-send`,
         {
           method: "POST",
-          headers: { Authorization: `Bearer ${wallet.jwt.accessToken}` },
-          body: {
-            asset_type: assetType,
-            items: items,
-            disperse_contract_address: "TODO",
-          },
+          headers: headers,
+          body: payload,
         }
       );
+
+      const callPayload = {
+        deployed_contract_id: "c0e6bd39-b3f2-4b60-b8a5-d6b694855524",
+        function_name: "approve",
+        function_params: [
+          {
+            type: "address",
+            value: disperseAddress,
+          },
+          {
+            type: "uint256",
+            value: tokenSum,
+          },
+        ],
+        eth_amount: "0",
+      };
+
+      const callData = await $fetch<FunctionCallResponse>(
+        `${runtimeConfig.public.backendUrl}/function-call`,
+        {
+          method: "POST",
+          headers: headers,
+          body: callPayload,
+        }
+      );
+
+      window.open(callData.redirect_url, "_blank");
+
+      let statusData: FunctionCallResponse;
+      let status: string = callData.status;
+
+      while (status === "PENDING") {
+        statusData = await $fetch<FunctionCallResponse>(
+          `${runtimeConfig.public.backendUrl}/function-call/${callData.id}`,
+          {
+            headers: headers,
+          }
+        );
+        status = statusData.status;
+        await new Promise((r) => setTimeout(r, 1500));
+      }
+
+      if (statusData.status === "SUCCESS") {
+        await $fetch(
+          `${runtimeConfig.public.backendUrl}/multi-send/${multiSendResp.id}/approve`,
+          {
+            method: "PUT",
+            headers: headers,
+            body: {
+              tx_hash: statusData.function_call_tx.tx_hash,
+              caller_address: statusData.caller_address,
+            },
+          }
+        );
+        return multiSendResp.id;
+      } else {
+        throwError("Received non success status");
+      }
+    },
+
+    async disperseFunctionCall(
+      contractAddr: string,
+      tokenAddr: string,
+      addresses: string[],
+      amounts: string[],
+      multiSendId: string
+    ) {
+      const callPayload = {
+        deployed_contract_id: contractAddr,
+        function_name: "disperseToken",
+        function_params: [
+          {
+            type: "address",
+            value: tokenAddr,
+          },
+          {
+            type: "address[]",
+            value: addresses,
+          },
+          {
+            type: "uint256[]",
+            value: amounts,
+          },
+        ],
+        eth_amount: "0",
+      };
+
+      const runtimeConfig = useRuntimeConfig();
+
+      const networksStore = useNetworksStore();
+      const apiKey = networksStore.networksList[0].apiKey;
+      const headers = {
+        "X-API-KEY": `${apiKey}`,
+      };
+
+      let disperseStatus = await $fetch<FunctionCallResponse>(
+        `${runtimeConfig.public.backendUrl}/function-call`,
+        {
+          method: "POST",
+          headers: headers,
+          body: callPayload,
+        }
+      );
+
+      window.open(disperseStatus.redirect_url, "_blank");
+
+      while (disperseStatus.status === "PENDING") {
+        disperseStatus = await $fetch<FunctionCallResponse>(
+          `${runtimeConfig.public.backendUrl}/function-call/${disperseStatus.id}`,
+          {
+            headers: headers,
+          }
+        );
+        await new Promise((r) => setTimeout(r, 1500));
+      }
+
+      if (disperseStatus.status === "SUCCESS") {
+        await $fetch(
+          `${runtimeConfig.public.backendUrl}/multi-send/${multiSendId}/disperse`,
+          {
+            method: "PUT",
+            headers: headers,
+            body: {
+              tx_hash: disperseStatus.function_call_tx.tx_hash,
+              caller_address: disperseStatus.caller_address,
+            },
+          }
+        );
+      } else {
+        throwError("Received non success status");
+      }
     },
   },
 });
