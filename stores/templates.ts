@@ -60,7 +60,15 @@ export const useTemplates = defineStore("templatesStore", {
               headers: { Authorization: `Bearer ${wallet.jwt.accessToken}` },
             }
           );
-          this.data = data.templates;
+
+          this.data = data.templates.sort((a, b) => {
+            if (a.created_at && b.created_at) {
+              const date1 = Date.parse(a.created_at);
+              const date2 = Date.parse(b.created_at);
+              return date2 - date1;
+            }
+            return 0;
+          });
         } catch (error) {}
       }
     },

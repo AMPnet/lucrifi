@@ -85,7 +85,7 @@ const isValidData = computed(() => {
                 />
               </div>
               <div>
-                <h4 class="font-bold text-sm">Name</h4>
+                <h4 class="font-bold text-sm">Alias</h4>
                 <input
                   class="w-full px-4 py-3 mt-3 border border-slate-300 rounded focus:outline-none text-sm"
                   v-model="name"

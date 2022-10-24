@@ -58,6 +58,12 @@ async function editOrAddToList() {
   const existingRecipient = templateRecipients.value.find(
     (x) => x.id === recipientData.value.id
   );
+  const alias = addressBook.aliases.find(
+    (x) => x.address === recipientData.value.wallet_address
+  );
+  if (alias) {
+    recipientData.value.item_name = alias.alias;
+  }
   if (existingRecipient) {
     try {
       await templatesStore.updateTemplateRecipient(
@@ -318,7 +324,7 @@ const showAddAliasModal = ref(false);
       <div
         class="grid grid-cols-12 items-center w-full gap-x-2 p-2 rounded-lg text-sm"
       >
-        <div class="col-span-5 flex items-center gap-2">
+        <div class="col-span-8 flex items-center gap-2">
           <svg
             class="w-5 h-5 stroke-current"
             fill="none"
@@ -344,7 +350,7 @@ const showAddAliasModal = ref(false);
           </div>
         </div>
 
-        <div class="flex items-center col-span-7">
+        <div class="flex items-center col-span-4">
           <img :src="`/tokens/${selectedToken.logoURI}`" class="h-5 w-5 mr-2" />
           <span class="font-bold mr-3">{{ selectedToken.symbol }}</span>
           <span>

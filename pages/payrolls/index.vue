@@ -38,7 +38,10 @@ const templateRecipients = useState<Array<Recipient>>(
   () => []
 );
 
-const templateName = useState<string>("newTemplateName", () => "");
+const templateName = useState<string>(
+  "newTemplateName",
+  () => "Untitled Template"
+);
 
 const templateValid = computed(() => {
   const nameValid = templateName.value.length > 0;

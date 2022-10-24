@@ -96,7 +96,7 @@ const showAddAliasModal = ref(false);
       <div
         class="bg-slate-100 rounded-t-md text-black font-bold text-sm grid grid-cols-9 py-4 px-5"
       >
-        <span class="col-span-4">Name</span>
+        <span class="col-span-4">Alias</span>
         <span class="col-span-2">Address</span>
         <span class="col-span-2">Email</span>
         <span class="col-span-1 text-center">Actions</span>

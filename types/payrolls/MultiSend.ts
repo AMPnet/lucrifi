@@ -63,4 +63,6 @@ export interface MultiSendPaymentListItem {
   currencySymbol: string;
   processedOn: string;
   status: string;
+  chainId: number;
+  txHash: string | undefined;
 }

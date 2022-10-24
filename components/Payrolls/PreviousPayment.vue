@@ -1,10 +1,16 @@
 <script setup lang="ts">
 import { PropType } from "vue";
 import { MultiSendPaymentListItem } from "@/types/payrolls/MultiSend";
+import { useNetworksStore } from "@/stores/networks";
 
 const props = defineProps({
   payment: Object as PropType<MultiSendPaymentListItem>,
 });
+
+const networkStore = useNetworksStore();
+const network = networkStore.networksList.find(
+  (x) => x.chainId === props.payment.chainId
+);
 
 const statusMapping = {
   SUCCESS: {
@@ -99,7 +105,7 @@ const prettyAmount = computed(() => {
 
           <a
             v-if="props.payment.status.toLowerCase() === 'success'"
-            href="#"
+            :href="`${network.blockExplorerUrl}/${props.payment.txHash}`"
             target="_blank norelopener"
             class="ml-2 rounded-full bg-gray-100 p-1.5 hover:bg-gray-300 text-gray-700"
           >

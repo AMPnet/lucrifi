@@ -194,10 +194,6 @@ async function executePayment() {
 
         <span>Save</span>
       </button>
-
-      <div class="px-4 py-2 bg-indigo-100 rounded-xl font-bold text-sm">
-        <span>Total: {{ payrollSum }} {{ selectedToken.symbol }} </span>
-      </div>
     </div>
 
     <div class="mb-4" v-show="templateRecipients">
@@ -212,6 +208,10 @@ async function executePayment() {
 
     <div class="mb-10">
       <PayrollsRecipientItem></PayrollsRecipientItem>
+    </div>
+
+    <div class="px-6 mb-3 py-1 bg-indigo-100 rounded-xl text-lg w-fit">
+      <span>Total: {{ payrollSum }} {{ selectedToken.symbol }} </span>
     </div>
 
     <div class="flex justify-start">

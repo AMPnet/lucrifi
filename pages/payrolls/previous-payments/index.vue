@@ -76,6 +76,8 @@ watch(data, (newData) => {
       currencySymbol: token.symbol,
       processedOn: parseDatetime(request.created_at),
       status: status,
+      txHash: request.disperse_tx.tx_hash,
+      chainId: request.chain_id,
     };
     prevPayments.value.push(payment);
   }
