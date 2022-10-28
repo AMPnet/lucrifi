@@ -154,8 +154,8 @@ const prettyAmount = computed(() => {
               <div
                 class="bg-white flex flex-col gap-3 rounded-lg py-2 text-sm text-left overflow-hidden shadow-lg sm:w-full"
               >
-                <button
-                  @click=""
+                <NuxtLink
+                  :to="`/payrolls/previous-payments/${props.payment.id}`"
                   class="hover:bg-slate-100 whitespace-nowrap w-full px-4 py-1.5"
                 >
                   <div class="flex items-center gap-2">
@@ -181,7 +181,7 @@ const prettyAmount = computed(() => {
 
                     <div>Show Details</div>
                   </div>
-                </button>
+                </NuxtLink>
               </div>
             </div>
           </div>

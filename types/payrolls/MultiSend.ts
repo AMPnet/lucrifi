@@ -1,8 +1,4 @@
-interface Item {
-  wallet_address: string;
-  amount: string;
-  item_name: string | undefined;
-}
+import { Recipient } from "./TemplateData";
 
 interface ArbitraryData {
   test: boolean;
@@ -47,7 +43,7 @@ export interface MultiSendPayment {
   token_address: string | undefined;
   disperse_contract_address: string;
   asset_type: string;
-  items: Item[];
+  items: Recipient[];
   sender_address: string | undefined;
   arbitrary_data: ArbitraryData;
   approve_screen_config: ApproveScreenConfig;
@@ -65,4 +61,5 @@ export interface MultiSendPaymentListItem {
   status: string;
   chainId: number;
   txHash: string | undefined;
+  id: string;
 }

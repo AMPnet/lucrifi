@@ -84,6 +84,7 @@ watch(data, (newData) => {
       status: status,
       txHash: request.disperse_tx.tx_hash,
       chainId: request.chain_id,
+      id: request.id,
     };
     prevPayments.value.push(payment);
   }

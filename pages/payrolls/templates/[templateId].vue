@@ -13,6 +13,7 @@ const addressBookStore = useAddressBook();
 addressBookStore.fetchAliases();
 
 const route = useRoute();
+const router = useRouter();
 const templatesStore = useTemplates();
 const networkStore = useNetworksStore();
 const networks = networkStore.networksList;
@@ -166,8 +167,8 @@ async function executePayment() {
   } catch (err) {
     console.error(err);
   } finally {
-    multiSendId.value = "";
     paymentLoading.value = false;
+    router.push(`/payrolls/previous-payments/${multiSendId.value}`);
   }
 }
 </script>

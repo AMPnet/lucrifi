@@ -358,7 +358,7 @@ export const useTemplates = defineStore("templatesStore", {
       }
 
       if (disperseStatus.status === "SUCCESS") {
-        await $fetch(
+        return await $fetch<MultiSendPayment>(
           `${runtimeConfig.public.backendUrl}/multi-send/${multiSendId}/disperse`,
           {
             method: "PUT",
