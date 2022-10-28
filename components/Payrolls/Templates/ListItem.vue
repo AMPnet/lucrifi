@@ -36,15 +36,10 @@ const showMenu = ref(false);
 
       <NuxtLink
         :to="`/payrolls/templates/${template.id}`"
-<<<<<<< HEAD
         class="col-span-2 text-xs text-slate-500 self-center"
-        >{{ parseDatetime(props.template.updated_at) }}</NuxtLink
-=======
-        class="col-span-1 text-xs text-slate-500 self-center"
         >{{
           parseDatetime(props.template.updated_at || props.template.created_at)
         }}</NuxtLink
->>>>>>> aa1edf7dce8a2074a4354a76640a345a5593ae01
       >
       <div class="col-span-2 flex items-center justify-center">
         <div class="relative flex justify-start sm:justify-end">
