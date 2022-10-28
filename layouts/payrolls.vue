@@ -10,17 +10,19 @@ let wallet = useWallet();
       <TheNavbar />
 
       <ClientOnly>
+
         <div
           v-show="wallet.isWalletConnected"
-          class="pt-5 md:pt-20 pb-5 grid grid-cols-12 px-8 xl:px-14 gap-x-3"
+          class="pt-5 md:pt-20 pb-5 grid grid-cols-10 px-8 xl:px-14 gap-x-3"
         >
           <div class="col-span-2">
             <PayrollsSideMenu />
           </div>
-          <div class="col-span-10 bg-white rounded-2xl py-10 px-6">
+          <div class="col-span-8 bg-white rounded-2xl p-8">
             <slot />
           </div>
         </div>
+
 
         <div
           v-show="!wallet.isWalletConnected"

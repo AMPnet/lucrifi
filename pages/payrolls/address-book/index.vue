@@ -41,10 +41,10 @@ const showAddAliasModal = ref(false);
     />
 
     <div>
-      <div class="flex items-center justify-between pl-4">
+      <div class="flex items-center justify-between">
         <button
           @click="showAddAliasModal = true"
-          class="rounded-full bg-gradient-to-r font-bold from-violet-700 to-purple-500 text-white py-2.5 px-5 text-sm"
+          class="rounded-full bg-gradient-to-r px-12 font-bold from-violet-700 to-purple-500 text-white py-2.5 text-xs"
         >
           <div class="flex items-center gap-1.5">
             <svg
@@ -53,7 +53,7 @@ const showAddAliasModal = ref(false);
               viewBox="0 0 24 24"
               stroke-width="1.5"
               stroke="currentColor"
-              class="w-5 h-5"
+              class="w-4 h-4"
             >
               <path
                 stroke-linecap="round"
@@ -94,7 +94,7 @@ const showAddAliasModal = ref(false);
 
     <div class="rounded-t-md border-t border-x border-slate-200 mt-6">
       <div
-        class="bg-slate-100 rounded-t-md text-black font-bold text-sm grid grid-cols-9 py-4 px-5"
+        class="bg-slate-100 uppercase rounded-t-md text-slate-700 font-bold text-sm grid grid-cols-9 py-4 px-5"
       >
         <span class="col-span-4">Alias</span>
         <span class="col-span-2">Address</span>

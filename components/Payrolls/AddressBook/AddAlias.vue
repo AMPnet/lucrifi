@@ -41,7 +41,7 @@ const isValidData = computed(() => {
     role="dialog"
     aria-modal="true"
   >
-    <div class="fixed inset-0 bg-gray-500 bg-opacity-75"></div>
+    <div class="fixed inset-0 !text-slate-700 bg-gray-500 bg-opacity-75"></div>
 
     <div class="fixed z-10 inset-0 overflow-y-auto">
       <div
@@ -69,10 +69,10 @@ const isValidData = computed(() => {
                 </svg>
               </button>
             </div>
-            <h3 class="text-center font-bold mb-10">Add to Address Book</h3>
-            <div class="text-left flex flex-col gap-8 mb-10">
+            <h3 class="text-center font-bold mb-6 text-slate-700">Add to Address Book</h3>
+            <div class="text-left flex flex-col gap-4 mb-10">
               <div>
-                <h4 class="font-bold text-sm">Wallet Address</h4>
+                <h4 class="font-bold text-sm text-slate-700">Wallet Address</h4>
                 <label class="text-xs"
                   >Paste the wallet address you want to add to your Address
                   Book</label
@@ -81,41 +81,44 @@ const isValidData = computed(() => {
                   class="w-full px-4 py-3 mt-3 border border-slate-300 rounded focus:outline-none text-sm"
                   v-model="address"
                   type="text"
-                  placeholder="Wallet address"
+                  placeholder="0xCoFeE7337bAbE..."
                 />
               </div>
               <div>
-                <h4 class="font-bold text-sm">Alias</h4>
+                <h4 class="font-bold text-sm text-slate-700">Alias</h4>
+                <small class="text-slate-500">Use only lowecase letters and dashes</small>
                 <input
-                  class="w-full px-4 py-3 mt-3 border border-slate-300 rounded focus:outline-none text-sm"
+                  class="w-full px-4 py-3 mt-1 border border-slate-300 rounded focus:outline-none text-sm"
                   v-model="name"
                   type="text"
-                  placeholder="Alias name"
+                  placeholder="my-example-alias"
                 />
               </div>
               <div>
-                <h4 class="font-bold text-sm">Email</h4>
+                <h4 class="font-bold text-sm text-slate-700">Email (optional)</h4>
                 <input
                   class="w-full px-4 py-3 mt-3 border border-slate-300 rounded focus:outline-none text-sm"
                   v-model="email"
                   type="text"
+                  placeholder="example@email.com"
                 />
               </div>
             </div>
 
             <button
               :disabled="!isValidData"
-              class="rounded-full bg-slate-700 text-white py-2 px-3 text-xs disabled:bg-slate-200 disabled:text-gray-400"
+              class="rounded-full bg-slate-700 text-white py-3 w-full
+               px-3 text-xs disabled:bg-slate-200 disabled:text-gray-400"
               @click="saveToAddressBook"
             >
-              <div class="flex items-center gap-1.5">
+              <div class="flex justify-center items-center gap-1.5">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke-width="1.5"
                   stroke="currentColor"
-                  class="w-5 h-5"
+                  class="w-4 h-4"
                 >
                   <path
                     stroke-linecap="round"

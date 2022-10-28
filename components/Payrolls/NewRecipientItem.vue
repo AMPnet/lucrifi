@@ -133,7 +133,7 @@ watch(recipientData, (newData, oldData) => {
       @close="showAddAliasModal = false"
     />
 
-    <div v-if="editRecipient" class="bg-slate-100 rounded-lg p-2">
+    <div v-if="editRecipient" class="bg-slate-100 rounded-lg p-4">
       <div class="flex items-center justify-between gap-4">
         <div
           class="flex items-center justify-between bg-white gap-x-2 p-2 rounded-lg text-xs w-4/6"
@@ -173,7 +173,7 @@ watch(recipientData, (newData, oldData) => {
           </div>
 
           <button
-            class="bg-slate-800 p-2 rounded-lg text-white whitespace-nowrap"
+            class="bg-slate-700 px-4 py-2 rounded-lg text-white text-xs whitespace-nowrap"
             @click="showSearchAddressBookModal = true"
           >
             Address Book
@@ -181,43 +181,36 @@ watch(recipientData, (newData, oldData) => {
         </div>
 
         <div class="flex items-center gap-3">
-          <span class="font-bold">{{ selectedToken.symbol }}</span>
 
-          <div class="bg-white rounded-lg p-2">
+          <div class="bg-white rounded-lg p-2 flex flex-row items-center">
             <input
               v-model="recipientData.amount"
               id="amount"
               type="text"
               inputmode="decimal"
               placeholder="Amount"
-              class="text-right placeholder:text-xs placeholder:sm:text-sm w-full text-xl bg-inherit focus:outline-none"
+              class="text-right placeholder:text-xs placeholder:sm:text-sm w-full text-base text-slate-700 bg-inherit focus:outline-none"
             />
+            <span class="text-slate-600 font-semibold ml-2">{{ selectedToken.symbol }}</span>
+
           </div>
+
+
 
           <button
             :disabled="!isValidRecipient"
-            class="bg-slate-800 text-xs py-1 px-4 rounded-full text-white whitespace-nowrap flex items-center gap-1.5 disabled:bg-slate-200 disabled:text-gray-400"
+            class="bg-slate-700 text-xs uppercase py-3 px-8 rounded-full text-white whitespace-nowrap flex items-center gap-1.5 disabled:bg-slate-200 disabled:text-gray-400"
             @click="editOrAddToList"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor"
-              class="w-5 h-5"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M4.5 12.75l6 6 9-13.5"
-              />
-            </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+</svg>
 
-            <span>Done</span>
+
+            <span>Add</span>
           </button>
 
-          <button
+          <!-- <button
             class="text-xs py-1 px-4 rounded-full whitespace-nowrap flex items-center gap-1.5 text-red-700 disabled:text-slate-400"
             @click="deleteFromList"
             :disabled="editRecipient"
@@ -238,7 +231,7 @@ watch(recipientData, (newData, oldData) => {
             </svg>
 
             <span>Delete</span>
-          </button>
+          </button> -->
         </div>
       </div>
 
@@ -285,14 +278,14 @@ watch(recipientData, (newData, oldData) => {
 
     <div
       v-else
-      class="bg-white-100 rounded-lg p-2 flex items-center justify-between gap-4 text-slate-800"
+      class="bg-slate-50 rounded-lg p-3 flex items-center justify-between gap-4 text-slate-800"
     >
       <div
         class="grid grid-cols-12 items-center w-full gap-x-2 p-2 rounded-lg text-sm"
       >
-        <div class="col-span-8 flex items-center gap-2">
+        <div class="col-span-8 flex items-center gap-2 text-slate-700">
           <svg
-            class="w-5 h-5 stroke-current"
+            class="w-4 h-4 stroke-current"
             fill="none"
             viewBox="0 0 20 20"
             xmlns="http://www.w3.org/2000/svg"
@@ -308,11 +301,11 @@ watch(recipientData, (newData, oldData) => {
             <span :title="recipientData.wallet_address">{{
               shortAddr(recipientData.wallet_address, 5, 4)
             }}</span>
-            <span class="font-bold">{{ recipientData.item_name }}</span>
+            <span class="font-bold text-sm">{{ recipientData.item_name }}</span>
           </div>
 
-          <div v-else>
-            <span>{{ recipientData.wallet_address }}</span>
+          <div class="flex items-center" v-else>
+            <span class="text-sm">{{ recipientData.wallet_address }}</span>
           </div>
         </div>
 
@@ -327,7 +320,7 @@ watch(recipientData, (newData, oldData) => {
 
       <div class="flex items-center gap-3">
         <button
-          class="bg-slate-800 text-xs py-1 px-4 rounded-full text-white whitespace-nowrap flex items-center gap-2"
+          class="bg-slate-700 text-xs py-2 px-8 rounded-full text-white whitespace-nowrap flex items-center gap-2"
           @click="editRecipient = true"
         >
           <svg
@@ -336,7 +329,7 @@ watch(recipientData, (newData, oldData) => {
             viewBox="0 0 24 24"
             stroke-width="1.5"
             stroke="currentColor"
-            class="w-5 h-5"
+            class="w-4 h-4"
           >
             <path
               stroke-linecap="round"

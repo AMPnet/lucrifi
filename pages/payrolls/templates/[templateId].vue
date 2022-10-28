@@ -34,6 +34,10 @@ let templateRecipients = useState<Array<Recipient>>(
   () => []
 );
 
+let isEditModeEnabled = useState<boolean>("isEditModeEnabled", () => {
+  return true
+})
+
 const templateUpdated = ref(false);
 
 try {
@@ -140,6 +144,11 @@ async function authorizePayment() {
   }
 }
 
+async function toggleEditMode() {
+
+}
+
+
 async function executePayment() {
   const addresses = templateRecipients.value.map((x) => x.wallet_address);
   const amounts = templateRecipients.value.map((x) =>
@@ -166,15 +175,152 @@ async function executePayment() {
 
 <template>
   <div>
-    <div class="flex items-center mb-6">
+
+    <div class="flex flex-row items-center justify-between">
+      <div class="flex flex-col">
+        <div v-if="!isEditModeEnabled" class=" text-sm font-semibold uppercase text-violet-600">Start payroll</div>
+        <div v-else class=" text-sm font-semibold uppercase text-violet-600">Edit payroll</div>
+        <div class="mb-4 text-lg text-slate-600">{{templateName}}</div>
+      </div>
+      <button v-if="multiSendId.length === 0" @click="isEditModeEnabled = !isEditModeEnabled"
+        class="flex flex-row items-center gap-2 hover:bg-violet-50 cursor-pointer font-semibold
+       text-xs uppercase text-slate-700 border rounded-full py-2 px-6">
+        <div v-if="!isEditModeEnabled">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+          </svg>
+        </div>
+        <div v-else>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+          </svg>
+        </div>
+        <div v-if="!isEditModeEnabled">Edit template</div>
+        <div v-else>Done</div>
+      </button>
+    </div>
+    
+
+
+    <div class="flex flex-row gap-2">
+      <div class="pl-4 py-4 pr-8 mb-3 bg-indigo-50 rounded-lg font-semibold text-slate-600 text-sm w-fit">
+      <div class="text-xs uppercase font-semibold text-violet-700">Total amount to be paid out</div>
+      <span class="text-lg">{{ payrollSum }} {{ selectedToken.symbol }} </span>
+    </div>
+    </div>
+
+    <div class="mb-4" v-show="templateRecipients">
+      <div
+        v-for="recipient in templateRecipients"
+        :key="recipient.id"
+        class="gap-y-2 flex flex-col"
+      >
+        <PayrollsRecipientItem :is-editable="isEditModeEnabled" :recipient="recipient"></PayrollsRecipientItem>
+      </div>
+    </div>
+
+    <div v-if="isEditModeEnabled" class="w-full text-sm uppercase text-slate-500 font-semibold">Add new recipients to payroll</div>
+    <div v-if="isEditModeEnabled" class="mb-4">
+      <PayrollsRecipientItem></PayrollsRecipientItem>
+    </div>
+    
+
+    
+    <div v-if="!isEditModeEnabled" class="flex justify-start">
+      <button
+        v-if="multiSendId.length === 0"
+        :disabled="!templateExecutable || paymentLoading"
+        class="rounded-full bg-gradient-to-r font-bold
+         from-violet-700 to-purple-500 text-white py-2.5 px-12 text-sm uppercase
+          disabled:from-slate-200 disabled:to-slate-200 disabled:text-gray-400"
+        @click="authorizePayment"
+      >
+        <div v-if="paymentLoading" class="flex items-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-4 h-4 animate-spin mr-2"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"
+            />
+          </svg>
+
+          <span class="text-xs">Authorizing</span>
+        </div>
+        
+        <div v-else>
+          <span class="flex flex-row gap-1 items-start">
+            <div class="text-xs">Step 1</div>
+            <div class="text-xs mx-1">•</div>
+            <div class="text-xs">Approve</div>
+          </span>
+        </div>
+      </button>
+
+      <button
+        v-else
+        :disabled="paymentLoading"
+        class="rounded-full bg-gradient-to-r font-bold from-violet-700
+         to-purple-500 text-white py-2.5 px-12 text-sm uppercase disabled:from-slate-200 disabled:to-slate-200 disabled:text-gray-400"
+        @click="executePayment"
+      >
+        <div v-if="paymentLoading" class="flex items-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-4 h-4 animate-spin mr-2"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"
+            />
+          </svg>
+          <span>Executing</span>
+        </div>
+        <div v-else>
+          <span class="flex flex-row gap-1 uppercase items-start">
+            <div class="text-xs">Step 2</div>
+            <div class="text-xs mx-1">•</div>
+            <div class="text-xs">Execute Payment</div>
+          </span>
+        </div>
+      </button>
+
+      
+    </div>
+
+
+    <!-- <div class="mb-4 text-lg font-semibold uppercase text-slate-600 flex items-center justify-between">
+      Preview template
+      <div  class="flex flex-row items-center border rounded-full py-3 px-4">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+        </svg>
+        <div class="ml-2 text-xs uppercase text-slate-600 font-semibold cursor-pointer ">Save</div>
+      </div>
+    </div>
+
+    <div class="flex items-center mb-4">
       <input
         v-model="templateName"
-        class="text-xl p-1 mr-1.5 focus:outline-none bg-inherit rounded-lg border border-transparent hover:border-gray-200 focus:border-violet-500"
+        class="text-base text-slate-700 py-2 px-4 w-full mr-1.5 bg-inherit rounded-lg border"
         placeholder="Enter template name"
       />
       <button
         v-show="templateUpdated"
-        class="bg-slate-800 text-xs py-1 px-4 rounded-full text-white whitespace-nowrap flex items-center gap-1.5 disabled:bg-slate-200 disabled:text-gray-400 mr-6"
+        class="bg-slate-700 text-xs py-3 px-10 uppercase
+        rounded-full text-white whitespace-nowrap
+         flex items-center gap-1.5 disabled:bg-slate-200 disabled:text-gray-400"
         @click="saveTemplateName"
       >
         <svg
@@ -183,7 +329,7 @@ async function executePayment() {
           viewBox="0 0 24 24"
           stroke-width="1.5"
           stroke="currentColor"
-          class="w-5 h-5"
+          class="w-4 h-4"
         >
           <path
             stroke-linecap="round"
@@ -196,6 +342,8 @@ async function executePayment() {
       </button>
     </div>
 
+    <div class="w-full text-sm uppercase text-slate-500 font-semibold">Payroll recipients</div>
+
     <div class="mb-4" v-show="templateRecipients">
       <div
         v-for="recipient in templateRecipients"
@@ -204,73 +352,8 @@ async function executePayment() {
       >
         <PayrollsRecipientItem :recipient="recipient"></PayrollsRecipientItem>
       </div>
-    </div>
+    </div> -->
 
-    <div class="mb-10">
-      <PayrollsRecipientItem></PayrollsRecipientItem>
-    </div>
-
-    <div class="px-6 mb-3 py-1 bg-indigo-100 rounded-xl text-lg w-fit">
-      <span>Total: {{ payrollSum }} {{ selectedToken.symbol }} </span>
-    </div>
-
-    <div class="flex justify-start">
-      <button
-        v-if="multiSendId.length === 0"
-        :disabled="!templateExecutable || paymentLoading"
-        class="rounded-full bg-gradient-to-r font-bold from-violet-700 to-purple-500 text-white py-2.5 px-12 text-lg disabled:from-slate-200 disabled:to-slate-200 disabled:text-gray-400"
-        @click="authorizePayment"
-      >
-        <div v-if="paymentLoading" class="flex items-center">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            class="w-5 h-5 animate-spin mr-2"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"
-            />
-          </svg>
-
-          <span>Authorizing</span>
-        </div>
-        <div v-else>
-          <span>Step 1: Authorize</span>
-        </div>
-      </button>
-
-      <button
-        v-else
-        :disabled="paymentLoading"
-        class="rounded-full bg-gradient-to-r font-bold from-violet-700 to-purple-500 text-white py-2.5 px-12 text-lg disabled:from-slate-200 disabled:to-slate-200 disabled:text-gray-400"
-        @click="executePayment"
-      >
-        <div v-if="paymentLoading" class="flex items-center">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            class="w-5 h-5 animate-spin mr-2"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"
-            />
-          </svg>
-          <span>Executing</span>
-        </div>
-        <div v-else>
-          <span>Step 2: Execute payment</span>
-        </div>
-      </button>
-    </div>
+    
   </div>
 </template>

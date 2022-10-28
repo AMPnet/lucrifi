@@ -18,12 +18,12 @@ templatesStore.fetchTemplates().finally(() => {
   <div>
     <div class="rounded-t-md border-t border-x border-slate-200">
       <div
-        class="bg-slate-100 rounded-t-md text-black font-bold text-sm grid grid-cols-7 py-4 px-5"
+        class="bg-slate-100 rounded-t-md text-slate-700 uppercase font-bold text-sm grid grid-cols-12 py-4 px-5"
       >
-        <span class="col-span-1">Created at</span>
-        <span class="col-span-4">Template name</span>
-        <span class="col-span-1">Last edited</span>
-        <span class="col-span-1 text-center">Actions</span>
+        <span class="col-span-2">Created at</span>
+        <span class="col-span-6">Template name</span>
+        <span class="col-span-2">Last edited</span>
+        <span class="col-span-2 text-center">Actions</span>
       </div>
 
       <div v-if="pending" class="border-b">

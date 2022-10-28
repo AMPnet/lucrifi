@@ -16,6 +16,10 @@ const props = defineProps({
     type: Object as PropType<Recipient>,
     required: false,
   },
+  isEditable: {
+    type: Boolean,
+    required: false
+  }
 });
 
 const templatesStore = useTemplates();
@@ -165,7 +169,7 @@ const showAddAliasModal = ref(false);
       @close="showAddAliasModal = false"
     />
 
-    <div v-if="editRecipient" class="bg-slate-100 rounded-lg p-2">
+    <div v-if="editRecipient" class="bg-slate-100 rounded-lg p-2 mt-2">
       <div class="flex items-center justify-between gap-4">
         <div
           class="flex items-center justify-between bg-white gap-x-2 p-2 rounded-lg text-xs w-4/6"
@@ -207,7 +211,7 @@ const showAddAliasModal = ref(false);
           </div>
 
           <button
-            class="bg-slate-800 p-2 rounded-lg text-white whitespace-nowrap"
+            class="bg-slate-700 px-5 py-2 rounded-lg text-white whitespace-nowrap"
             @click="showSearchAddressBookModal = true"
           >
             Address Book
@@ -228,30 +232,20 @@ const showAddAliasModal = ref(false);
             />
           </div>
 
-          <button
+          <button 
             :disabled="!isValidRecipient"
-            class="bg-slate-800 text-xs py-1 px-4 rounded-full text-white whitespace-nowrap flex items-center gap-1.5 disabled:bg-slate-200 disabled:text-gray-400"
+            class="bg-slate-800 text-xs py-3 px-6 rounded-full text-white whitespace-nowrap flex items-center gap-1.5 disabled:bg-slate-200 disabled:text-gray-400"
             @click="editOrAddToList"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor"
-              class="w-5 h-5"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M4.5 12.75l6 6 9-13.5"
-              />
-            </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+</svg>
 
-            <span>Done</span>
+
+            <span>Add</span>
           </button>
 
-          <button
+          <!-- <button
             class="text-xs py-1 px-4 rounded-full whitespace-nowrap flex items-center gap-1.5 text-red-700 disabled:text-slate-400"
             @click="deleteFromList"
             :disabled="editRecipient"
@@ -272,7 +266,7 @@ const showAddAliasModal = ref(false);
             </svg>
 
             <span>Delete</span>
-          </button>
+          </button> -->
         </div>
       </div>
 
@@ -319,14 +313,14 @@ const showAddAliasModal = ref(false);
 
     <div
       v-else
-      class="bg-white-100 rounded-lg p-2 flex items-center justify-between gap-4 text-slate-800"
+      class="bg-slate-100 mt-2 !text-slate-700 rounded-lg p-2 flex items-center justify-between gap-4"
     >
       <div
         class="grid grid-cols-12 items-center w-full gap-x-2 p-2 rounded-lg text-sm"
       >
-        <div class="col-span-8 flex items-center gap-2">
+        <div class="col-span-9 flex items-center gap-2">
           <svg
-            class="w-5 h-5 stroke-current"
+            class="w-4 h-4 stroke-current"
             fill="none"
             viewBox="0 0 20 20"
             xmlns="http://www.w3.org/2000/svg"
@@ -338,7 +332,7 @@ const showAddAliasModal = ref(false);
             />
           </svg>
 
-          <div class="flex items-center gap-2.5" v-if="recipientData.item_name">
+          <div class="flex items-center text-sm gap-2.5" v-if="recipientData.item_name">
             <span :title="recipientData.wallet_address">{{
               shortAddr(recipientData.wallet_address, 5, 4)
             }}</span>
@@ -350,7 +344,7 @@ const showAddAliasModal = ref(false);
           </div>
         </div>
 
-        <div class="flex items-center col-span-4">
+        <div class="flex items-center col-span-3">
           <img :src="`/tokens/${selectedToken.logoURI}`" class="h-5 w-5 mr-2" />
           <span class="font-bold mr-3">{{ selectedToken.symbol }}</span>
           <span>
@@ -360,8 +354,8 @@ const showAddAliasModal = ref(false);
       </div>
 
       <div class="flex items-center gap-3">
-        <button
-          class="bg-slate-800 text-xs py-1 px-4 rounded-full text-white whitespace-nowrap flex items-center gap-2"
+        <button v-if="isEditable"
+          class="bg-slate-700 text-xs py-2 px-8 rounded-full text-white whitespace-nowrap flex items-center gap-2"
           @click="editRecipient = true"
         >
           <svg
@@ -370,7 +364,7 @@ const showAddAliasModal = ref(false);
             viewBox="0 0 24 24"
             stroke-width="1.5"
             stroke="currentColor"
-            class="w-5 h-5"
+            class="w-4 h-4"
           >
             <path
               stroke-linecap="round"
@@ -382,7 +376,7 @@ const showAddAliasModal = ref(false);
           <span>Edit</span>
         </button>
 
-        <button
+        <button v-if="isEditable"
           class="text-xs py-1 px-4 rounded-full whitespace-nowrap flex items-center gap-1.5 text-red-700 disabled:text-slate-400"
           @click="deleteFromList"
           :disabled="editRecipient"
