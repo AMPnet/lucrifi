@@ -90,7 +90,7 @@ const isValidData = computed(() => {
                   class="w-full px-4 py-3 mt-3 border border-slate-300 rounded focus:outline-none text-sm"
                   v-model="name"
                   type="text"
-                  placeholder="Alias name"
+                  placeholder="Lower case letters, numbers, and dashes allowed"
                 />
               </div>
               <div>
