@@ -39,7 +39,13 @@ const { data, pending } = useFetch<MultiSendResponse>(
 );
 
 watch(data, (newData) => {
-  for (const request of newData.requests) {
+  const sortedRequests = newData.requests.sort((a, b) => {
+    const date1 = Date.parse(a.created_at);
+    const date2 = Date.parse(b.created_at);
+    return date2 - date1;
+  });
+
+  for (const request of sortedRequests) {
     const network = networkStore.networksList.find(
       (network) => network.chainId == request.chain_id
     );

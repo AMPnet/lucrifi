@@ -30,7 +30,12 @@ export const useAddressBook = defineStore("addressBook", {
           const data = await $fetch<addressesList>(
             `${runtimeConfig.public.backendUrl}/address-book/by-wallet-address/${wallet.walletAddress}`
           );
-          this.data = data["entries"];
+
+          this.data = data["entries"].sort((a, b) => {
+            const date1 = Date.parse(a.created_at);
+            const date2 = Date.parse(b.created_at);
+            return date2 - date1;
+          });
         } catch (error) {}
       }
     },

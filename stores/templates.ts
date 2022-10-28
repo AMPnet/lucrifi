@@ -62,12 +62,9 @@ export const useTemplates = defineStore("templatesStore", {
           );
 
           this.data = data.templates.sort((a, b) => {
-            if (a.created_at && b.created_at) {
-              const date1 = Date.parse(a.created_at);
-              const date2 = Date.parse(b.created_at);
-              return date2 - date1;
-            }
-            return 0;
+            const date1 = Date.parse(a.updated_at || a.created_at);
+            const date2 = Date.parse(b.updated_at || b.created_at);
+            return date2 - date1;
           });
         } catch (error) {}
       }
