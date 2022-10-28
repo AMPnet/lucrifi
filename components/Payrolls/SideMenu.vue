@@ -4,7 +4,7 @@ const route = useRoute();
 
 <template>
   <div
-    class="flex flex-col justify-left bg-violet-600 text-white px-1 py-3 rounded-3xl text-xs gap-y-2"
+    class="flex flex-col justify-left bg-violet-600 text-white p-3 rounded-xl text-xs font-medium gap-y-2"
   >
     <NuxtLink
       to="/payrolls"
@@ -37,7 +37,7 @@ const route = useRoute();
       to="/payrolls/templates"
       :class="
         route.path.includes('templates')
-          ? 'opacity-100 bg-violet-500 rounded-lg'
+          ? 'opacity-100 bg-violet-500 rounded-sm'
           : 'opacity-60'
       "
     >
@@ -57,7 +57,7 @@ const route = useRoute();
           />
         </svg>
 
-        <span>Templates</span>
+        <span>My templates</span>
       </div>
     </NuxtLink>
 
@@ -65,7 +65,7 @@ const route = useRoute();
       to="/payrolls/address-book"
       :class="
         route.path.includes('address-book')
-          ? 'opacity-100 bg-violet-500 rounded-lg'
+          ? 'opacity-100 bg-violet-500 rounded-sm'
           : 'opacity-60'
       "
     >
@@ -113,7 +113,7 @@ const route = useRoute();
           />
         </svg>
 
-        <span>Previous payments</span>
+        <span>Payment history</span>
       </div>
     </NuxtLink>
   </div>

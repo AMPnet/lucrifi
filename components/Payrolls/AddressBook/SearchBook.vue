@@ -57,7 +57,7 @@ const queriedAliases = computed(() => {
                 </svg>
               </button>
             </div>
-            <h3 class="text-center font-bold">Search in Address Book</h3>
+            <h3 class="text-center font-bold text-slate-600">Search in Address Book</h3>
             <input
               class="w-full px-4 py-3 mt-3 border border-slate-300 rounded focus:outline-none"
               v-model="searchQuery"
@@ -74,7 +74,7 @@ const queriedAliases = computed(() => {
               No results found
             </h4>
             <button
-              class="w-full text-left px-7 py-2 hover:bg-violet-100"
+              class="w-full text-slate-600 text-left px-7 py-2 hover:bg-violet-100"
               v-for="alias in queriedAliases"
               :key="alias.alias"
               @click="$emit('selectAlias', alias)"

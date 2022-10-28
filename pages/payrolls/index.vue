@@ -93,19 +93,22 @@ async function saveTemplate() {
       v-if="showNetworkModal"
       @close="showNetworkModal = false"
     />
-    <div class="flex items-center mb-6">
+    <div class="mb-4 font-semibold uppercase tracking-wide text-lg text-gray-600">
+      Create a new payroll template
+    </div>
+    <div class="flex items-center mb-3">
       <input
         v-model="templateName"
-        class="text-xl mr-2 p-1 focus:outline-none bg-inherit rounded-lg border border-transparent hover:border-gray-200 focus:border-violet-500"
+        class="text-base mr-2 px-4 py-2 text-slate-700 bg-inherit rounded-lg border focus:border-violet-500 w-full"
         placeholder="Enter template name"
       />
     </div>
 
-    <h2 class="text-sm font-semibold mb-3">Select Network and Token</h2>
+    <h2 class="text-sm font-semibold mb-3 text-slate-600 mt-4">Select network and token</h2>
 
-    <div class="flex items-center gap-4 mb-8">
+    <div class="flex items-center gap-4 mb-4 text-slate-500">
       <button
-        class="bg-white rounded-full px-2.5 py-2 text-sm font-semibold border border-slate-200"
+        class="bg-white rounded-full px-8 py-2 text-sm font-semibold border border-slate-200"
         @click="showNetworkModal = true"
       >
         <div class="flex items-center">
@@ -130,7 +133,7 @@ async function saveTemplate() {
       </button>
 
       <button
-        class="bg-white rounded-full px-2.5 py-2 text-sm font-semibold border border-slate-200"
+        class="bg-white rounded-full px-8 py-2 text-sm font-semibold border border-slate-200"
         @click="showTokenModal = true"
       >
         <div class="flex items-center">
@@ -155,11 +158,12 @@ async function saveTemplate() {
       </button>
     </div>
 
+
     <div class="mb-4" v-show="templateRecipients">
       <div
         v-for="(recipient, index) in templateRecipients"
         :key="index"
-        class="gap-y-2 flex flex-col"
+        class="gap-y-2 flex mt-2 flex-col"
       >
         <PayrollsNewRecipientItem
           :recipient="recipient"
@@ -167,32 +171,24 @@ async function saveTemplate() {
       </div>
     </div>
 
-    <div class="mb-10">
+    <div class="mb-4">
       <PayrollsNewRecipientItem></PayrollsNewRecipientItem>
     </div>
 
-    <div class="flex justify-start">
+    <div class="flex justify-end">
       <button
         :disabled="!templateValid"
-        class="rounded-full bg-gradient-to-r font-bold from-violet-700 to-purple-500 text-white py-2.5 px-8 text-lg disabled:from-slate-200 disabled:to-slate-200 disabled:text-gray-400"
+        class="rounded-full bg-gradient-to-r font-semibold uppercase
+          from-violet-700 to-purple-500 text-white text-xs
+         py-2.5 px-12 disabled:from-slate-200 disabled:to-slate-200 disabled:text-gray-400"
         @click="saveTemplate"
       >
         <div class="flex items-center gap-2">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            class="w-6 h-6"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M4.5 12.75l6 6 9-13.5"
-            />
-          </svg>
-          <span>Save Template</span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+</svg>
+
+          <span>Create template</span>
         </div>
       </button>
     </div>

@@ -17,31 +17,36 @@ const showMenu = ref(false);
 
 <template>
   <div
-    class="bg-white text-gray-700 py-7 px-5 border-b border-slate-200 font-semibold hover:bg-slate-200"
+    class="bg-white text-gray-700 py-5 px-5 border-b border-slate-200 font-semibold hover:bg-slate-200"
   >
-    <div class="grid grid-cols-7">
+    <div class="grid grid-cols-12">
       <NuxtLink
         :to="`/payrolls/templates/${template.id}`"
-        class="col-span-1 self-center text-xs text-slate-500"
+        class="col-span-2 self-center text-xs text-slate-500"
       >
         {{ parseDatetime(props.template.created_at) }}</NuxtLink
       >
 
       <NuxtLink
         :to="`/payrolls/templates/${template.id}`"
-        class="col-span-4 flex items-center gap-1.5"
+        class="col-span-6 text-slate-600 font-semibold text-sm flex items-center gap-1.5"
       >
         <span>{{ props.template.template_name }}</span>
       </NuxtLink>
 
       <NuxtLink
         :to="`/payrolls/templates/${template.id}`"
+<<<<<<< HEAD
+        class="col-span-2 text-xs text-slate-500 self-center"
+        >{{ parseDatetime(props.template.updated_at) }}</NuxtLink
+=======
         class="col-span-1 text-xs text-slate-500 self-center"
         >{{
           parseDatetime(props.template.updated_at || props.template.created_at)
         }}</NuxtLink
+>>>>>>> aa1edf7dce8a2074a4354a76640a345a5593ae01
       >
-      <div class="col-span-1 flex items-center justify-center">
+      <div class="col-span-2 flex items-center justify-center">
         <div class="relative flex justify-start sm:justify-end">
           <button @click="showMenu = !showMenu">
             <svg

@@ -31,7 +31,7 @@ const showEditAliasModal = ref(false);
 
 <template>
   <div
-    class="bg-white text-gray-700 grid grid-cols-9 py-7 px-5 border-b border-slate-200 font-semibold"
+    class="bg-white text-gray-700 grid grid-cols-9 py-4 px-5 border-b border-slate-200 font-semibold"
   >
     <PayrollsAddressBookEditAlias
       v-if="showEditAliasModal"
@@ -42,7 +42,7 @@ const showEditAliasModal = ref(false);
     <span class="col-span-4 self-center">{{ props.alias.alias }}</span>
 
     <div class="col-span-2 flex items-center gap-1.5">
-      <span :title="props.alias.address">{{
+      <span class="text-slate-600 text-sm" :title="props.alias.address">{{
         shortAddr(props.alias.address, 5, 4)
       }}</span>
       <div class="relative">
@@ -62,7 +62,7 @@ const showEditAliasModal = ref(false);
             viewBox="0 0 24 24"
             stroke-width="1.5"
             stroke="currentColor"
-            class="w-5 h-5"
+            class="w-3 h-3"
           >
             <path
               stroke-linecap="round"
