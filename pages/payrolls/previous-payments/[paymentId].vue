@@ -91,8 +91,8 @@ async function executePayment() {
   paymentLoading.value = true;
   try {
     const data = await templatesStore.disperseFunctionCall(
-      "05dcc94a-1a96-4309-957c-36a31eb1e840",
       selectedToken.value.address,
+      selectedNetwork.value.disperseContract,
       addresses,
       amounts,
       String(route.params.paymentId)

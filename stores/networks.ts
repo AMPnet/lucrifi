@@ -14,6 +14,7 @@ export const useNetworksStore = defineStore("networksList", {
           rpcURL: undefined,
           apiKey: publicKey.mumbaiApiKey,
           blockExplorerUrl: "https://mumbai.polygonscan.com/tx",
+          disperseContract: "0x74dbe3de8d83ce0c4fe44de615c2539e2bb23259",
         },
         {
           name: "Polygon",
@@ -22,6 +23,7 @@ export const useNetworksStore = defineStore("networksList", {
           rpcURL: undefined,
           apiKey: publicKey.polygonApiKey,
           blockExplorerUrl: "https://polygonscan.com/tx",
+          disperseContract: "0xff8e425b4982b58b3220d9de004b2ac832266915",
         },
         {
           name: "Ethereum",
@@ -31,6 +33,7 @@ export const useNetworksStore = defineStore("networksList", {
           rpcURL: undefined,
           apiKey: publicKey.ethereumApiKey,
           blockExplorerUrl: "https://etherscan.io/tx",
+          disperseContract: "0xff8e425b4982b58b3220d9de004b2ac832266915",
         },
         {
           name: "BSC",
@@ -40,6 +43,7 @@ export const useNetworksStore = defineStore("networksList", {
           rpcURL: undefined,
           apiKey: publicKey.bscApiKey,
           blockExplorerUrl: "https://bscscan.com/tx",
+          disperseContract: "0xc50CDD22f65538A2e6C15Eee7638873e659a4877",
         },
         {
           name: "xDai/Gnosis",
@@ -49,6 +53,7 @@ export const useNetworksStore = defineStore("networksList", {
           rpcURL: undefined,
           apiKey: publicKey.gnosisApiKey,
           blockExplorerUrl: "https://blockscout.com/xdai/mainnet/tx",
+          disperseContract: "0x94c0Ca3a6131Ca985BFA3c818Fba8bf4E912c0E7",
         },
         {
           name: "Fantom Opera",
@@ -58,6 +63,7 @@ export const useNetworksStore = defineStore("networksList", {
           rpcURL: undefined,
           apiKey: publicKey.fantomApiKey,
           blockExplorerUrl: "https://ftmscan.com/tx",
+          disperseContract: "0x94c0Ca3a6131Ca985BFA3c818Fba8bf4E912c0E7",
         },
         {
           name: "Moonriver",
@@ -67,6 +73,7 @@ export const useNetworksStore = defineStore("networksList", {
           rpcURL: undefined,
           apiKey: publicKey.moonriverApiKey,
           blockExplorerUrl: "https://moonriver.moonscan.io/tx",
+          disperseContract: "0x7da52848eda4ae10af06e88adf7da8960fa92b8e",
         },
         {
           name: "Avalanche",
@@ -76,6 +83,7 @@ export const useNetworksStore = defineStore("networksList", {
           rpcURL: undefined,
           apiKey: publicKey.avaxApiKey,
           blockExplorerUrl: "https://snowtrace.io/tx",
+          disperseContract: "0x8eb2f385c878bef4f5674fc8bcedbad1246a57b0",
         },
         {
           name: "Aurora",
@@ -85,6 +93,7 @@ export const useNetworksStore = defineStore("networksList", {
           rpcURL: undefined,
           apiKey: publicKey.auroraApiKey,
           blockExplorerUrl: "https://explorer.mainnet.aurora.dev/tx",
+          disperseContract: "0x0db4d3139edf99958f3b73844eeefa11bc0ed6c0",
         },
       ],
     };

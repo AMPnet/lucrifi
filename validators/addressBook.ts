@@ -1,11 +1,13 @@
 import { isValidAddress } from "@/validators/blockchain";
 
-export function validateAlias(address: string, name: string) {
+export function isValidAliasForm(address: string, name: string) {
   const validAddr = isValidAddress(address) === true;
+  const validAlias = isValidAlias(name);
 
-  const re = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
-  const validName = name.length > 0;
-  const formValid = name.match(re);
+  return validAddr && validAlias;
+}
 
-  return validAddr && validName && formValid;
+export function isValidAlias(alias: string) {
+  const re = /^[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*$/;
+  return alias.length > 0 && alias.match(re);
 }

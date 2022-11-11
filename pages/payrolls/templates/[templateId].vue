@@ -136,7 +136,7 @@ async function authorizePayment() {
     const data = await templatesStore.createMultiPayment(
       itemsSol,
       assetType,
-      "0xb853e8b0dc7542391f095070a75af57e3f0427be",
+      selectedNetwork.value.disperseContract,
       selectedToken.value.address,
       sumSol
     );
@@ -158,8 +158,8 @@ async function executePayment() {
   paymentLoading.value = true;
   try {
     await templatesStore.disperseFunctionCall(
-      "05dcc94a-1a96-4309-957c-36a31eb1e840",
       selectedToken.value.address,
+      selectedNetwork.value.disperseContract,
       addresses,
       amounts,
       multiSendId.value

@@ -243,7 +243,7 @@ export const useTemplates = defineStore("templatesStore", {
       );
 
       const callPayload = {
-        deployed_contract_id: "c0e6bd39-b3f2-4b60-b8a5-d6b694855524",
+        contract_address: tokenAddress,
         function_name: "approve",
         function_params: [
           {
@@ -302,14 +302,14 @@ export const useTemplates = defineStore("templatesStore", {
     },
 
     async disperseFunctionCall(
-      contractAddr: string,
       tokenAddr: string,
+      disperseContract: string,
       addresses: string[],
       amounts: string[],
       multiSendId: string
     ) {
       const callPayload = {
-        deployed_contract_id: contractAddr,
+        contract_address: disperseContract,
         function_name: "disperseToken",
         function_params: [
           {

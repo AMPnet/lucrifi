@@ -59,8 +59,10 @@ export const useWallet = defineStore("walletData", {
       /*
       Fetches redirect URL and request ID that will be used to connect wallet
       */
+      const { public: publicKey } = useRuntimeConfig();
+
       const data = await $fetch<GetPayloadByMessage>(
-        "https://eth-staging.ampnet.io/api/identity/authorize/by-message",
+        `${publicKey.identityUrl}/authorize/by-message`,
         {
           method: "POST",
         }
@@ -76,7 +78,6 @@ export const useWallet = defineStore("walletData", {
         "X-API-KEY": `${apiKey}`,
       };
 
-      const { public: publicKey } = useRuntimeConfig();
       try {
         const walletData = await $fetch<CreateWalletAuthRequest>(
           `${publicKey.backendUrl}/wallet-authorization`,
@@ -135,7 +136,7 @@ export const useWallet = defineStore("walletData", {
             signed_payload: statusData.value.signed_message,
           };
           const { data: jwtData } = await useFetch<GetJWTByMessage>(
-            `https://eth-staging.ampnet.io/api/identity/authorize/jwt/by-message`,
+            `${runtimeConfig.public.identityUrl}/authorize/jwt/by-message`,
             {
               method: "post",
               body: payload,
@@ -160,9 +161,10 @@ export const useWallet = defineStore("walletData", {
     },
 
     async refreshAccessToken() {
+      const runtimeConfig = useRuntimeConfig();
       try {
         const data = await $fetch<GetJWTByMessage>(
-          "https://eth-staging.ampnet.io/api/identity/authorize/refresh",
+          `${runtimeConfig.public.identityUrl}/authorize/refresh`,
           {
             method: "post",
             body: {

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useAddressBook } from "@/stores/addressBook";
 import { NewAddressAlias } from "@/types/payrolls/AddressAlias";
-import { validateAlias } from "@/validators/addressBook";
+import { isValidAliasForm, isValidAlias } from "@/validators/addressBook";
 
 const emit = defineEmits(["close"]);
 
@@ -30,7 +30,7 @@ function saveToAddressBook() {
 }
 
 const isValidData = computed(() => {
-  return validateAlias(address.value, name.value);
+  return isValidAliasForm(address.value, name.value);
 });
 </script>
 
@@ -75,9 +75,9 @@ const isValidData = computed(() => {
             <div class="text-left flex flex-col gap-4 mb-10">
               <div>
                 <h4 class="font-bold text-sm text-slate-700">Wallet Address</h4>
-                <label class="text-xs"
+                <span class="text-slate-500 text-xs"
                   >Paste the wallet address you want to add to your Address
-                  Book</label
+                  Book</span
                 >
                 <input
                   class="w-full px-4 py-3 mt-3 border border-slate-300 rounded focus:outline-none text-sm"
@@ -88,14 +88,13 @@ const isValidData = computed(() => {
               </div>
               <div>
                 <h4 class="font-bold text-sm text-slate-700">Alias</h4>
-                <small class="text-slate-500"
-                  >Use only lowecase letters and dashes</small
+                <span class="text-slate-500 text-xs"
+                  >Use only letters, numbers, and dashes. No spaces.</span
                 >
                 <input
                   class="w-full px-4 py-3 mt-1 border border-slate-300 rounded focus:outline-none text-sm"
                   v-model="name"
                   type="text"
-                  placeholder="Lower case letters, numbers, and dashes allowed"
                 />
               </div>
               <div>

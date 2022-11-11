@@ -2,7 +2,7 @@
 import { useAddressBook } from "@/stores/addressBook";
 import { AddressAlias } from "@/types/payrolls/AddressAlias";
 import { PropType } from "vue";
-import { validateAlias } from "@/validators/addressBook";
+import { isValidAliasForm } from "@/validators/addressBook";
 
 const emit = defineEmits(["close"]);
 
@@ -26,7 +26,7 @@ function saveToAddressBook() {
   emit("close");
 }
 const isValidData = computed(() => {
-  return validateAlias(address.value, name.value);
+  return isValidAliasForm(address.value, name.value);
 });
 </script>
 
@@ -65,30 +65,38 @@ const isValidData = computed(() => {
                 </svg>
               </button>
             </div>
-            <h3 class="text-center font-bold mb-10">Edit Address Book Item</h3>
+            <h3 class="text-center mb-6 font-bold text-slate-700">
+              Edit Address Book Item
+            </h3>
             <div class="text-left flex flex-col gap-8 mb-10">
               <div>
-                <h4 class="font-bold text-sm">Wallet Address</h4>
+                <h4 class="font-bold text-sm text-slate-700">Wallet Address</h4>
+                <span class="text-slate-500 text-xs"
+                  >Paste the wallet address you want to add to your Address
+                  Book.</span
+                >
                 <input
-                  class="w-full px-4 py-3 mt-3 border border-slate-300 rounded focus:outline-none text-sm"
+                  class="w-full px-4 py-3 mt-1 border border-slate-300 rounded focus:outline-none text-sm"
                   v-model="address"
                   type="text"
-                  placeholder="Wallet address"
+                  placeholder="0xCoFeE7337bAbE..."
                 />
               </div>
               <div>
-                <h4 class="font-bold text-sm">Alias</h4>
+                <h4 class="font-bold text-sm text-slate-700">Alias</h4>
+                <span class="text-slate-500 text-xs"
+                  >Use only letters, numbers, and dashes. No spaces.</span
+                >
                 <input
-                  class="w-full px-4 py-3 mt-3 border border-slate-300 rounded focus:outline-none text-sm"
+                  class="w-full px-4 py-3 mt-1 border border-slate-300 rounded focus:outline-none text-sm"
                   v-model="name"
                   type="text"
-                  placeholder="Lower case letters, numbers, and dashes allowed"
                 />
               </div>
               <div>
-                <h4 class="font-bold text-sm">Email</h4>
+                <h4 class="font-bold text-sm text-slate-700">Email</h4>
                 <input
-                  class="w-full px-4 py-3 mt-3 border border-slate-300 rounded focus:outline-none text-sm"
+                  class="w-full px-4 py-3 mt-1 border border-slate-300 rounded focus:outline-none text-sm"
                   v-model="email"
                   type="text"
                 />
@@ -97,10 +105,10 @@ const isValidData = computed(() => {
 
             <button
               :disabled="!isValidData"
-              class="rounded-full bg-slate-700 text-white py-2 px-3 text-xs disabled:bg-slate-200 disabled:text-gray-400"
+              class="rounded-full bg-slate-700 text-white w-full py-3 px-3 text-xs disabled:bg-slate-200 disabled:text-gray-400"
               @click="saveToAddressBook"
             >
-              <div class="flex items-center gap-1.5">
+              <div class="flex justify-center items-center gap-1.5">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"

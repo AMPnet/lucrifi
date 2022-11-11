@@ -48,11 +48,10 @@ export default defineNuxtConfig({
       auroraApiKey: "",
 
       gtagId: "",
-      backendUrl: "https://eth-staging.ampnet.io/api/blockchain-api/v1",
+      identityUrl: "https://invest-api.ampnet.io/api/identity",
+      backendUrl: "https://invest-api.ampnet.io/api/blockchain-api/v1",
       requestPaymentRedirect:
         "https://rsend.vercel.app/request-send/${id}/action",
-      connectWalletRedirect:
-        "https://demo.dev3.sh:80001/demo-project/connect/${id}",
     },
   },
 
