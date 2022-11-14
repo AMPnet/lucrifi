@@ -2,7 +2,8 @@
 import { useAddressBook } from "@/stores/addressBook";
 import { AddressAlias } from "@/types/payrolls/AddressAlias";
 import { PropType } from "vue";
-import { isValidAliasForm } from "@/validators/addressBook";
+import { isValidAliasForm, isValidAlias } from "@/validators/addressBook";
+import { isValidAddress } from "@/validators/blockchain";
 
 const emit = defineEmits(["close"]);
 
@@ -27,6 +28,13 @@ function saveToAddressBook() {
 }
 const isValidData = computed(() => {
   return isValidAliasForm(address.value, name.value);
+});
+
+const isAliasValid = computed(() => {
+  return isValidAlias(name.value) || name.value.length === 0;
+});
+const isAddressValid = computed(() => {
+  return isValidAddress(address.value) === true || address.value.length === 0;
 });
 </script>
 
@@ -77,6 +85,7 @@ const isValidData = computed(() => {
                 >
                 <input
                   class="w-full px-4 py-3 mt-1 border border-slate-300 rounded focus:outline-none text-sm"
+                  :class="!isAddressValid ? 'text-red-600 border-red-600' : ''"
                   v-model="address"
                   type="text"
                   placeholder="0xCoFeE7337bAbE..."
@@ -84,11 +93,14 @@ const isValidData = computed(() => {
               </div>
               <div>
                 <h4 class="font-bold text-sm text-slate-700">Alias</h4>
-                <span class="text-slate-500 text-xs"
+                <span
+                  class="text-slate-500 text-xs"
+                  :class="!isAliasValid ? 'text-red-600' : ''"
                   >Use only letters, numbers, and dashes. No spaces.</span
                 >
                 <input
                   class="w-full px-4 py-3 mt-1 border border-slate-300 rounded focus:outline-none text-sm"
+                  :class="!isAliasValid ? 'text-red-600 border-red-600' : ''"
                   v-model="name"
                   type="text"
                 />
@@ -98,7 +110,7 @@ const isValidData = computed(() => {
                 <input
                   class="w-full px-4 py-3 mt-1 border border-slate-300 rounded focus:outline-none text-sm"
                   v-model="email"
-                  type="text"
+                  type="email"
                 />
               </div>
             </div>

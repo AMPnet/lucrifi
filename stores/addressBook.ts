@@ -23,6 +23,10 @@ export const useAddressBook = defineStore("addressBook", {
     async fetchAliases() {
       const wallet = useWallet();
 
+      if (!wallet.accessTokenValid) {
+        wallet.refreshAccessToken();
+      }
+
       if (wallet.isWalletConnected) {
         const runtimeConfig = useRuntimeConfig();
 
@@ -42,6 +46,10 @@ export const useAddressBook = defineStore("addressBook", {
     async addToAddressBook(address: NewAddressAlias) {
       const runtimeConfig = useRuntimeConfig();
       const wallet = useWallet();
+
+      if (!wallet.accessTokenValid) {
+        wallet.refreshAccessToken();
+      }
 
       try {
         const data = await $fetch<AddressAlias>(
@@ -66,6 +74,10 @@ export const useAddressBook = defineStore("addressBook", {
       const wallet = useWallet();
       const item = this.data.find((x: AddressAlias) => x.id === id);
 
+      if (!wallet.accessTokenValid) {
+        wallet.refreshAccessToken();
+      }
+
       try {
         await $fetch<AddressAlias>(
           `${runtimeConfig.public.backendUrl}/address-book/${id}`,
@@ -83,6 +95,10 @@ export const useAddressBook = defineStore("addressBook", {
     async removeFromAddressBook(id: String) {
       const runtimeConfig = useRuntimeConfig();
       const wallet = useWallet();
+
+      if (!wallet.accessTokenValid) {
+        wallet.refreshAccessToken();
+      }
 
       try {
         await $fetch<AddressAlias>(
