@@ -61,7 +61,7 @@ export const useAddressBook = defineStore("addressBook", {
           }
         );
         const newAddress = { ...address, id: data.id };
-        this.data.push(newAddress);
+        this.data.unshift(newAddress);
       } catch (error) {}
     },
     async editAddressBookItem(

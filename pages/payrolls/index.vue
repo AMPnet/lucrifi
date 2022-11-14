@@ -93,18 +93,22 @@ async function saveTemplate() {
       v-if="showNetworkModal"
       @close="showNetworkModal = false"
     />
-    <div class="mb-4 font-semibold uppercase tracking-wide text-lg text-gray-600">
+    <div
+      class="mb-4 font-semibold uppercase tracking-wide text-lg text-gray-600"
+    >
       Create a new payroll template
     </div>
     <div class="flex items-center mb-3">
       <input
         v-model="templateName"
-        class="text-base mr-2 px-4 py-2 text-slate-700 bg-inherit rounded-lg border focus:border-violet-500 w-full"
+        class="text-base mr-2 px-4 py-2 text-slate-700 bg-inherit rounded-lg border focus:border-violet-500 focus:outline-none w-full"
         placeholder="Enter template name"
       />
     </div>
 
-    <h2 class="text-sm font-semibold mb-3 text-slate-600 mt-4">Select network and token</h2>
+    <h2 class="text-sm font-semibold mb-3 text-slate-600 mt-4">
+      Select network and token
+    </h2>
 
     <div class="flex items-center gap-4 mb-4 text-slate-500">
       <button
@@ -158,7 +162,6 @@ async function saveTemplate() {
       </button>
     </div>
 
-
     <div class="mb-4" v-show="templateRecipients">
       <div
         v-for="(recipient, index) in templateRecipients"
@@ -178,17 +181,26 @@ async function saveTemplate() {
     <div class="flex justify-end">
       <button
         :disabled="!templateValid"
-        class="rounded-full bg-gradient-to-r font-semibold uppercase
-          from-violet-700 to-purple-500 text-white text-xs
-         py-2.5 px-12 disabled:from-slate-200 disabled:to-slate-200 disabled:text-gray-400"
+        class="rounded-full bg-gradient-to-r font-semibold uppercase from-violet-700 to-purple-500 text-white text-xs py-2.5 px-12 disabled:from-slate-200 disabled:to-slate-200 disabled:text-gray-400"
         @click="saveTemplate"
       >
         <div class="flex items-center gap-2">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-  <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-</svg>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-5 h-5"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m3.75 9v6m3-3H9m1.5-12H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"
+            />
+          </svg>
 
-          <span>Create template</span>
+          <span>Save template</span>
         </div>
       </button>
     </div>

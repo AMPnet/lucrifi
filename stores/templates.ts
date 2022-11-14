@@ -97,7 +97,7 @@ export const useTemplates = defineStore("templatesStore", {
           created_at: data.created_at,
           updated_at: data.updated_at,
         };
-        this.data.push(newTemplate);
+        this.data.unshift(newTemplate);
       } catch (error) {}
     },
     addTemplateRecipient(template_id: string, recipient: NewRecipient) {

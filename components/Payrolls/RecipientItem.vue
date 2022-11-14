@@ -18,8 +18,8 @@ const props = defineProps({
   },
   isEditable: {
     type: Boolean,
-    required: false
-  }
+    required: false,
+  },
 });
 
 const templatesStore = useTemplates();
@@ -206,7 +206,7 @@ const showAddAliasModal = ref(false);
               type="text"
               class="w-full focus:outline-none bg-inherit"
               id="transfer-to"
-              placeholder="Wallet address"
+              placeholder="Receiver wallet address"
             />
           </div>
 
@@ -232,17 +232,27 @@ const showAddAliasModal = ref(false);
             />
           </div>
 
-          <button 
+          <button
             :disabled="!isValidRecipient"
-            class="bg-slate-800 text-xs py-3 px-6 rounded-full text-white whitespace-nowrap flex items-center gap-1.5 disabled:bg-slate-200 disabled:text-gray-400"
+            class="bg-slate-700 text-xs py-2 px-8 rounded-full text-white whitespace-nowrap flex items-center gap-1.5 disabled:bg-slate-200 disabled:text-gray-400"
             @click="editOrAddToList"
           >
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-  <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-</svg>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-4 h-4"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M4.5 12.75l6 6 9-13.5"
+              />
+            </svg>
 
-
-            <span>Add</span>
+            <span>Done</span>
           </button>
 
           <!-- <button
@@ -332,7 +342,10 @@ const showAddAliasModal = ref(false);
             />
           </svg>
 
-          <div class="flex items-center text-sm gap-2.5" v-if="recipientData.item_name">
+          <div
+            class="flex items-center text-sm gap-2.5"
+            v-if="recipientData.item_name"
+          >
             <span :title="recipientData.wallet_address">{{
               shortAddr(recipientData.wallet_address, 5, 4)
             }}</span>
@@ -354,7 +367,8 @@ const showAddAliasModal = ref(false);
       </div>
 
       <div class="flex items-center gap-3">
-        <button v-if="isEditable"
+        <button
+          v-if="isEditable"
           class="bg-slate-700 text-xs py-2 px-8 rounded-full text-white whitespace-nowrap flex items-center gap-2"
           @click="editRecipient = true"
         >
@@ -376,7 +390,8 @@ const showAddAliasModal = ref(false);
           <span>Edit</span>
         </button>
 
-        <button v-if="isEditable"
+        <button
+          v-if="isEditable"
           class="text-xs py-1 px-4 rounded-full whitespace-nowrap flex items-center gap-1.5 text-red-700 disabled:text-slate-400"
           @click="deleteFromList"
           :disabled="editRecipient"

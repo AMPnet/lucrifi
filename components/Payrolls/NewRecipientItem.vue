@@ -168,7 +168,7 @@ watch(recipientData, (newData, oldData) => {
               type="text"
               class="w-full focus:outline-none bg-inherit"
               id="transfer-to"
-              placeholder="Wallet address"
+              placeholder="Receiver wallet address"
             />
           </div>
 
@@ -181,7 +181,6 @@ watch(recipientData, (newData, oldData) => {
         </div>
 
         <div class="flex items-center gap-3">
-
           <div class="bg-white rounded-lg p-2 flex flex-row items-center">
             <input
               v-model="recipientData.amount"
@@ -191,23 +190,32 @@ watch(recipientData, (newData, oldData) => {
               placeholder="Amount"
               class="text-right placeholder:text-xs placeholder:sm:text-sm w-full text-base text-slate-700 bg-inherit focus:outline-none"
             />
-            <span class="text-slate-600 font-semibold ml-2">{{ selectedToken.symbol }}</span>
-
+            <span class="text-slate-600 font-semibold ml-2">{{
+              selectedToken.symbol
+            }}</span>
           </div>
-
-
 
           <button
             :disabled="!isValidRecipient"
-            class="bg-slate-700 text-xs uppercase py-3 px-8 rounded-full text-white whitespace-nowrap flex items-center gap-1.5 disabled:bg-slate-200 disabled:text-gray-400"
+            class="bg-slate-700 text-xs py-2 px-8 rounded-full text-white whitespace-nowrap flex items-center gap-1.5 disabled:bg-slate-200 disabled:text-gray-400"
             @click="editOrAddToList"
           >
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-  <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-</svg>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-4 h-4"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M4.5 12.75l6 6 9-13.5"
+              />
+            </svg>
 
-
-            <span>Add</span>
+            <span>Done</span>
           </button>
 
           <!-- <button
