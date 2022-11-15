@@ -184,5 +184,3 @@ const isOpen = ref(false);
     </nav>
   </div>
 </template>
-
-<style scoped></style>

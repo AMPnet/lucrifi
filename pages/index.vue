@@ -50,7 +50,6 @@ async function createRequest() {
   );
 
   let payload = {
-    redirect_url: runtimeConfig.public.requestPaymentRedirect,
     recipient_address: selectedToAddress.value,
     amount: shiftedAmount,
     arbitrary_data: {

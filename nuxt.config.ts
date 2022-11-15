@@ -50,8 +50,6 @@ export default defineNuxtConfig({
       gtagId: "",
       identityUrl: "https://invest-api.ampnet.io/api/identity",
       backendUrl: "https://invest-api.ampnet.io/api/blockchain-api/v1",
-      requestPaymentRedirect:
-        "https://rsend.vercel.app/request-send/${id}/action",
     },
   },
 

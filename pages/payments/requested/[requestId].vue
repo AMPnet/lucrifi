@@ -50,7 +50,7 @@ if (requestData.value.token_address) {
   address = requestData.value.token_address.toLowerCase();
 } else {
   // It's native token
-  address = "0x0000000000000000000000000000000000000000";
+  address = NATIVE_TOKEN_ADDR;
 }
 
 const amount = computed(() => {

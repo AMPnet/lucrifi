@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import { useClipboard } from "@vueuse/core";
 import { TemplateItem } from "@/types/payrolls/TemplateData";
 import { useTemplates } from "@/stores/templates";
 import { PropType } from "vue";
 
+const { copy } = useClipboard();
 const templatesStore = useTemplates();
 
 const props = defineProps({
@@ -13,6 +15,18 @@ const props = defineProps({
 });
 
 const showMenu = ref(false);
+const showCopied = ref(false);
+
+function copyTemplateId() {
+  copy(
+    `${window.location.origin}/payrolls/templates/import?id=${props.template.id}`
+  );
+  showCopied.value = true;
+
+  setTimeout(function () {
+    showCopied.value = false;
+  }, 1200);
+}
 </script>
 
 <template>
@@ -69,7 +83,7 @@ const showMenu = ref(false);
                 class="bg-white flex flex-col gap-3 rounded-lg py-2 text-sm text-left overflow-hidden shadow-lg sm:w-full"
               >
                 <button
-                  @click=""
+                  @click="copyTemplateId"
                   class="hover:bg-slate-100 whitespace-nowrap w-full px-4 py-1.5"
                 >
                   <div class="flex items-center gap-2">
@@ -88,7 +102,13 @@ const showMenu = ref(false);
                       />
                     </svg>
 
-                    <span>Share Link</span>
+                    <span>Copy import link</span>
+                  </div>
+                  <div
+                    v-show="showCopied"
+                    class="absolute rounded-xl px-2 py-1 bg-violet-700 text-white text-xs z-11 -right-8 bottom-20"
+                  >
+                    Copied
                   </div>
                 </button>
 
