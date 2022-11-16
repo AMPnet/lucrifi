@@ -37,6 +37,8 @@ let templateRecipients = useState<Array<Recipient>>(
 
 const isEditModeEnabled = ref(false);
 const templateUpdated = ref(false);
+const multiSendId = ref("");
+const paymentLoading = ref(false);
 
 try {
   const data = await templatesStore.fetchTemplateDetails(
@@ -65,6 +67,10 @@ try {
 
   templateRecipients.value = itemsDecimalAmounts;
 
+  if (data.asset_type === "NATIVE") {
+    await createNativeMultiPaymentRequest();
+  }
+
   watch(templateName, (oldName, newName) => {
     templateUpdated.value = oldName !== newName;
   });
@@ -84,6 +90,10 @@ const templateExecutable = computed(() => {
   const validName = templateName.value.length > 0;
   const validRecipients = templateRecipients.value.length > 0;
   return validName && validRecipients;
+});
+
+const isNativeToken = computed(() => {
+  return selectedToken.value.address === NATIVE_TOKEN_ADDR;
 });
 
 async function saveTemplateName() {
@@ -110,24 +120,42 @@ async function toggleEdit() {
   isEditModeEnabled.value = !isEditModeEnabled.value;
 }
 
-const multiSendId = ref("");
-const paymentLoading = ref(false);
+async function createNativeMultiPaymentRequest() {
+  const itemsSol = templateRecipients.value.map((item) => {
+    const solAmount = decimalToSolNumber(
+      item.amount,
+      selectedToken.value.decimals
+    );
+    const newData = { ...item }; // must create a copy otherwise the ref is modified in place
+    newData.amount = solAmount;
+    return newData;
+  });
+  try {
+    const data = await templatesStore.createNativeMultiPayment(
+      itemsSol,
+      selectedNetwork.value.chainId,
+      selectedNetwork.value.disperseContract
+    );
+    multiSendId.value = data;
+  } catch (error) {
+    multiSendId.value = "";
+    console.error(error);
+  } finally {
+  }
+}
 
 async function authorizePayment() {
-  const assetType =
-    selectedToken.value.address === NATIVE_TOKEN_ADDR ? "NATIVE" : "TOKEN";
-
   const sumSol = decimalToSolNumber(
     String(payrollSum.value),
     selectedToken.value.decimals
   );
   const itemsSol = templateRecipients.value.map((item) => {
-    const decimalAmount = decimalToSolNumber(
+    const solAmount = decimalToSolNumber(
       item.amount,
       selectedToken.value.decimals
     );
     const newData = { ...item }; // must create a copy otherwise the ref is modified in place
-    newData.amount = decimalAmount;
+    newData.amount = solAmount;
     return newData;
   });
 
@@ -135,7 +163,7 @@ async function authorizePayment() {
   try {
     const data = await templatesStore.createMultiPayment(
       itemsSol,
-      assetType,
+      selectedNetwork.value.chainId,
       selectedNetwork.value.disperseContract,
       selectedToken.value.address,
       sumSol
@@ -159,10 +187,12 @@ async function executePayment() {
   try {
     await templatesStore.disperseFunctionCall(
       selectedToken.value.address,
+      selectedNetwork.value.chainId,
       selectedNetwork.value.disperseContract,
       addresses,
       amounts,
-      multiSendId.value
+      multiSendId.value,
+      isNativeToken.value
     );
   } catch (err) {
     console.error(err);
@@ -281,7 +311,7 @@ async function executePayment() {
 
     <div v-if="!isEditModeEnabled" class="flex justify-start">
       <button
-        v-if="multiSendId.length === 0"
+        v-if="multiSendId.length === 0 && !isNativeToken"
         :disabled="!templateExecutable || paymentLoading"
         class="rounded-full bg-gradient-to-r font-bold from-violet-700 to-purple-500 text-white py-2.5 px-12 text-sm uppercase disabled:from-slate-200 disabled:to-slate-200 disabled:text-gray-400"
         @click="authorizePayment"
@@ -339,8 +369,10 @@ async function executePayment() {
         </div>
         <div v-else>
           <span class="flex flex-row gap-1 uppercase items-start">
-            <div class="text-xs">Step 2</div>
-            <div class="text-xs mx-1">•</div>
+            <div v-if="!isNativeToken" class="flex items-center">
+              <div class="text-xs">Step 2</div>
+              <div class="text-xs mx-1">•</div>
+            </div>
             <div class="text-xs">Execute Payment</div>
           </span>
         </div>

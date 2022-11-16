@@ -77,6 +77,7 @@ const tokenMeta = computed((): Token => {
     chainId: undefined,
     decimals: 18,
     name: "Custom",
+    uuid: "",
   };
 });
 

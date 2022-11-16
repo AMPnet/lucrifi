@@ -210,7 +210,7 @@ export const useTemplates = defineStore("templatesStore", {
 
     async createMultiPayment(
       items: Recipient[],
-      assetType: "TOKEN" | "NATIVE",
+      chainId: number,
       disperseAddress: string,
       tokenAddress: string | undefined,
       tokenSum: string
@@ -218,20 +218,19 @@ export const useTemplates = defineStore("templatesStore", {
       const runtimeConfig = useRuntimeConfig();
 
       const networksStore = useNetworksStore();
-      const apiKey = networksStore.networksList[0].apiKey;
+      const apiKey = networksStore.networksList.find(
+        (x) => x.chainId === chainId
+      ).apiKey;
       const headers = {
         "X-API-KEY": `${apiKey}`,
       };
 
       const payload = {
-        asset_type: assetType,
+        asset_type: "TOKEN",
         items: items,
         disperse_contract_address: disperseAddress,
+        token_address: tokenAddress,
       };
-
-      if (assetType === "TOKEN") {
-        payload["token_address"] = tokenAddress;
-      }
 
       const multiSendResp = await $fetch<MultiSendPayment>(
         `${runtimeConfig.public.backendUrl}/multi-send`,
@@ -300,14 +299,53 @@ export const useTemplates = defineStore("templatesStore", {
         throwError("Received non success status");
       }
     },
+    async createNativeMultiPayment(
+      items: Recipient[],
+      chainId: number,
+      disperseAddress: string
+    ): Promise<string> {
+      const runtimeConfig = useRuntimeConfig();
+
+      const networksStore = useNetworksStore();
+      const apiKey = networksStore.networksList.find(
+        (x) => x.chainId === chainId
+      ).apiKey;
+      const headers = {
+        "X-API-KEY": `${apiKey}`,
+      };
+
+      const payload = {
+        asset_type: "NATIVE",
+        items: items,
+        disperse_contract_address: disperseAddress,
+      };
+
+      const multiSendResp = await $fetch<MultiSendPayment>(
+        `${runtimeConfig.public.backendUrl}/multi-send`,
+        {
+          method: "POST",
+          headers: headers,
+          body: payload,
+        }
+      );
+
+      return multiSendResp.id;
+    },
 
     async disperseFunctionCall(
       tokenAddr: string,
+      chainId: number,
       disperseContract: string,
       addresses: string[],
       amounts: string[],
-      multiSendId: string
+      multiSendId: string,
+      isNativeToken: boolean
     ) {
+      let sumGwei = "0";
+      if (isNativeToken) {
+        sumGwei = amounts.reduce((a, b) => a + parseInt(b), 0).toString();
+      }
+
       const callPayload = {
         contract_address: disperseContract,
         function_name: "disperseToken",
@@ -325,13 +363,15 @@ export const useTemplates = defineStore("templatesStore", {
             value: amounts,
           },
         ],
-        eth_amount: "0",
+        eth_amount: sumGwei,
       };
 
       const runtimeConfig = useRuntimeConfig();
 
       const networksStore = useNetworksStore();
-      const apiKey = networksStore.networksList[0].apiKey;
+      const apiKey = networksStore.networksList.find(
+        (x) => x.chainId === chainId
+      ).apiKey;
       const headers = {
         "X-API-KEY": `${apiKey}`,
       };

@@ -8,13 +8,14 @@ export const useNetworksStore = defineStore("networksList", {
     return {
       networks: [
         {
-          name: "Mumbai",
-          logoURI: "https://cryptologos.cc/logos/polygon-matic-logo.png",
-          chainId: 80001,
+          name: "Ethereum",
+          logoURI:
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Ethereum-icon-purple.svg/480px-Ethereum-icon-purple.svg.png",
+          chainId: 1,
           rpcURL: undefined,
-          apiKey: publicKey.mumbaiApiKey,
-          blockExplorerUrl: "https://mumbai.polygonscan.com/tx",
-          disperseContract: "0x74dbe3de8d83ce0c4fe44de615c2539e2bb23259",
+          apiKey: publicKey.ethereumApiKey,
+          blockExplorerUrl: "https://etherscan.io/tx",
+          disperseContract: "0xff8e425b4982b58b3220d9de004b2ac832266915",
         },
         {
           name: "Polygon",
@@ -23,16 +24,6 @@ export const useNetworksStore = defineStore("networksList", {
           rpcURL: undefined,
           apiKey: publicKey.polygonApiKey,
           blockExplorerUrl: "https://polygonscan.com/tx",
-          disperseContract: "0xff8e425b4982b58b3220d9de004b2ac832266915",
-        },
-        {
-          name: "Ethereum",
-          logoURI:
-            "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Ethereum-icon-purple.svg/480px-Ethereum-icon-purple.svg.png",
-          chainId: 1,
-          rpcURL: undefined,
-          apiKey: publicKey.ethereumApiKey,
-          blockExplorerUrl: "https://etherscan.io/tx",
           disperseContract: "0xff8e425b4982b58b3220d9de004b2ac832266915",
         },
         {

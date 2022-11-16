@@ -38,7 +38,7 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
-      mumbaiApiKey: "",
+      polygonApiKey: "",
       ethereumApiKey: "",
       bscApiKey: "",
       avaxApiKey: "",

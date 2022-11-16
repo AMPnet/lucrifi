@@ -92,10 +92,12 @@ async function executePayment() {
   try {
     const data = await templatesStore.disperseFunctionCall(
       selectedToken.value.address,
+      selectedNetwork.value.chainId,
       selectedNetwork.value.disperseContract,
       addresses,
       amounts,
-      String(route.params.paymentId)
+      String(route.params.paymentId),
+      false // only real tokens will be visible hear as native tokens don't have 2 step process
     );
     paymentExecuted.value = true;
     txHash.value = `${selectedNetwork.value.blockExplorerUrl}/${data.disperse_tx.tx_hash}`;
