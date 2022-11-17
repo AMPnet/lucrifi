@@ -15,7 +15,7 @@ export const useNetworksStore = defineStore("networksList", {
           rpcURL: undefined,
           apiKey: publicKey.ethereumApiKey,
           blockExplorerUrl: "https://etherscan.io/tx",
-          disperseContract: "0xff8e425b4982b58b3220d9de004b2ac832266915",
+          disperseContract: "0xd152f549545093347a162dce210e7293f1452150",
         },
         {
           name: "Polygon",
@@ -54,7 +54,7 @@ export const useNetworksStore = defineStore("networksList", {
           rpcURL: undefined,
           apiKey: publicKey.fantomApiKey,
           blockExplorerUrl: "https://ftmscan.com/tx",
-          disperseContract: "0x94c0Ca3a6131Ca985BFA3c818Fba8bf4E912c0E7",
+          disperseContract: "0x7da52848eda4ae10af06e88adf7da8960fa92b8e",
         },
         {
           name: "Moonriver",
