@@ -58,7 +58,7 @@ export interface MultiSendPaymentListItem {
   totalPayment: number;
   currencySymbol: string;
   processedOn: string;
-  status: string;
+  status: "SUCCESS" | "PENDING_APPROVE" | "PENDING_EXECUTION" | "FAILED";
   chainId: number;
   txHash: string | undefined;
   id: string;

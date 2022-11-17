@@ -43,7 +43,7 @@ try {
   );
 
   let tokenAddr = NATIVE_TOKEN_ADDR;
-  if (templateDetails.asset_type === "TOKEN") {
+  if (templateDetails.token_address) {
     tokenAddr = templateDetails.token_address;
   }
   selectedToken.value = filteredTokenList.value.find(

@@ -4,12 +4,15 @@ import { MultiSendPaymentListItem } from "@/types/payrolls/MultiSend";
 import { useNetworksStore } from "@/stores/networks";
 
 const props = defineProps({
-  payment: Object as PropType<MultiSendPaymentListItem>,
+  payment: {
+    type: Object as PropType<MultiSendPaymentListItem>,
+    required: true,
+  },
 });
 
 const networkStore = useNetworksStore();
 const network = networkStore.networksList.find(
-  (x) => x.chainId === props.payment.chainId
+  (x) => x.chainId === props.payment?.chainId
 );
 
 const statusMapping = {
@@ -63,7 +66,7 @@ const prettyAmount = computed(() => {
         >
           <div class="mr-1">
             <svg
-              v-if="props.payment.status.toLowerCase() === 'success'"
+              v-if="props.payment?.status.toLowerCase() === 'success'"
               xmlns="http://www.w3.org/2000/svg"
               class="h-5 w-5"
               fill="none"
@@ -111,8 +114,8 @@ const prettyAmount = computed(() => {
           <span>{{ statusMapping[props.payment.status].title }}</span>
 
           <a
-            v-if="props.payment.status.toLowerCase() === 'success'"
-            :href="`${network.blockExplorerUrl}/${props.payment.txHash}`"
+            v-if="props.payment?.status.toLowerCase() === 'success'"
+            :href="`${network?.blockExplorerUrl}/${props.payment.txHash}`"
             target="_blank norelopener"
             class="ml-2 rounded-full bg-gray-100 p-1.5 hover:bg-gray-300 text-gray-700"
           >

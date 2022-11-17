@@ -118,7 +118,7 @@ async function executePayment() {
 <template>
   <div>
     <div v-if="!dataLoading">
-      <div class="flex flex-row gap-2">
+      <div class="flex flex-row gap-3 items-center">
         <div
           class="pl-4 py-4 pr-8 mb-3 bg-indigo-50 rounded-lg font-semibold text-slate-600 text-sm w-fit"
         >
@@ -128,6 +128,49 @@ async function executePayment() {
           <span class="text-lg"
             >{{ payrollSum }} {{ selectedToken.symbol }}
           </span>
+        </div>
+        <div class="flex items-center gap-1.5" v-if="paymentExecuted">
+          <div class="flex items-center text-green-500">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-6 h-6 mr-1.5"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+
+            <span>Paid</span>
+          </div>
+
+          <div class="flex items-center">
+            <a
+              :href="txHash"
+              target="_blank norelopener"
+              class="ml-1.5 rounded-full bg-gray-100 p-2 hover:bg-gray-300 text-gray-700"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                />
+              </svg>
+            </a>
+          </div>
         </div>
       </div>
 
@@ -176,50 +219,6 @@ async function executePayment() {
               </span>
             </div>
           </button>
-        </div>
-        <div v-else class="flex items-center">
-          <div
-            class="rounded-lg bg-gradient-to-r font-bold from-green-700 to-green-500 text-white py-2 px-6 text-sm uppercase disabled:from-slate-200 disabled:to-slate-200 disabled:text-gray-400"
-          >
-            <div class="flex items-center text-xs">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                class="w-6 h-6 mr-1.5"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-
-              <span>Payment successfully executed </span>
-            </div>
-          </div>
-          <a
-            :href="txHash"
-            target="_blank norelopener"
-            class="ml-1.5 rounded-lg bg-gray-200 p-2.5 hover:bg-gray-300 text-gray-700"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-              />
-            </svg>
-          </a>
         </div>
       </div>
     </div>
