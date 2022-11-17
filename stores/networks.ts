@@ -82,7 +82,7 @@ export const useNetworksStore = defineStore("networksList", {
           chainId: 1313161554,
           rpcURL: undefined,
           apiKey: publicKey.auroraApiKey,
-          blockExplorerUrl: "https://explorer.mainnet.aurora.dev/tx",
+          blockExplorerUrl: "https://aurorascan.dev/tx",
           disperseContract: "0x0db4d3139edf99958f3b73844eeefa11bc0ed6c0",
         },
       ],
