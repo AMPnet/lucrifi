@@ -34,7 +34,9 @@ const statusMapping = {
 const showMenu = ref(false);
 
 const prettyAmount = computed(() => {
-  return new Intl.NumberFormat().format(props.payment.totalPayment);
+  return new Intl.NumberFormat("en-US", { maximumFractionDigits: 10 }).format(
+    props.payment.totalPayment
+  );
 });
 </script>
 
