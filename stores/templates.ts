@@ -377,11 +377,13 @@ export const useTemplates = defineStore("templatesStore", {
       const runtimeConfig = useRuntimeConfig();
 
       const networksStore = useNetworksStore();
-      const apiKey = networksStore.networksList.find(
+
+      const network = networksStore.networksList.find(
         (x) => x.chainId === chainId
-      ).apiKey;
+      );
+
       const headers = {
-        "X-API-KEY": `${apiKey}`,
+        "X-API-KEY": `${network?.apiKey}`,
       };
 
       let disperseStatus = await $fetch<FunctionCallResponse>(
