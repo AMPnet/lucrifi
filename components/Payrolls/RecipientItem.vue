@@ -37,6 +37,7 @@ const selectedToken = useState<Token>("selectedToken");
 const templateRecipients = useState<Array<Recipient>>("templateRecipients");
 
 let recipientData: Ref<Recipient>;
+
 if (editRecipient.value) {
   recipientData = ref({
     item_name: null,

@@ -128,7 +128,6 @@ export const useWallet = defineStore("walletData", {
         if (error.value) {
           this.isConnecting = false;
         }
-
         if (statusData.value.status === "SUCCESS") {
           const payload = {
             address: statusData.value.wallet_address,

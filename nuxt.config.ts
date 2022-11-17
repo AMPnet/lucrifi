@@ -54,7 +54,7 @@ export default defineNuxtConfig({
   },
 
   typescript: {
-    typeCheck: true,
+    typeCheck: false,
     tsConfig: "./tsconfig.json",
     shim: false,
   },
