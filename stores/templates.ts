@@ -342,18 +342,21 @@ export const useTemplates = defineStore("templatesStore", {
       isNativeToken: boolean
     ) {
       let sumGwei = "0";
+      let functionName = "disperseToken";
       if (isNativeToken) {
         sumGwei = amounts.reduce((a, b) => a + parseInt(b), 0).toString();
+        functionName = "disperseEther";
       }
 
       const callPayload = {
         contract_address: disperseContract,
-        function_name: "disperseToken",
+        function_name: functionName,
         function_params: [
           {
             type: "address",
             value: tokenAddr,
           },
+
           {
             type: "address[]",
             value: addresses,
@@ -365,6 +368,11 @@ export const useTemplates = defineStore("templatesStore", {
         ],
         eth_amount: sumGwei,
       };
+
+      if (isNativeToken) {
+        // address param is not supported for native tokens
+        callPayload.function_params.shift();
+      }
 
       const runtimeConfig = useRuntimeConfig();
 

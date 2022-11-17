@@ -7,7 +7,6 @@ import {
   MultiSendPayment,
   MultiSendPaymentListItem,
 } from "@/types/payrolls/MultiSend";
-import { parseDatetime } from "@/composables/util";
 
 definePageMeta({
   layout: "payrolls",
@@ -50,8 +49,14 @@ watch(data, (newData) => {
       (network) => network.chainId == request.chain_id
     );
     const tokensList = tokensListStore.tokensList(network.chainId);
+
+    let tokenAddress = NATIVE_TOKEN_ADDR;
+    if (request.token_address) {
+      tokenAddress = request.token_address;
+    }
+
     const token = tokensList.find(
-      (token) => token.address.toLowerCase() === request.token_address
+      (token) => token.address.toLowerCase() === tokenAddress
     );
 
     const totalPayment = request.items.reduce(
@@ -60,21 +65,29 @@ watch(data, (newData) => {
     );
 
     let status = "PENDING_APPROVE";
-    if (
-      request.approve_status === "FAILED" ||
-      request.disperse_status === "FAILED"
-    ) {
-      status = "FAILED";
-    } else if (
-      request.approve_status === "SUCCESS" &&
-      request.disperse_status === "SUCCESS"
-    ) {
-      status = "SUCCESS";
-    } else if (
-      request.approve_status === "SUCCESS" &&
-      request.disperse_status === "PENDING"
-    ) {
-      status = "PENDING_EXECUTION";
+    if (tokenAddress === NATIVE_TOKEN_ADDR) {
+      if (request.disperse_status === "SUCCESS") {
+        status = "SUCCESS";
+      } else {
+        status = "FAILED";
+      }
+    } else {
+      if (
+        request.approve_status === "FAILED" ||
+        request.disperse_status === "FAILED"
+      ) {
+        status = "FAILED";
+      } else if (
+        request.approve_status === "SUCCESS" &&
+        request.disperse_status === "SUCCESS"
+      ) {
+        status = "SUCCESS";
+      } else if (
+        request.approve_status === "SUCCESS" &&
+        request.disperse_status === "PENDING"
+      ) {
+        status = "PENDING_EXECUTION";
+      }
     }
 
     const payment = {

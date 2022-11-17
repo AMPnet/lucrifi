@@ -73,7 +73,9 @@ const payrollSum = computed(() => {
     (a, b) => a + Number(b.amount),
     0
   );
-  return new Intl.NumberFormat("en-US").format(sum);
+  return new Intl.NumberFormat("en-US", { maximumFractionDigits: 10 }).format(
+    sum
+  );
 });
 
 async function importTemplate() {

@@ -38,8 +38,12 @@ try {
     }
   );
 
-  paymentExecuted.value =
-    data.approve_status === "SUCCESS" && data.disperse_status === "SUCCESS";
+  if (data.asset_type === "TOKEN") {
+    paymentExecuted.value =
+      data.approve_status === "SUCCESS" && data.disperse_status === "SUCCESS";
+  } else {
+    paymentExecuted.value = data.disperse_status === "SUCCESS";
+  }
 
   const networks = networkStore.networksList;
   selectedNetwork.value = networks.find((x) => x.chainId === data.chain_id);
@@ -80,7 +84,9 @@ const payrollSum = computed(() => {
     (a, b) => a + Number(b.amount),
     0
   );
-  return new Intl.NumberFormat("en-US").format(sum);
+  return new Intl.NumberFormat("en-US", { maximumFractionDigits: 10 }).format(
+    sum
+  );
 });
 
 async function executePayment() {
