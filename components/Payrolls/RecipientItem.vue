@@ -34,6 +34,7 @@ if (props.recipient) {
 }
 
 const selectedToken = useState<Token>("selectedToken");
+const selectedNetwork = useState<Token>("selectedNetwork");
 const templateRecipients = useState<Array<Recipient>>("templateRecipients");
 
 let recipientData: Ref<Recipient>;
@@ -329,7 +330,7 @@ const showAddAliasModal = ref(false);
       <div
         class="grid grid-cols-12 items-center w-full gap-x-2 p-2 rounded-lg text-sm"
       >
-        <div class="col-span-9 flex items-center gap-2">
+        <div class="col-span-7 flex items-center gap-2">
           <svg
             class="w-4 h-4 stroke-current"
             fill="none"
@@ -357,9 +358,13 @@ const showAddAliasModal = ref(false);
             <span>{{ recipientData.wallet_address }}</span>
           </div>
         </div>
+        <div class="flex items-center col-span-2">
+          <img :src="selectedNetwork.logoURI" class="h-4 w-4 mr-2" />
+          <span class="font-bold mr-3">{{ selectedNetwork.name }}</span>
+        </div>
 
         <div class="flex items-center col-span-3">
-          <img :src="`/tokens/${selectedToken.logoURI}`" class="h-5 w-5 mr-2" />
+          <img :src="`/tokens/${selectedToken.logoURI}`" class="h-4 w-4 mr-2" />
           <span class="font-bold mr-3">{{ selectedToken.symbol }}</span>
           <span>
             {{ recipientData.amount }}

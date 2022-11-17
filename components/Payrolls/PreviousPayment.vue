@@ -43,15 +43,20 @@ const prettyAmount = computed(() => {
 <template>
   <div class="bg-white text-gray-700 py-6 px-5 border-b border-slate-200">
     <div class="grid grid-cols-12">
-      <span class="col-span-4 flex items-center gap-1.5 text-xs">
+      <span class="col-span-3 flex items-center gap-1.5 text-xs">
         <span>{{ prettyAmount }} {{ props.payment.currencySymbol }}</span>
       </span>
+
+      <div class="col-span-2 flex items-center text-xs">
+        <img class="w-4 h-4 mr-1.5" :src="network?.logoURI" loading="lazy" />
+        <span>{{ network?.name }}</span>
+      </div>
 
       <span class="col-span-2 text-xs text-slate-500 self-center">{{
         props.payment.processedOn
       }}</span>
 
-      <div class="col-span-4">
+      <div class="col-span-3 text-xs">
         <div
           class="flex items-center"
           :class="statusMapping[props.payment.status].class"
@@ -60,7 +65,7 @@ const prettyAmount = computed(() => {
             <svg
               v-if="props.payment.status.toLowerCase() === 'success'"
               xmlns="http://www.w3.org/2000/svg"
-              class="h-6 w-6"
+              class="h-5 w-5"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -75,7 +80,7 @@ const prettyAmount = computed(() => {
             <svg
               v-else-if="props.payment.status.toLowerCase() === 'failed'"
               xmlns="http://www.w3.org/2000/svg"
-              class="h-6 w-6"
+              class="h-5 w-5"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -90,7 +95,7 @@ const prettyAmount = computed(() => {
             <svg
               v-else
               xmlns="http://www.w3.org/2000/svg"
-              class="h-6 w-6"
+              class="h-5 w-5"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
