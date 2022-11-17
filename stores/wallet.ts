@@ -15,7 +15,7 @@ import {
 export const useWallet = defineStore("walletData", {
   state: () => {
     return {
-      walletAddress: useLocalStorage("wallet-address", ""),
+      walletAddress: useLocalStorage("walletAddress", ""),
       isConnecting: false,
       connectData: {
         redirectUrl: "",
@@ -33,7 +33,7 @@ export const useWallet = defineStore("walletData", {
   hydrate(storeState, initialState) {
     // https://pinia.vuejs.org/api/interfaces/pinia.DefineStoreOptions.html#hydrate
     // @ts-expect-error: https://github.com/microsoft/TypeScript/issues/43826
-    storeState.walletAddress = useLocalStorage("wallet-address", "");
+    storeState.walletAddress = useLocalStorage("walletAddress", "");
     // @ts-expect-error: https://github.com/microsoft/TypeScript/issues/43826
     storeState.jwt.accessToken = useLocalStorage("accessToken", "");
     // @ts-expect-error: https://github.com/microsoft/TypeScript/issues/43826

@@ -3,8 +3,7 @@ import { Network } from "@/types/Network";
 
 export const useNetworksStore = defineStore("networksList", {
   state: () => {
-    const publicKey = useRuntimeConfig();
-
+    const { public: publicKey } = useRuntimeConfig();
     return {
       networks: [
         {
@@ -32,7 +31,7 @@ export const useNetworksStore = defineStore("networksList", {
             "https://chainlist.org/_next/image?url=https%3A%2F%2Fdefillama.com%2Fchain-icons%2Frsz_binance.jpg&w=32&q=75",
           chainId: 56,
           rpcURL: undefined,
-          apiKey: publicKey.bscApiKey,
+          apiKey: publicKey.polygonApiKey,
           blockExplorerUrl: "https://bscscan.com/tx",
           disperseContract: "0xc50CDD22f65538A2e6C15Eee7638873e659a4877",
         },
