@@ -6,7 +6,7 @@ const { copy } = useClipboard();
 
 const wallet = useWallet();
 
-const { data, refresh } = await wallet.preFetchConnectData();
+wallet.preFetchConnectData();
 
 const showCopied = ref(false);
 
@@ -21,10 +21,7 @@ function copyAddr() {
 
 async function disconnectWallet() {
   wallet.disconnectWallet();
-  await refresh(); // Refresh the redirect link in case user wants to connect wallet again without page refresh
-
-  wallet.connectData.id = data.value.id;
-  wallet.connectData.redirectUrl = data.value.redirect_url;
+  await wallet.preFetchConnectData(); // Refresh the redirect link in case user wants to connect wallet again without page refresh
 }
 </script>
 

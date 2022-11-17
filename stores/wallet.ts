@@ -5,16 +5,27 @@ import { event } from "vue-gtag";
 
 import { useNetworksStore } from "@/stores/networks";
 
-import { BalanceCheckRequestResponse } from "@/types/ampnet/BalanceCheck";
+import {
+  FetchWalletAuthRequest,
+  CreateWalletAuthRequest,
+  GetPayloadByMessage,
+  GetJWTByMessage,
+} from "@/types/ampnet/BalanceCheck";
 
 export const useWallet = defineStore("walletData", {
   state: () => {
     return {
-      walletAddress: useLocalStorage("wallet-address", ""),
+      walletAddress: useLocalStorage("walletAddress", ""),
       isConnecting: false,
       connectData: {
         redirectUrl: "",
         id: "",
+      },
+      jwt: {
+        accessToken: useLocalStorage("accessToken", ""),
+        refreshToken: useLocalStorage("refreshToken", ""),
+        expires: useLocalStorage("expires", Date.now()),
+        refreshTokenExpires: useLocalStorage("refreshTokenExpires", Date.now()),
       },
     };
   },
@@ -22,11 +33,25 @@ export const useWallet = defineStore("walletData", {
   hydrate(storeState, initialState) {
     // https://pinia.vuejs.org/api/interfaces/pinia.DefineStoreOptions.html#hydrate
     // @ts-expect-error: https://github.com/microsoft/TypeScript/issues/43826
-    storeState.walletAddress = useLocalStorage("wallet-address", "");
+    storeState.walletAddress = useLocalStorage("walletAddress", "");
+    // @ts-expect-error: https://github.com/microsoft/TypeScript/issues/43826
+    storeState.jwt.accessToken = useLocalStorage("accessToken", "");
+    // @ts-expect-error: https://github.com/microsoft/TypeScript/issues/43826
+    storeState.jwt.refreshToken = useLocalStorage("refreshToken", "");
+    // @ts-expect-error: https://github.com/microsoft/TypeScript/issues/43826
+    storeState.jwt.expires = useLocalStorage("expires", Date.now());
+    // @ts-expect-error: https://github.com/microsoft/TypeScript/issues/43826
+    storeState.jwt.refreshTokenExpires = useLocalStorage(
+      "refreshTokenExpires",
+      Date.now()
+    );
   },
 
   getters: {
     isWalletConnected: (state) => ethers.utils.isAddress(state.walletAddress),
+    accessToken: (state): string => state.jwt.accessToken,
+    accessTokenValid: (state): boolean =>
+      state.jwt.expires > Date.now() + 2 * 60 * 1000,
   },
 
   actions: {
@@ -34,13 +59,17 @@ export const useWallet = defineStore("walletData", {
       /*
       Fetches redirect URL and request ID that will be used to connect wallet
       */
-      const runtimeConfig = useRuntimeConfig();
+      const { public: publicKey } = useRuntimeConfig();
+
+      const data = await $fetch<GetPayloadByMessage>(
+        `${publicKey.identityUrl}/authorize/by-message`,
+        {
+          method: "POST",
+        }
+      );
 
       const payload = {
-        chain_id: 137,
-        token_address: "0x0000000000000000000000000000000000001010",
-        redirect_url: runtimeConfig.public.connectWalletRedirect,
-        asset_type: "TOKEN",
+        message_to_sign: data.payload,
       };
 
       const networksStore = useNetworksStore();
@@ -48,17 +77,19 @@ export const useWallet = defineStore("walletData", {
       const headers = {
         "X-API-KEY": `${apiKey}`,
       };
-      const data = await useFetch<BalanceCheckRequestResponse>(
-        `${runtimeConfig.public.backendUrl}/balance/`,
-        {
-          method: "post",
-          headers: headers,
-          body: payload,
-          pick: ["id", "redirect_url"],
-        }
-      );
 
-      return data;
+      try {
+        const walletData = await $fetch<CreateWalletAuthRequest>(
+          `${publicKey.backendUrl}/wallet-authorization`,
+          {
+            method: "post",
+            headers: headers,
+            body: payload,
+          }
+        );
+        this.connectData.id = walletData.id;
+        this.connectData.redirectUrl = walletData.redirect_url;
+      } catch (error) {}
     },
     async connectWallet() {
       const networksStore = useNetworksStore();
@@ -74,11 +105,16 @@ export const useWallet = defineStore("walletData", {
         data: statusData,
         refresh,
         error,
-      } = await useFetch<BalanceCheckRequestResponse>(
-        `${runtimeConfig.public.backendUrl}/balance/${this.connectData.id}`,
+      } = await useFetch<FetchWalletAuthRequest>(
+        `${runtimeConfig.public.backendUrl}/wallet-authorization/${this.connectData.id}`,
         {
-          pick: ["status", "balance"],
           headers: headers,
+          pick: [
+            "status",
+            "wallet_address",
+            "message_to_sign",
+            "signed_message",
+          ],
         }
       );
 
@@ -92,9 +128,27 @@ export const useWallet = defineStore("walletData", {
         if (error.value) {
           this.isConnecting = false;
         }
-
         if (statusData.value.status === "SUCCESS") {
-          this.walletAddress = statusData.value.balance.wallet;
+          const payload = {
+            address: statusData.value.wallet_address,
+            message_to_sign: statusData.value.message_to_sign,
+            signed_payload: statusData.value.signed_message,
+          };
+          const { data: jwtData } = await useFetch<GetJWTByMessage>(
+            `${runtimeConfig.public.identityUrl}/authorize/jwt/by-message`,
+            {
+              method: "post",
+              body: payload,
+            }
+          );
+          this.jwt.accessToken = jwtData.value.access_token;
+          this.jwt.refreshToken = jwtData.value.refresh_token;
+
+          this.jwt.expires = jwtData.value.expires_in + Date.now();
+          this.jwt.refreshTokenExpires =
+            jwtData.value.refresh_token_expires_in + Date.now();
+
+          this.walletAddress = statusData.value.wallet_address;
           this.isConnecting = false;
           event("login", { method: "Wallet" });
         } else if (statusData.value.status === "FAILED") {
@@ -105,8 +159,32 @@ export const useWallet = defineStore("walletData", {
       }
     },
 
+    async refreshAccessToken() {
+      const runtimeConfig = useRuntimeConfig();
+      try {
+        const data = await $fetch<GetJWTByMessage>(
+          `${runtimeConfig.public.identityUrl}/authorize/refresh`,
+          {
+            method: "post",
+            body: {
+              refresh_token: this.jwt.refreshToken,
+            },
+          }
+        );
+        this.jwt.accessToken = data.access_token;
+        this.jwt.expires = data.expires_in + Date.now();
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
     disconnectWallet() {
       this.walletAddress = "";
+      this.jwt.accessToken = "";
+      this.jwt.refreshToken = "";
+      this.jwt.expires = Date.now();
+      this.jwt.refreshTokenExpires = Date.now();
+
       event("logout", {
         event_category: "engagement",
         event_label: "wallet_disconnect",

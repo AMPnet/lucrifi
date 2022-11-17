@@ -50,7 +50,6 @@ async function createRequest() {
   );
 
   let payload = {
-    redirect_url: runtimeConfig.public.requestPaymentRedirect,
     recipient_address: selectedToAddress.value,
     amount: shiftedAmount,
     arbitrary_data: {
@@ -67,9 +66,7 @@ async function createRequest() {
   };
   let queryParams = {};
 
-  const isNativeToken =
-    selectedToken.value.address ===
-    "0x0000000000000000000000000000000000000000";
+  const isNativeToken = selectedToken.value.address === NATIVE_TOKEN_ADDR;
 
   if (selectedNetwork.value.chainId !== undefined) {
     payload["chain_id"] = selectedNetwork.value.chainId;
@@ -90,28 +87,29 @@ async function createRequest() {
     payload["asset_type"] = "TOKEN";
   }
 
-  const { data, error } = await useFetch<FetchSendRequestResponse>(
-    `${runtimeConfig.public.backendUrl}/send`,
-    {
-      method: "post",
-      headers: headers,
-      body: payload,
-    }
-  );
+  try {
+    const data = await $fetch<FetchSendRequestResponse>(
+      `${runtimeConfig.public.backendUrl}/send`,
+      {
+        method: "post",
+        headers: headers,
+        body: payload,
+      }
+    );
 
-  if (error.value) {
+    event("create_payment_request");
+    navigateTo({
+      path: `/payments/requested/${data.id}`,
+      query: queryParams,
+    });
+  } catch {
     navigateTo({
       path: `/errorPage`,
     });
-  } else {
-    event("create_payment_request");
-    navigateTo({
-      path: `/payments/requested/${data.value.id}`,
-      query: queryParams,
-    });
+  } finally {
+    selectedAmount.value = "";
+    selectedToAddress.value = "";
   }
-  selectedAmount.value = "";
-  selectedToAddress.value = "";
 }
 </script>
 

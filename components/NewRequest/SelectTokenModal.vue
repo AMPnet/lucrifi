@@ -21,7 +21,9 @@ const topTokens = computed(() => {
   const top = [];
 
   for (const token of props.tokens) {
-    if (["USDC", "USDC.e", "WETH", "DAI", "USDT", "USDT.e"].includes(token.symbol)) {
+    if (
+      ["USDC", "USDC.e", "WETH", "DAI", "USDT", "USDT.e"].includes(token.symbol)
+    ) {
       top.push(token);
     }
   }
@@ -51,16 +53,14 @@ const queriedTokens = computed(() => {
     role="dialog"
     aria-modal="true"
   >
-    <div
-      class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
-    ></div>
+    <div class="fixed inset-0 bg-gray-500 bg-opacity-75"></div>
 
     <div class="fixed z-10 inset-0 overflow-y-auto">
       <div
         class="flex items-center justify-center min-h-full p-4 text-center sm:p-0"
       >
         <div
-          class="w-96 relative bg-white pt-4 pb-4 rounded-lg overflow-hidden shadow-xl transform transition-all sm:my-8 sm:max-w-lg sm:w-full"
+          class="w-96 relative bg-white pt-4 pb-4 rounded-lg overflow-hidden shadow-xl sm:my-8 sm:max-w-lg sm:w-full"
         >
           <div class="px-6">
             <div class="flex flex-row-reverse">
@@ -129,10 +129,10 @@ const queriedTokens = computed(() => {
               <div class="flex items-center justify-between">
                 <div class="flex items-center">
                   <img
-                      :src="`/tokens/${token.logoURI}`"
-                      class="w-5 h-5 mr-2.5"
-                      alt="token logo"
-                      loading="lazy"
+                    :src="`/tokens/${token.logoURI}`"
+                    class="w-5 h-5 mr-2.5"
+                    alt="token logo"
+                    loading="lazy"
                   />
                   <span>
                     {{ token.symbol }}

@@ -39,4 +39,25 @@ function decimalToSolNumber(decimalAmount: string, decimals: number): string {
   } else return solAmount;
 }
 
-export { solNumberToDecimal, decimalToSolNumber };
+function isValidCurrencyAmount(value: string, decimals: number): boolean {
+  if (!value) return false;
+
+  let regex = /^(0|[1-9]\d*)((\.|,)\d+)?$/;
+  if (!regex.test(value)) {
+    return false;
+  }
+
+  const valueFloat = parseFloat(value.replace(",", "."));
+
+  if (valueFloat <= 0) {
+    return false;
+  }
+
+  if (countDecimals(value) > decimals) {
+    return false;
+  }
+
+  return true;
+}
+
+export { solNumberToDecimal, decimalToSolNumber, isValidCurrencyAmount };

@@ -32,6 +32,7 @@ const { data: requestData } = await useFetch<FetchSendRequestResponse>(
   `${runtimeConfig.public.backendUrl}/send/${route.params.requestId}`,
   {
     headers: headers,
+    key: route.params.requestId.toString(),
   }
 );
 
@@ -49,7 +50,7 @@ if (requestData.value.token_address) {
   address = requestData.value.token_address.toLowerCase();
 } else {
   // It's native token
-  address = "0x0000000000000000000000000000000000000000";
+  address = NATIVE_TOKEN_ADDR;
 }
 
 const amount = computed(() => {
@@ -76,6 +77,7 @@ const tokenMeta = computed((): Token => {
     chainId: undefined,
     decimals: 18,
     name: "Custom",
+    uuid: "",
   };
 });
 

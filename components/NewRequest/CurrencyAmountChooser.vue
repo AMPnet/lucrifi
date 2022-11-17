@@ -13,6 +13,7 @@ const selectedNetwork = useState("selectedNetwork", (): Network => {
     name: "",
     blockExplorerUrl: "",
     apiKey: "",
+    disperseContract: "",
   };
 });
 

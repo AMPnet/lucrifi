@@ -5,4 +5,5 @@ export interface Network {
   rpcURL: string | undefined;
   blockExplorerUrl: string;
   apiKey: string;
+  disperseContract: string;
 }

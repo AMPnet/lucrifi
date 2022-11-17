@@ -3,26 +3,27 @@ import { Network } from "@/types/Network";
 
 export const useNetworksStore = defineStore("networksList", {
   state: () => {
-    const runtimeConfig = useRuntimeConfig();
-
+    const { public: publicKey } = useRuntimeConfig();
     return {
       networks: [
-        {
-          name: "Polygon",
-          logoURI: "https://cryptologos.cc/logos/polygon-matic-logo.png",
-          chainId: 137,
-          rpcURL: undefined,
-          apiKey: runtimeConfig.polygonApiKey,
-          blockExplorerUrl: "https://polygonscan.com/tx",
-        },
         {
           name: "Ethereum",
           logoURI:
             "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Ethereum-icon-purple.svg/480px-Ethereum-icon-purple.svg.png",
           chainId: 1,
           rpcURL: undefined,
-          apiKey: runtimeConfig.ethereumApiKey,
+          apiKey: publicKey.ethereumApiKey,
           blockExplorerUrl: "https://etherscan.io/tx",
+          disperseContract: "0xd152f549545093347a162dce210e7293f1452150",
+        },
+        {
+          name: "Polygon",
+          logoURI: "https://cryptologos.cc/logos/polygon-matic-logo.png",
+          chainId: 137,
+          rpcURL: undefined,
+          apiKey: publicKey.polygonApiKey,
+          blockExplorerUrl: "https://polygonscan.com/tx",
+          disperseContract: "0xff8e425b4982b58b3220d9de004b2ac832266915",
         },
         {
           name: "BSC",
@@ -30,8 +31,9 @@ export const useNetworksStore = defineStore("networksList", {
             "https://chainlist.org/_next/image?url=https%3A%2F%2Fdefillama.com%2Fchain-icons%2Frsz_binance.jpg&w=32&q=75",
           chainId: 56,
           rpcURL: undefined,
-          apiKey: runtimeConfig.bscApiKey,
+          apiKey: publicKey.bscApiKey,
           blockExplorerUrl: "https://bscscan.com/tx",
+          disperseContract: "0xc50CDD22f65538A2e6C15Eee7638873e659a4877",
         },
         {
           name: "xDai/Gnosis",
@@ -39,8 +41,9 @@ export const useNetworksStore = defineStore("networksList", {
             "https://chainlist.org/_next/image?url=https%3A%2F%2Fdefillama.com%2Fchain-icons%2Frsz_xdai.jpg&w=32&q=75",
           chainId: 100,
           rpcURL: undefined,
-          apiKey: runtimeConfig.gnosisApiKey,
+          apiKey: publicKey.gnosisApiKey,
           blockExplorerUrl: "https://blockscout.com/xdai/mainnet/tx",
+          disperseContract: "0x94c0Ca3a6131Ca985BFA3c818Fba8bf4E912c0E7",
         },
         {
           name: "Fantom Opera",
@@ -48,8 +51,9 @@ export const useNetworksStore = defineStore("networksList", {
             "https://chainlist.org/_next/image?url=https%3A%2F%2Fdefillama.com%2Fchain-icons%2Frsz_fantom.jpg&w=32&q=75",
           chainId: 250,
           rpcURL: undefined,
-          apiKey: runtimeConfig.fantomApiKey,
+          apiKey: publicKey.fantomApiKey,
           blockExplorerUrl: "https://ftmscan.com/tx",
+          disperseContract: "0x7da52848eda4ae10af06e88adf7da8960fa92b8e",
         },
         {
           name: "Moonriver",
@@ -57,8 +61,9 @@ export const useNetworksStore = defineStore("networksList", {
             "https://chainlist.org/_next/image?url=https%3A%2F%2Fdefillama.com%2Fchain-icons%2Frsz_moonriver.jpg&w=32&q=75",
           chainId: 1285,
           rpcURL: undefined,
-          apiKey: runtimeConfig.moonriverApiKey,
+          apiKey: publicKey.moonriverApiKey,
           blockExplorerUrl: "https://moonriver.moonscan.io/tx",
+          disperseContract: "0x7da52848eda4ae10af06e88adf7da8960fa92b8e",
         },
         {
           name: "Avalanche",
@@ -66,8 +71,9 @@ export const useNetworksStore = defineStore("networksList", {
             "https://chainlist.org/_next/image?url=https%3A%2F%2Fdefillama.com%2Fchain-icons%2Frsz_avalanche.jpg&w=32&q=75",
           chainId: 43114,
           rpcURL: undefined,
-          apiKey: runtimeConfig.avaxApiKey,
+          apiKey: publicKey.avaxApiKey,
           blockExplorerUrl: "https://snowtrace.io/tx",
+          disperseContract: "0x8eb2f385c878bef4f5674fc8bcedbad1246a57b0",
         },
         {
           name: "Aurora",
@@ -75,8 +81,9 @@ export const useNetworksStore = defineStore("networksList", {
             "https://chainlist.org/_next/image?url=https%3A%2F%2Fdefillama.com%2Fchain-icons%2Frsz_aurora.jpg&w=32&q=75",
           chainId: 1313161554,
           rpcURL: undefined,
-          apiKey: runtimeConfig.auroraApiKey,
-          blockExplorerUrl: "https://explorer.mainnet.aurora.dev/tx",
+          apiKey: publicKey.auroraApiKey,
+          blockExplorerUrl: "https://aurorascan.dev/tx",
+          disperseContract: "0x0db4d3139edf99958f3b73844eeefa11bc0ed6c0",
         },
       ],
     };
