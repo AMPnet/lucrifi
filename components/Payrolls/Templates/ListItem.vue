@@ -102,7 +102,7 @@ function copyTemplateId() {
                       />
                     </svg>
 
-                    <span>Copy import link</span>
+                    <span>Share link</span>
                   </div>
                   <div
                     v-show="showCopied"

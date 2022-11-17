@@ -56,7 +56,7 @@ try {
     return tokensListStore.tokensList(selectedNetwork.value.chainId);
   });
   let tokenAddr = NATIVE_TOKEN_ADDR;
-  if (data.asset_type === "TOKEN") {
+  if (data.token_address) {
     tokenAddr = data.token_address;
   }
   selectedToken.value = filteredTokenList.value.find(

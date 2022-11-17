@@ -1,13 +1,9 @@
 <script setup lang="ts">
-import { ref, Ref } from "vue";
+import { ref } from "vue";
 import { useField } from "vee-validate";
 
 import { useNetworksStore } from "@/stores/networks";
-import { useTokensStore } from "@/stores/tokens";
-import { Token } from "@/types/Token";
 import { Network } from "@/types/Network";
-
-const tokensListStore = useTokensStore();
 
 const networkStore = useNetworksStore();
 const networks = networkStore.networksList;
@@ -56,14 +52,6 @@ const selectedNetwork = useState("selectedNetwork", () => networks[0]);
 const dropDownActive = ref(false);
 
 const isCustomRpc = computed(() => selectedNetwork.value.chainId === undefined);
-
-const dirtyClass = computed(() => {
-  if (!meta.valid) {
-    return "bg-orange-50 border-orange-300";
-  } else {
-    return "bg-slate-100 border-slate-300";
-  }
-});
 
 async function selectNetwork(network: Network) {
   selectedNetwork.value = network;

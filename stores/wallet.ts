@@ -108,13 +108,13 @@ export const useWallet = defineStore("walletData", {
       } = await useFetch<FetchWalletAuthRequest>(
         `${runtimeConfig.public.backendUrl}/wallet-authorization/${this.connectData.id}`,
         {
+          headers: headers,
           pick: [
             "status",
             "wallet_address",
             "message_to_sign",
             "signed_message",
           ],
-          headers: headers,
         }
       );
 
@@ -184,7 +184,7 @@ export const useWallet = defineStore("walletData", {
       this.jwt.accessToken = "";
       this.jwt.refreshToken = "";
       this.jwt.expires = Date.now();
-      this.jwt.refresh_token_expires = Date.now();
+      this.jwt.refreshTokenExpires = Date.now();
 
       event("logout", {
         event_category: "engagement",

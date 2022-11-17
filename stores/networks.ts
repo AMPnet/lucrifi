@@ -3,7 +3,7 @@ import { Network } from "@/types/Network";
 
 export const useNetworksStore = defineStore("networksList", {
   state: () => {
-    const { public: publicKey } = useRuntimeConfig();
+    const publicKey = useRuntimeConfig();
 
     return {
       networks: [
