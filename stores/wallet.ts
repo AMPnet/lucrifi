@@ -145,6 +145,7 @@ export const useWallet = defineStore("walletData", {
           this.jwt.refreshToken = jwtData.value.refresh_token;
 
           this.jwt.expires = jwtData.value.expires_in + Date.now();
+
           this.jwt.refreshTokenExpires =
             jwtData.value.refresh_token_expires_in + Date.now();
 
@@ -174,7 +175,8 @@ export const useWallet = defineStore("walletData", {
         this.jwt.accessToken = data.access_token;
         this.jwt.expires = data.expires_in + Date.now();
       } catch (error) {
-        console.log(error);
+        console.error(error);
+        this.disconnectWallet();
       }
     },
 
