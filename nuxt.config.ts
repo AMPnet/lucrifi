@@ -17,6 +17,46 @@ export default defineNuxtConfig({
           content:
             "web3, crypto, blockhain, defi, payments, transaction, dev3, lucrifi, finance",
         },
+        {
+          property: "og:site_name",
+          content: "LucriFi",
+        },
+        {
+          property: "og:title",
+          content: "LucriFi",
+        },
+        {
+          property: "og:description",
+          content: "Easy crypto payrolls.",
+        },
+        {
+          property: "og:image",
+          content: "share-thumb.webp",
+        },
+        {
+          property: "og:url",
+          content: "https://app.lucri.fi",
+        },
+        {
+          name: "twitter:title",
+          content: "LucrFi",
+        },
+        {
+          name: "twitter:description",
+          content: "Easy crypto payrolls.",
+        },
+        {
+          name: "twitter:image",
+          content: "share-thumb.webp",
+        },
+        {
+          property: "twitter:url",
+          content: "https://app.lucri.fi",
+        },
+        {
+          name: "twitter:card",
+          content: "summary",
+        },
       ],
     },
   },
