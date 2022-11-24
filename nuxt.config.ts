@@ -9,7 +9,7 @@ export default defineNuxtConfig({
         {
           hid: "description",
           name: "description",
-          content: "Get paid in crypto, easy and fast!",
+          content: "Easy crypto payrolls",
         },
         {
           hid: "keywords",
@@ -27,11 +27,11 @@ export default defineNuxtConfig({
         },
         {
           property: "og:description",
-          content: "Easy crypto payrolls.",
+          content: "Easy crypto payrolls",
         },
         {
           property: "og:image",
-          content: "share-thumb.webp",
+          content: "/share-thumb.webp",
         },
         {
           property: "og:url",
@@ -43,11 +43,11 @@ export default defineNuxtConfig({
         },
         {
           name: "twitter:description",
-          content: "Easy crypto payrolls.",
+          content: "Easy crypto payrolls",
         },
         {
           name: "twitter:image",
-          content: "share-thumb.webp",
+          content: "/share-thumb.webp",
         },
         {
           property: "twitter:url",
