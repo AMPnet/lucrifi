@@ -31,8 +31,18 @@ const wallet = useWallet();
             <AuthorizationSignIn />
           </div>
         </div>
-        <div class="lg:hidden text-center py-5 text-lg">
-          This screen isn't supported on mobile and tablet displays.
+        <div class="lg:hidden text-center pt-5 pb-8 text-lg">
+          <div class="flex justify-center pb-6">
+            <img class="w-96" src="/rocket.webp" />
+          </div>
+          <div>
+            <div class="text-violet-700 text-sm uppercase font-semibold mb-4">
+              Mobile view not supported
+            </div>
+            <div class="text-slate-600 text-base">
+              Switch to desktop to jumpstart your payrolls
+            </div>
+          </div>
         </div>
       </ClientOnly>
     </div>
