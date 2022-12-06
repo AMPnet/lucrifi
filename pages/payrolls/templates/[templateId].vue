@@ -147,10 +147,15 @@ async function createNativeMultiPaymentRequest() {
 }
 
 async function authorizePayment() {
+  const sumDecimal = templateRecipients.value.reduce(
+    (a, b) => a + Number(b.amount),
+    0
+  );
   const sumSol = decimalToSolNumber(
-    String(payrollSum.value),
+    String(sumDecimal),
     selectedToken.value.decimals
   );
+
   const itemsSol = templateRecipients.value.map((item) => {
     const solAmount = decimalToSolNumber(
       item.amount,
