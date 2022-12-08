@@ -87,6 +87,7 @@ export default defineNuxtConfig({
       gnosisApiKey: "",
       fantomApiKey: "",
       auroraApiKey: "",
+      mumbaiApiKey: "",
 
       gtagId: "",
       identityUrl: "https://invest-api.ampnet.io/api/identity",

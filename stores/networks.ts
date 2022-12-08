@@ -85,6 +85,15 @@ export const useNetworksStore = defineStore("networksList", {
           blockExplorerUrl: "https://aurorascan.dev/tx",
           disperseContract: "0x0db4d3139edf99958f3b73844eeefa11bc0ed6c0",
         },
+        {
+          name: "Mumbai (Testnet)",
+          logoURI: "https://cryptologos.cc/logos/polygon-matic-logo.png",
+          chainId: 80001,
+          rpcURL: undefined,
+          apiKey: publicKey.mumbaiApiKey,
+          blockExplorerUrl: "https://mumbai.polygonscan.com/tx",
+          disperseContract: "0xd152f549545093347a162dce210e7293f1452150",
+        },
       ],
     };
   },
