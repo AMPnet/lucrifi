@@ -265,8 +265,10 @@ export const useTemplates = defineStore("templatesStore", {
           body: callPayload,
         }
       );
+      
 
-      window.open(callData.redirect_url, "_blank");
+      const result = await dev3Sdks().get(chainId)!.present(callData.redirect_url);
+      if (result.status === 'PENDING') { throw new Error("User canceled"); }  
 
       let statusData: FunctionCallResponse;
       let status: string = callData.status;
@@ -296,7 +298,7 @@ export const useTemplates = defineStore("templatesStore", {
         );
         return multiSendResp.id;
       } else {
-        throwError("Received non success status");
+        throw new Error("Received non success status");
       }
     },
     async createNativeMultiPayment(
@@ -395,7 +397,8 @@ export const useTemplates = defineStore("templatesStore", {
         }
       );
 
-      window.open(disperseStatus.redirect_url, "_blank");
+      const result = await dev3Sdks().get(chainId)!.present(disperseStatus.redirect_url);
+      if (result.status === 'PENDING') { throw new Error("Action canceled"); }
 
       while (disperseStatus.status === "PENDING") {
         disperseStatus = await $fetch<FunctionCallResponse>(
@@ -420,7 +423,7 @@ export const useTemplates = defineStore("templatesStore", {
           }
         );
       } else {
-        throwError("Received non success status");
+        throw new Error("Received non success status");
       }
     },
   },

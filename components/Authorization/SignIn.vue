@@ -3,12 +3,17 @@ import { useWallet } from "@/stores/wallet";
 
 const wallet = useWallet();
 
-function connectWallet() {
-  window.open(wallet.connectData.redirectUrl, "_blank");
-  wallet.connectWallet();
-}
-
 const pending = ref(wallet.connectData.redirectUrl.length === 0);
+
+function connectWallet() {
+  dev3Sdks().get(1)!.present(wallet.connectData.redirectUrl).then((result) => {
+    if (result.status === 'PENDING') {
+      wallet.isConnecting = false;
+    } else {
+      wallet.connectWallet();
+    }
+  });
+}
 
 if (!wallet.isWalletConnected) {
   pending.value = true;

@@ -30,6 +30,7 @@
     "@pinia/nuxt": "^0.4.2",
     "@vueuse/core": "^9.5.0",
     "@vueuse/nuxt": "^9.2.0",
+    "dev3-sdk": "^0.0.13",
     "ethers": "^5.6.8",
     "nuxt": "^3.0.0",
     "pinia": "^2.0.14",

@@ -30,23 +30,6 @@ export const useWallet = defineStore("walletData", {
     };
   },
 
-  hydrate(storeState, initialState) {
-    // https://pinia.vuejs.org/api/interfaces/pinia.DefineStoreOptions.html#hydrate
-    // @ts-expect-error: https://github.com/microsoft/TypeScript/issues/43826
-    storeState.walletAddress = useLocalStorage("walletAddress", "");
-    // @ts-expect-error: https://github.com/microsoft/TypeScript/issues/43826
-    storeState.jwt.accessToken = useLocalStorage("accessToken", "");
-    // @ts-expect-error: https://github.com/microsoft/TypeScript/issues/43826
-    storeState.jwt.refreshToken = useLocalStorage("refreshToken", "");
-    // @ts-expect-error: https://github.com/microsoft/TypeScript/issues/43826
-    storeState.jwt.expires = useLocalStorage("expires", Date.now());
-    // @ts-expect-error: https://github.com/microsoft/TypeScript/issues/43826
-    storeState.jwt.refreshTokenExpires = useLocalStorage(
-      "refreshTokenExpires",
-      Date.now()
-    );
-  },
-
   getters: {
     isWalletConnected: (state) => ethers.utils.isAddress(state.walletAddress),
     accessToken: (state): string => state.jwt.accessToken,
@@ -186,7 +169,6 @@ export const useWallet = defineStore("walletData", {
       this.jwt.refreshToken = "";
       this.jwt.expires = Date.now();
       this.jwt.refreshTokenExpires = Date.now();
-
       event("logout", {
         event_category: "engagement",
         event_label: "wallet_disconnect",
