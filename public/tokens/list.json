@@ -729,5 +729,31 @@
       "decimals": 18,
       "logoURI": "images/1313161554/0x1Bc741235EC0Ee86ad488fa49B69Bb6C823eE7b7.png.webp"
     }
+  ],
+  "80001": [
+    {
+      "address": "0x0000000000000000000000000000000000000000",
+      "name": "Polygon Native",
+      "symbol": "MATIC",
+      "chainId": 80001,
+      "decimals": 18,
+      "logoURI": "images/137/matic.webp"
+    },
+    {
+      "address": "0x2d7882bedcbfddce29ba99965dd3cdf7fcb10a1e",
+      "name": "Test Token",
+      "symbol": "TST",
+      "chainId": 80001,
+      "decimals": 18,
+      "logoURI": "images/80001/test-token-image.png"
+    },
+    {
+      "address": "0x0fa8781a83e46826621b3bc094ea2a0212e71b23",
+      "name": "USD Coin (PoS)",
+      "symbol": "USDC",
+      "chainId": 80001,
+      "decimals": 6,
+      "logoURI": "images/137/0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174.png.webp"
+    }
   ]
 }

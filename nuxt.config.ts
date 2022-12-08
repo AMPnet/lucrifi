@@ -60,6 +60,7 @@ export default defineNuxtConfig({
       ],
     },
   },
+  ssr: false,
   css: ["~/assets/css/tailwind.css"],
   modules: ["@nuxtjs/tailwindcss", "@pinia/nuxt"],
 
@@ -86,6 +87,7 @@ export default defineNuxtConfig({
       gnosisApiKey: "",
       fantomApiKey: "",
       auroraApiKey: "",
+      mumbaiApiKey: "",
 
       gtagId: "",
       identityUrl: "https://invest-api.ampnet.io/api/identity",

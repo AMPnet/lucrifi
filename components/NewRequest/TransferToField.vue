@@ -7,8 +7,13 @@ import { useWallet } from "@/stores/wallet";
 const wallet = useWallet();
 
 function connectWallet() {
-  window.open(wallet.connectData.redirectUrl, "_blank");
-  wallet.connectWallet();
+   dev3Sdks().get(1)!.present(wallet.connectData.redirectUrl).then(result => {
+    if (result.status === 'PENDING') {
+      wallet.isConnecting = false;
+    } else {
+      wallet.connectWallet();
+    }
+   });
 }
 
 const pending = ref(false);
@@ -59,6 +64,8 @@ const dirtyClass = computed(() => {
 <template>
   <div>
     <h3>Transfer to</h3>
+    <ClientOnly>
+
     <div class="px-4 py-3 border rounded mt-2" :class="dirtyClass">
       <div class="flex items-center justify-between">
         <svg
@@ -81,7 +88,6 @@ const dirtyClass = computed(() => {
           id="transfer-to"
           placeholder="Input address"
         />
-        <ClientOnly>
           <button
             v-if="wallet.isWalletConnected"
             class="py-1 px-3 whitespace-nowrap rounded-full text-xs font-bold border border-violet-700"
@@ -116,9 +122,10 @@ const dirtyClass = computed(() => {
             <div class="flex items-center">
               <span>Select My Wallet</span>
             </div>
-          </button></ClientOnly
-        >
+          </button>
       </div>
     </div>
+    </ClientOnly
+        >
   </div>
 </template>
