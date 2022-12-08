@@ -37,6 +37,10 @@ export function dev3Sdks(): Map<number, Dev3SDK> {
             publicKey.auroraApiKey,
             "b59f4e8b-bd67-42b1-a667-b1ad4e6e2b98"
           ));
+        dev3SdksMap.set(80001, new Dev3SDK(
+            publicKey.mumbaiApiKey,
+            "64dea511-74db-4aa5-8d0b-f9d33c214f3c"
+          ));
     }
     return dev3SdksMap;
 }
