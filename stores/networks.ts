@@ -92,7 +92,7 @@ export const useNetworksStore = defineStore("networksList", {
           rpcURL: undefined,
           apiKey: publicKey.mumbaiApiKey,
           blockExplorerUrl: "https://mumbai.polygonscan.com/tx",
-          disperseContract: "0xd152f549545093347a162dce210e7293f1452150",
+          disperseContract: "0x74dbe3de8d83ce0c4fe44de615c2539e2bb23259",
         },
       ],
     };
