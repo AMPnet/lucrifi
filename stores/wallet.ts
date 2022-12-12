@@ -145,21 +145,22 @@ export const useWallet = defineStore("walletData", {
 
     async refreshAccessToken() {
       const runtimeConfig = useRuntimeConfig();
-      try {
-        const data = await $fetch<GetJWTByMessage>(
-          `${runtimeConfig.public.identityUrl}/authorize/refresh`,
-          {
-            method: "post",
-            body: {
-              refresh_token: this.jwt.refreshToken,
-            },
-          }
-        );
-        this.jwt.accessToken = data.access_token;
-        this.jwt.expires = data.expires_in + Date.now();
-      } catch (error) {
-        console.error(error);
-        this.disconnectWallet();
+      if (this.jwt.refreshToken) {
+        try {
+          const data = await $fetch<GetJWTByMessage>(
+            `${runtimeConfig.public.identityUrl}/authorize/refresh`,
+            {
+              method: "post",
+              body: {
+                refresh_token: this.jwt.refreshToken,
+              },
+            }
+          );
+          this.jwt.accessToken = data.access_token;
+          this.jwt.expires = data.expires_in + Date.now();
+        } catch (error) {
+          this.disconnectWallet();
+        }
       }
     },
 
