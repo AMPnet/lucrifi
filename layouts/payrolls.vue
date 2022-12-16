@@ -8,7 +8,7 @@ const wallet = useWallet();
   <div class="bg-slate-100 min-h-screen">
     <div class="container mx-auto lg:px-14">
       <TheNavbar />
-
+      <PromoBanner />
       <ClientOnly>
         <div class="hidden lg:block">
           <div
