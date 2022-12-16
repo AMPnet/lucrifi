@@ -1,8 +1,8 @@
 export interface NewAddressAlias {
   alias: string;
   address: string;
-  phone_number: string | undefined;
-  email: string | undefined;
+  phone_number: string | null;
+  email: string | null;
 }
 
 export interface AddressAlias extends NewAddressAlias {
