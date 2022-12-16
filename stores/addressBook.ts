@@ -17,7 +17,18 @@ export const useAddressBook = defineStore("addressBook", {
     };
   },
   getters: {
-    aliases: (state) => state.data,
+    aliases: (state) =>
+      state.data.filter((x) => !x.alias.startsWith(PROMO_HOLIDAYS_CODE)),
+    promoUsed: (state) => {
+      const promoExists = state.data.find((x) =>
+        x.alias.startsWith(PROMO_HOLIDAYS_CODE)
+      );
+      if (promoExists) {
+        return true;
+      } else {
+        return false;
+      }
+    },
   },
   actions: {
     async fetchAliases() {

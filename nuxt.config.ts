@@ -92,6 +92,7 @@ export default defineNuxtConfig({
       gtagId: "",
       identityUrl: "https://invest-api.ampnet.io/api/identity",
       backendUrl: "https://invest-api.ampnet.io/api/blockchain-api/v1",
+      mailVerifierApiKey: "",
     },
   },
 
