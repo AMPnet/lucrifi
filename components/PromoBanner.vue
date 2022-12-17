@@ -91,7 +91,7 @@ async function submitMail() {
         v-if="successMessage.length > 0"
         class="flex items-center gap-x-2 justify-center py-1"
       >
-        <div>{{ successMessage }} fjeiofjeoijfoij</div>
+        <div>{{ successMessage }}</div>
         <div>
           <svg
             xmlns="http://www.w3.org/2000/svg"
