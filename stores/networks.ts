@@ -8,8 +8,7 @@ export const useNetworksStore = defineStore("networksList", {
       networks: [
         {
           name: "Ethereum",
-          logoURI:
-            "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Ethereum-icon-purple.svg/480px-Ethereum-icon-purple.svg.png",
+          logoURI: "/networks/ethereum.svg",
           chainId: 1,
           rpcURL: undefined,
           apiKey: publicKey.ethereumApiKey,
@@ -18,7 +17,7 @@ export const useNetworksStore = defineStore("networksList", {
         },
         {
           name: "Polygon",
-          logoURI: "https://cryptologos.cc/logos/polygon-matic-logo.png",
+          logoURI: "/networks/polygon.svg",
           chainId: 137,
           rpcURL: undefined,
           apiKey: publicKey.polygonApiKey,
@@ -27,8 +26,7 @@ export const useNetworksStore = defineStore("networksList", {
         },
         {
           name: "BSC",
-          logoURI:
-            "https://chainlist.org/_next/image?url=https%3A%2F%2Fdefillama.com%2Fchain-icons%2Frsz_binance.jpg&w=32&q=75",
+          logoURI: "/networks/bsc.svg",
           chainId: 56,
           rpcURL: undefined,
           apiKey: publicKey.bscApiKey,
@@ -37,8 +35,7 @@ export const useNetworksStore = defineStore("networksList", {
         },
         {
           name: "xDai/Gnosis",
-          logoURI:
-            "https://chainlist.org/_next/image?url=https%3A%2F%2Fdefillama.com%2Fchain-icons%2Frsz_xdai.jpg&w=32&q=75",
+          logoURI: "/networks/gnosis.svg",
           chainId: 100,
           rpcURL: undefined,
           apiKey: publicKey.gnosisApiKey,
@@ -47,8 +44,7 @@ export const useNetworksStore = defineStore("networksList", {
         },
         {
           name: "Fantom Opera",
-          logoURI:
-            "https://chainlist.org/_next/image?url=https%3A%2F%2Fdefillama.com%2Fchain-icons%2Frsz_fantom.jpg&w=32&q=75",
+          logoURI: "/networks/fantom.svg",
           chainId: 250,
           rpcURL: undefined,
           apiKey: publicKey.fantomApiKey,
@@ -57,8 +53,7 @@ export const useNetworksStore = defineStore("networksList", {
         },
         {
           name: "Moonriver",
-          logoURI:
-            "https://chainlist.org/_next/image?url=https%3A%2F%2Fdefillama.com%2Fchain-icons%2Frsz_moonriver.jpg&w=32&q=75",
+          logoURI: "/networks/moonriver.svg",
           chainId: 1285,
           rpcURL: undefined,
           apiKey: publicKey.moonriverApiKey,
@@ -67,8 +62,7 @@ export const useNetworksStore = defineStore("networksList", {
         },
         {
           name: "Avalanche",
-          logoURI:
-            "https://chainlist.org/_next/image?url=https%3A%2F%2Fdefillama.com%2Fchain-icons%2Frsz_avalanche.jpg&w=32&q=75",
+          logoURI: "/networks/avalanche.svg",
           chainId: 43114,
           rpcURL: undefined,
           apiKey: publicKey.avaxApiKey,
@@ -77,8 +71,7 @@ export const useNetworksStore = defineStore("networksList", {
         },
         {
           name: "Aurora",
-          logoURI:
-            "https://chainlist.org/_next/image?url=https%3A%2F%2Fdefillama.com%2Fchain-icons%2Frsz_aurora.jpg&w=32&q=75",
+          logoURI: "/networks/aurora.webp",
           chainId: 1313161554,
           rpcURL: undefined,
           apiKey: publicKey.auroraApiKey,
@@ -87,7 +80,7 @@ export const useNetworksStore = defineStore("networksList", {
         },
         {
           name: "Mumbai (Testnet)",
-          logoURI: "https://cryptologos.cc/logos/polygon-matic-logo.png",
+          logoURI: "/networks/polygon.svg",
           chainId: 80001,
           rpcURL: undefined,
           apiKey: publicKey.mumbaiApiKey,
